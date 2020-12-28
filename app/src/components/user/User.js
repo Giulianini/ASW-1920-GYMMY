@@ -1,13 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Dashboard from "./dashboard/Dashboard";
 import Personal from "./personal/Personal";
 import Statistics from "./statistics/Statistics";
 import Training from "./training/Training";
 import BottomBar from "./BottomBar";
-import {AppBar, IconButton, Toolbar, Typography} from "@material-ui/core";
-import {Menu} from '@material-ui/icons'
 import Header from "./Header";
+import {Button, SwipeableDrawer} from "@material-ui/core";
 
 const routes = {
     dashboard: {
@@ -29,9 +28,18 @@ const routes = {
 }
 
 function User() {
+    const [drawerIsOpen, setDrawerIsOpen] = useState(false)
     return (
         <Router>
             <Header/>
+            <SwipeableDrawer
+                anchor={'left'}
+                open={drawerIsOpen}
+                onClose={() => {setDrawerIsOpen(false)}}
+                onOpen={() => {setDrawerIsOpen(true)}}
+            >
+                <Button>Placeholder</Button>
+            </SwipeableDrawer>
             <Switch>
                 <Route path={`/${routes.dashboard.value}`} children={<Dashboard/>}/>
                 <Route path={`/${routes.personal.value}`} children={<Personal/>}/>

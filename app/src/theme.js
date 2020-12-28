@@ -13,4 +13,10 @@ const theme = createMuiTheme({
     },
 });
 
-export default theme
+const darkMode = createMuiTheme({
+    palette: {
+        type: "dark"
+    }
+})
+
+export {theme, darkMode}
