@@ -22,7 +22,7 @@ function Header(props) {
             position={"sticky"}
         >
             <Toolbar>
-                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={() => props.toggleDrawer(true)}>
                     <Menu/>
                 </IconButton>
                 <Typography variant="h6" className={classes.title}>
