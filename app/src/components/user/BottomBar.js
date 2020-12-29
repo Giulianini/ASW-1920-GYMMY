@@ -1,13 +1,18 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {BottomNavigation, BottomNavigationAction} from "@material-ui/core";
 import {Dashboard, BarChart, Receipt, Person} from '@material-ui/icons'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 
 function BottomBar(props) {
     const [value, setValue] = useState("dashboard")
+    const location = useLocation()
     const history = useHistory()
     const classes = useStyles()
+
+    useEffect(() => {
+        setValue(location.pathname.toString().split("/")[1])
+    }, [location])
 
     function handleChange(newValue) {
         setValue(newValue)
