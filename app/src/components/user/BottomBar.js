@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {BottomNavigation, BottomNavigationAction} from "@material-ui/core";
 import {Dashboard, BarChart, Receipt, Person} from '@material-ui/icons'
 import {useHistory} from 'react-router-dom'
