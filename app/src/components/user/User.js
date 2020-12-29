@@ -11,25 +11,7 @@ import {CssBaseline} from "@material-ui/core";
 import {darkMode, theme} from "../../theme";
 import {ThemeProvider} from "@material-ui/core/styles";
 import Drawer from "./Drawer";
-
-const routes = {
-    dashboard: {
-        name: "Dashboard",
-        value: "dashboard",
-    },
-    personal: {
-        name: "Personal",
-        value: "personal",
-    },
-    statistics: {
-        name: "Statistics",
-        value: "statistics",
-    },
-    training: {
-        name: "Training",
-        value: "training",
-    },
-}
+import routes from "../Routes";
 
 function User() {
     const [drawerIsOpen, setDrawerIsOpen] = useState(false)
