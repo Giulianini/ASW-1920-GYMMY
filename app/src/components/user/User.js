@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
 import Dashboard from "./dashboard/Dashboard";
 import Personal from "./personal/Personal";
 import Statistics from "./statistics/Statistics";
@@ -54,6 +54,7 @@ function User() {
                     <Route path={`/${routes.personal.value}`} children={<Personal/>}/>
                     <Route path={`/${routes.statistics.value}`} children={<Statistics/>}/>
                     <Route path={`/${routes.training.value}`} children={<Training/>}/>
+                    <Redirect from='*' to={`/${routes.dashboard.value}`} />
                 </Switch>
                 <BottomBar tabs={routes}/>
             </Router>
