@@ -1,6 +1,11 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node
 # Edit at https://www.toptal.com/developers/gitignore?templates=node
 
+### Security -> Create cert e key -> add cert to certs -> trust all -> profit
+cert.key
+cert.pem
+# openssl req -x509 -nodes -days 730 -newkey rsa:2048 -keyout cert.key -out cert.pem -config req.cnf -sha256
+
 ### Node ###
 # Logs
 logs
