@@ -1,4 +1,5 @@
 import React from 'react';
+import {Brightness3, Lock, LockOpen, PersonAdd} from "@material-ui/icons";
 import {
     List,
     ListItem,
@@ -8,7 +9,6 @@ import {
     ListSubheader, makeStyles,
     SwipeableDrawer, Switch as SwitchUI
 } from "@material-ui/core";
-import {Brightness3, PowerSettingsNew} from "@material-ui/icons";
 
 const useStyles = makeStyles({
     list: {
@@ -42,9 +42,21 @@ function Drawer(props) {
                 </ListItem>
                 <ListItem button divider={true}>
                     <ListItemIcon>
-                        <PowerSettingsNew />
+                        <PersonAdd />
                     </ListItemIcon>
-                    <ListItemText id="switch-list-label-bluetooth" primary="Logout" />
+                    <ListItemText id="signup" primary="Signup" />
+                </ListItem>
+                <ListItem button divider={true}>
+                    <ListItemIcon>
+                        <LockOpen />
+                    </ListItemIcon>
+                    <ListItemText id="login" primary="Login" />
+                </ListItem>
+                <ListItem button divider={true}>
+                    <ListItemIcon>
+                        <Lock />
+                    </ListItemIcon>
+                    <ListItemText id="logout" primary="Logout" />
                 </ListItem>
             </List>
         </SwipeableDrawer>
