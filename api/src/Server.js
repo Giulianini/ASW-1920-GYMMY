@@ -18,7 +18,6 @@ const mongoose = require('mongoose')
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
-const authenticateJWT = require('./middleware/auth')
 const bodyParser = require("body-parser")
 
 const usersRoute = require('./routes/usersRoute')
@@ -28,18 +27,6 @@ app.use(bodyParser.json())
 app.use('/users', usersRoute)
 
 app.use('/session', sessionRoute)
-
-app.get("/nibba", authenticateJWT, (req, res) => {
-    const role = req.user.role
-    console.log(role)
-
-    if (role !== 'admin') {
-        console.log("Forbidden nibba")
-        return res.sendStatus(403);
-    }
-
-    res.send("heres yo chickennugget")
-})
 
 app.get("/", (req, res) => {
     console.log(req)

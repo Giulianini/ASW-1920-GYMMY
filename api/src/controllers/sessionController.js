@@ -11,14 +11,17 @@ exports.createSession = async function (req, res) {
         if (foundUser) {
             bcrypt.compare(password, foundUser.password, (err, result) => {
                 if (result) {
-                    const accessToken = jwt.sign({username: foundUser.username, role: foundUser.role}, secret)
+                    const accessToken = jwt.sign({
+                        username: foundUser.username,
+                        role: foundUser.role
+                    }, secret)
                     res.status(200).json({ accessToken })
                 } else {
-                    res.status(401).send()
+                    res.sendStatus(401)
                 }
             })
         } else {
-            res.status(401).send()
+            res.sendStatus(401)
         }
     } catch (err) {
         res.status(500).json({ message: err })
