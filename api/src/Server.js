@@ -1,8 +1,10 @@
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
-var privateKey  = fs.readFileSync('./security/cert.key', 'utf8');
-var certificate = fs.readFileSync('./security/cert.pem', 'utf8');
+
+const path = require('path')
+var privateKey  = fs.readFileSync(path.resolve(__dirname, './security/cert.key'), 'utf8');
+var certificate = fs.readFileSync(path.resolve(__dirname, './security/cert.pem'), 'utf8');
 
 require('dotenv/config')
 
