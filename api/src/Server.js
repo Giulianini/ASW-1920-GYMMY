@@ -1,22 +1,22 @@
-var fs = require('fs');
-var http = require('http');
-var https = require('https');
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
 
 const path = require('path')
-var privateKey  = fs.readFileSync(path.resolve(__dirname, './security/cert.key'), 'utf8');
-var certificate = fs.readFileSync(path.resolve(__dirname, './security/cert.pem'), 'utf8');
+const privateKey  = fs.readFileSync(path.resolve(__dirname, './security/cert.key'), 'utf8');
+const certificate = fs.readFileSync(path.resolve(__dirname, './security/cert.pem'), 'utf8');
 
 require('dotenv/config')
 
-var credentials = {key: privateKey, cert: certificate};
-var express = require('express');
-var app = express();
+const credentials = {key: privateKey, cert: certificate};
+const express = require('express');
+const app = express();
 
 const mongoose = require('mongoose')
 
 // your express configuration here
-var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
 
 const jwt = require("jsonwebtoken")
 const authenticateJWT = require('./middleware/auth')
