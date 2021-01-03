@@ -4,17 +4,20 @@ var https = require('https');
 var privateKey  = fs.readFileSync('./security/cert.key', 'utf8');
 var certificate = fs.readFileSync('./security/cert.pem', 'utf8');
 
+require('dotenv/config')
+
 var credentials = {key: privateKey, cert: certificate};
 var express = require('express');
 var app = express();
 
+// your express configuration here
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
+
 const jwt = require("jsonwebtoken")
 const bodyParser = require("body-parser")
 
-// your express configuration here
-
-var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
+const usersRoute = require('./routes/usersRoute')
 
 const users = [
     {
@@ -52,6 +55,8 @@ const authenticateJWT = (req, res, next) => {
 
 app.use(bodyParser.json())
 
+app.use('/users', usersRoute)
+
 app.get("/nibba", authenticateJWT, (req, res) => {
     const { role } = req.user
     console.log(role)
@@ -83,6 +88,13 @@ app.post('/login', (req, res) => {
     }
 })
 
-httpServer.listen(8080);
-httpsServer.listen(443);
+const httpPort = process.env.HTTP_PORT;
+httpServer.listen(httpPort, () => {
+    console.log('Listening on port ' + httpPort)
+});
+
+const httpsPort = process.env.HTTPS_PORT;
+httpsServer.listen(httpsPort, () => {
+    console.log('Listening on port ' + httpsPort)
+});
 
