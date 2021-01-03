@@ -1,29 +1,26 @@
-####### Build Environment
-# Pull official image for node.
-FROM node:14.15.0-alpine AS builder
-LABEL stage=builder
+# ----------- Production ---------------
 
+# ------- Build Stage
+FROM node:14.15.0-alpine AS build-stage
+LABEL stage=build-stage
 # Set working directory
 WORKDIR /app
-
 # Add `/app/node_modules/.bin` to $PATH
 ENV PATH /app/node_modules/.bin:$PATH
-
-# Install app dependencies
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm ci --silent
-RUN npm install react-scripts@3.4.1 -g --silent
-
+# Copy dependencies
+COPY package*.json ./
 # Add src in /app -> note that ignored file are not present in context
-ADD . ./
-
-# Start app with doc enforced "exec-form"
+COPY . .
+# Install app dependencies
+RUN npm ci --only=production --quiet
+RUN npm install react-scripts@3.4.1 -g --quiet
+# Build app with doc enforced "exec-form"
 RUN npm run build
 
-####### Production Environment
+# ------- Release Stage
 FROM nginx:stable-alpine
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=build-stage /app/build /usr/share/nginx/html
+# Document that i hope you expose 8080
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
