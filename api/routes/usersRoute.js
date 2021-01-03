@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
+const authenticate = require('../middleware/auth')
 
-router.get('/', async (req, res) => {
-    console.log('GET users')
-})
+const usersController = require('../controllers/usersController')
+
+router.get('/', authenticate, usersController.userList)
 
 module.exports = router
