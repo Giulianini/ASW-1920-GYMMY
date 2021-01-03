@@ -3,7 +3,7 @@
 FROM node:14.15.0-alpine
 LABEL stage=build-stage
 # Set working directory
-WORKDIR /usr/src/app
+WORKDIR /app
 # Copy dependencies
 COPY package*.json ./
 # Add src in /app -> note that ignored file are not present in context
