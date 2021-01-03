@@ -22,7 +22,7 @@ services:
       context: api
       dockerfile: dev.Dockerfile
     ports:
-      - 80:80
+      - 8080:8080
       - 443:443
     volumes:
       - ./api:/app
