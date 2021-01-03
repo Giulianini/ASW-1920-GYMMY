@@ -18,31 +18,19 @@ const mongoose = require('mongoose')
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
-const jwt = require("jsonwebtoken")
 const authenticateJWT = require('./middleware/auth')
 const bodyParser = require("body-parser")
 
 const usersRoute = require('./routes/usersRoute')
-
-const users = [
-    {
-        username: 'john',
-        password: 'password123admin',
-        role: 'admin'
-    },
-    {
-        username: 'anna',
-        password: 'password123member',
-        role: 'member'
-    }
-];
-
+const sessionRoute = require('./routes/sessionRoute')
 app.use(bodyParser.json())
 
 app.use('/users', usersRoute)
 
+app.use('/session', sessionRoute)
+
 app.get("/nibba", authenticateJWT, (req, res) => {
-    const { role } = req.user
+    const role = req.user.role
     console.log(role)
 
     if (role !== 'admin') {
@@ -55,21 +43,7 @@ app.get("/nibba", authenticateJWT, (req, res) => {
 
 app.get("/", (req, res) => {
     console.log(req)
-    res.send("Dionigga")
-})
-
-app.post('/login', (req, res) => {
-    const {username, password} = req.body
-    const user = users.find(u => u.username === username && u.password === password)
-
-    console.log(req.body)
-
-    if (user) {
-        const accessToken = jwt.sign({username: user.username, role: user.role}, secret)
-        res.json({accessToken})
-    } else {
-        res.send('Username or password incorrect')
-    }
+    res.send("Gymmy API")
 })
 
 const dbConnection = process.env.DB_CONNECTION;
