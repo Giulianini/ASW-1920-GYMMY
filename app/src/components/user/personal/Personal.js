@@ -15,7 +15,8 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import {Box, Grid} from "@material-ui/core";
+import {Box, Fab, Grid} from "@material-ui/core";
+import CreateIcon from '@material-ui/icons/Create';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -29,6 +30,9 @@ const useStyles = makeStyles(theme => ({
     },
     containerBox: {
         margin: "auto"
+    },
+    customFab: {
+        marginBottom: 60
     },
     mediaTarget: {
         height: 100,
@@ -61,8 +65,8 @@ function Personal() {
 
     return (
       <Box justifyContent="center" p={1}>
-              <Grid container direction="column" spacing={2}>
-                  <Grid className={classes.containerBox} item xs={7} md={4} lg={3}>
+              <Grid container direction="column" alignItems="flex-start" spacing={2}>
+                  <Grid item xs={7} md={4} lg={3} className={classes.containerBox}>
                       <Card className={classes.root}>
                           <CardHeader
                               avatar={
@@ -120,7 +124,7 @@ function Personal() {
                       </Card>
                   </Grid>
 
-                  <Grid className={classes.containerBox} item xs={7} md={4} lg={3}>
+                  <Grid item xs={7} md={4} lg={3} className={classes.containerBox}>
                       <Card className={classes.root}>
                           <CardHeader
                               action={
@@ -175,6 +179,16 @@ function Personal() {
                       </Card>
                   </Grid>
 
+                  <Grid container item direction="row" justify="flex-end" className={classes.customFab}>
+                      <Fab color={"primary"}
+                           disabled={false}
+                           href={""}
+                           iconTheme={"Filled"}
+                           size={"large"}
+                           variant={"round"}>
+                          <CreateIcon />
+                      </Fab>
+                  </Grid>
               </Grid>
       </Box>
 
