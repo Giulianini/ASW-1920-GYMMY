@@ -10,6 +10,8 @@ var credentials = {key: privateKey, cert: certificate};
 var express = require('express');
 var app = express();
 
+const mongoose = require('mongoose')
+
 // your express configuration here
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
@@ -67,6 +69,14 @@ app.post('/login', (req, res) => {
         res.send('Username or password incorrect')
     }
 })
+
+const dbConnection = process.env.DB_CONNECTION;
+const dbName = process.env.DB_NAME;
+mongoose.connect(
+    dbConnection.concat(dbName),
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    () => console.log(`Connected to ${dbName} @ ${dbConnection}`)
+)
 
 const httpPort = process.env.HTTP_PORT;
 httpServer.listen(httpPort, () => {
