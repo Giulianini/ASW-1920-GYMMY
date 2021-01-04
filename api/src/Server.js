@@ -6,7 +6,7 @@ const path = require('path')
 const privateKey  = fs.readFileSync(path.resolve(__dirname, './security/cert.key'), 'utf8');
 const certificate = fs.readFileSync(path.resolve(__dirname, './security/cert.pem'), 'utf8');
 
-require('dotenv/config')
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 
 const credentials = {key: privateKey, cert: certificate};
 const express = require('express');
