@@ -41,7 +41,7 @@ function Signup() {
                             </Box>
                         </Typography>
                     </Grid>
-                    <Grid className={classes.textfieldGrid} item container direction="row" xs={10} md={7} lg={5}>
+                    <Grid item container direction="row" xs={10} md={7} lg={5} className={classes.textfieldGrid}>
                         <TextField required={true} fullWidth={true} variant="filled" label="Email" />
                         <TextField required={true} fullWidth={true} variant="filled" label="Username"/>
                         <TextField required={true} fullWidth={true} variant="filled" label="Password"/>
@@ -60,5 +60,3 @@ function Signup() {
         </Box>
     );
 }
-
-export default Signup;
