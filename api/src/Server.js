@@ -29,7 +29,6 @@ app.use('/users', usersRoute)
 app.use('/session', sessionRoute)
 
 app.get("/", (req, res) => {
-    console.log(req)
     res.send("Gymmy API")
 })
 

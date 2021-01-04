@@ -7,10 +7,10 @@ WORKDIR /app
 # Copy dependencies
 COPY package*.json ./
 # Add src in /app -> note that ignored file are not present in context
-COPY . .
+COPY ./src ./src
 # Install app dependencies
 RUN npm ci --only=production --quiet
 # Document that i hope you expose 8080
 EXPOSE 8080
-ENTRYPOINT ["node", "Server.js"]
+ENTRYPOINT ["node", "src/Server.js"]
 
