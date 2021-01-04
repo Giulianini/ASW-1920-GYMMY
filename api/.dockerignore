@@ -1,0 +1,15 @@
+# Docker start copying all the file in /usr/src/app so ignoring shit will speed up the process!
+# Node
+node_modules
+dist
+build
+npm-debug.log
+# Docker
+Dockerfile
+Dockerfile.prod
+.dockerignore
+# Git
+.git
+.gitignore
+# Extra
+README.md
