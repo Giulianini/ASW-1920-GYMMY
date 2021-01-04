@@ -34,10 +34,24 @@ app.get("/", (req, res) => {
 
 const dbConnection = process.env.DB_CONNECTION;
 const dbName = process.env.DB_NAME;
+console.log("connection " + dbConnection)
+console.log("name " + dbName)
 mongoose.connect(
     dbConnection.concat(dbName),
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    () => console.log(`Connected to ${dbName} @ ${dbConnection}`)
+    {
+        "auth": {"authSource": "admin"},
+        "user": "admin",
+        "pass": "password",
+        "useNewUrlParser": true,
+        "useUnifiedTopology": true
+    },
+    (err, db) => {
+        if (err) {
+            console.log('Could not connect to database ' + err)
+        } else {
+            console.log(`Connected to ${dbName} @ ${dbConnection}`)
+        }
+    }
 )
 
 const httpPort = process.env.HTTP_PORT;

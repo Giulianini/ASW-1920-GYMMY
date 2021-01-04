@@ -33,7 +33,7 @@ services:
     container_name: mongo
     restart: unless-stopped
     #load env vars
-    env_file: config/.dev.env
+    env_file: .env
     environment:
       # MONGO_INITDB_ROOT_USERNAME and MONGO_INITDB_ROOT_PASSWORD together create
       # a root user in the admin authentication database and ensure that authentication is enabled
