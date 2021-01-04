@@ -33,12 +33,12 @@ services:
     container_name: mongo
     restart: unless-stopped
     #load env vars
-    env_file: .env
+    env_file: .docker.env
     environment:
       # MONGO_INITDB_ROOT_USERNAME and MONGO_INITDB_ROOT_PASSWORD together create
       # a root user in the admin authentication database and ensure that authentication is enabled
       # when the container starts. We have set MONGO_INITDB_ROOT_USERNAME and MONGO_INITDB_ROOT_PASSWORD
-      # using the values from our .env file, which we pass to the db service using the env_file option.
+      # using the values from our .docker.env file, which we pass to the db service using the env_file option.
       - MONGO_INITDB_ROOT_USERNAME=$DB_ADMIN
       - MONGO_INITDB_ROOT_PASSWORD=$DB_ADMIN_PWD
       - MONGO_INITDB_DATABASE=$DB_NAME
