@@ -6,7 +6,11 @@ const path = require('path')
 const privateKey  = fs.readFileSync(path.resolve(__dirname, './security/cert.key'), 'utf8');
 const certificate = fs.readFileSync(path.resolve(__dirname, './security/cert.pem'), 'utf8');
 
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+if (!process.env.DOCKER) { // Check if inside a container
+    require('dotenv').config({ path: path.resolve(__dirname, '../../.local.env') })
+}
+
+console.log(process.env.DOCKER)
 
 const credentials = {key: privateKey, cert: certificate};
 const express = require('express');
