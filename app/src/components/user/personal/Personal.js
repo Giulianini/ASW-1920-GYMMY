@@ -195,7 +195,7 @@ function Personal() {
                       <Fab color={"primary"}
                            disabled={false}
                            href={""}
-                           iconTheme={"Filled"}
+                           icontheme={"Filled"}
                            size={"large"}
                            variant={"round"}
                            className={classes.customFab}>
