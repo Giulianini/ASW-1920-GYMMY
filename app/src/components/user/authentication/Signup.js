@@ -2,17 +2,15 @@ import React from 'react';
 import {
     Box,
     Fab,
-    FormControl, FormHelperText,
-    Grid, Input,
+    FormControl,
+    Grid,
     InputAdornment,
     InputLabel,
     OutlinedInput,
-    TextField,
     Typography
 } from "@material-ui/core";
 import SendIcon from '@material-ui/icons/Send';
 import {makeStyles} from "@material-ui/core/styles";
-import {height} from "@material-ui/system";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 
@@ -24,7 +22,7 @@ const useStyles = makeStyles(theme => ({
         backgroundPosition: 'center',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
-        height: "90vh",
+        height: "100vh",
     },
     buttonStyle: {
         color: "red",
@@ -95,7 +93,6 @@ export default function Signup() {
                                 id="email"
                                 value={values.mail}
                                 onChange={handleChange('mail')}
-                                endAdornment={<InputAdornment position="end"></InputAdornment>}
                                 aria-describedby="mail"
                                 inputProps={{
                                     'aria-label': 'email',
@@ -109,7 +106,6 @@ export default function Signup() {
                                 id="username"
                                 value={values.username}
                                 onChange={handleChange('username')}
-                                endAdornment={<InputAdornment position="end"></InputAdornment>}
                                 aria-describedby="username"
                                 inputProps={{
                                     'aria-label': 'username',

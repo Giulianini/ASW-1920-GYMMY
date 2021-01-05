@@ -1,19 +1,23 @@
 const routes = {
+    user: {
+        name: "User",
+        value: "user",
+    },
     dashboard: {
         name: "Dashboard",
-        value: "dashboard",
+        value: "user/dashboard",
     },
     personal: {
         name: "Personal",
-        value: "personal",
+        value: "user/personal",
     },
     statistics: {
         name: "Statistics",
-        value: "statistics",
+        value: "user/statistics",
     },
     training: {
         name: "Training",
-        value: "training",
+        value: "user/training",
     },
     login: {
         name: "Login",

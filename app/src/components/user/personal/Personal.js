@@ -15,7 +15,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import {Box, Container, Fab, Grid, useMediaQuery} from "@material-ui/core";
+import {Box, Container, Fab, Grid} from "@material-ui/core";
 import CreateIcon from '@material-ui/icons/Create';
 
 const useStyles = makeStyles(theme => ({
@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
 function Personal() {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
-    const big = useMediaQuery(theme => theme.breakpoints.up('md'))
+    //const big = useMediaQuery(theme => theme.breakpoints.up('md'))
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -96,7 +96,7 @@ function Personal() {
                           />
                           <CardMedia
                               className={classes.mediaPersonal}
-                              image="personRunning.png"
+                              image="/personRunning.png"
                           />
                           <CardContent>
                               <Typography variant="body2" color="textSecondary" component="p">
@@ -151,7 +151,7 @@ function Personal() {
                           />
                           <CardMedia
                               className={classes.mediaTarget}
-                              image="fire.png"
+                              image="/fire.png"
                               title="Paella dish"
                           />
                           <CardContent>
