@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function Signup() {
+export default function Signup() {
     const classes = useStyles();
     return (
         <Box height="100vh" display="flex" flexDirection="column" className={classes.root}>

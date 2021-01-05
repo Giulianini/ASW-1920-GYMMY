@@ -15,11 +15,15 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import {Box, Fab, Grid, useMediaQuery} from "@material-ui/core";
+import {Box, Container, Fab, Grid, useMediaQuery} from "@material-ui/core";
 import CreateIcon from '@material-ui/icons/Create';
 
 const useStyles = makeStyles(theme => ({
-    root: {
+    rootBox:{
+        padding: 20,
+        height: "100%",
+    },
+    card: {
         maxWidth: 345,
     },
     mediaPersonal: {
@@ -27,9 +31,6 @@ const useStyles = makeStyles(theme => ({
         width: '33%',
         paddingTop: '60%', // 16:9
         marginLeft: '30%'
-    },
-    containerBox: {
-        margin: "auto"
     },
     customFab: {
         marginBottom: 60
@@ -65,10 +66,10 @@ function Personal() {
     };
 
     return (
-      <Box p={1} height={"100%"} >
-              <Grid container direction={"row"} justify="center" alignItems="center" sm={12} spacing={2}>
-                  <Grid item className={classes.containerBox}>
-                      <Card className={classes.root}>
+        <Box component={"div"} className={classes.rootBox}>
+              <Grid container direction={"row"} justify="space-around" alignItems="center" sm={12} spacing={2}>
+                  <Grid item>
+                      <Card className={classes.card}>
                           <CardHeader
                               avatar={
                                   <Avatar aria-label="personalAvatar" className={classes.avatar}>
@@ -127,8 +128,8 @@ function Personal() {
                       </Card>
                   </Grid>
 
-                  <Grid item className={classes.containerBox}>
-                      <Card className={classes.root}>
+                  <Grid item>
+                      <Card className={classes.card}>
                           <CardHeader
                               action={
                                   <IconButton aria-label="settings">
@@ -194,8 +195,7 @@ function Personal() {
                       </Fab>
                   </Grid>
               </Grid>
-      </Box>
-
+        </Box>
     );
 }
 

@@ -4,9 +4,7 @@ import React from "react";
 
 function App() {
   return (
-      <div className={"App"}>
-          <User/>
-      </div>
+      <User/>
   );
 }
 
