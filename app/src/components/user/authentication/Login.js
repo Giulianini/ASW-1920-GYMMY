@@ -19,9 +19,6 @@ const useStyles = makeStyles(theme => ({
     title: {
         color: "black",
         fontSize: 49,
-        fontFamily: [
-            'Roboto', 'sans-serif'
-        ].join(',')
     },
     textfieldGrid: {
         padding: theme.spacing(5)

@@ -1,8 +1,20 @@
 import React from 'react';
-import {Box, Fab, Grid, TextField, Typography} from "@material-ui/core";
+import {
+    Box,
+    Fab,
+    FormControl, FormHelperText,
+    Grid, Input,
+    InputAdornment,
+    InputLabel,
+    OutlinedInput,
+    TextField,
+    Typography
+} from "@material-ui/core";
 import SendIcon from '@material-ui/icons/Send';
 import {makeStyles} from "@material-ui/core/styles";
 import {height} from "@material-ui/system";
+import {Visibility, VisibilityOff} from "@material-ui/icons";
+import IconButton from "@material-ui/core/IconButton";
 
 const backgroundImage = "authLanding.jpeg";
 
@@ -16,6 +28,12 @@ const useStyles = makeStyles(theme => ({
     },
     buttonStyle: {
         color: "red",
+    },
+
+    textFieldForm: {
+        paddingTop: 10,
+        paddingBottom: 5,
+        fontWeight: 300,
     },
 
     textFieldGrid: {
@@ -38,6 +56,26 @@ const useStyles = makeStyles(theme => ({
 
 export default function Signup() {
     const classes = useStyles();
+    const [values, setValues] = React.useState({
+        mail: '',
+        username: '',
+        password: '',
+        password2: '',
+        showPassword: false,
+    });
+
+    const handleChange = (prop) => (event) => {
+        setValues({ ...values, [prop]: event.target.value });
+    };
+
+    const handleClickShowPassword = () => {
+        setValues({ ...values, showPassword: !values.showPassword });
+    };
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
     return (
         <Box className={classes.rootBox}>
             <Box py={10}>
@@ -50,10 +88,78 @@ export default function Signup() {
                         </Typography>
                     </Grid>
                     <Grid item md={6} lg={4} xl={3} container direction="column" className={classes.textFieldGrid} >
-                        <TextField required={true} fullWidth={true} variant="filled" label="Email"/>
-                        <TextField required={true} fullWidth={true} variant="filled" label="Username"/>
-                        <TextField required={true} fullWidth={true} variant="filled" label="Password"/>
-                        <TextField required={true} fullWidth={true} variant="filled" label="Conferma password"/>
+                        <FormControl required={true} fullWidth={true} variant={"filled"}>
+                            <InputLabel htmlFor="outlined-adornment-password">Email</InputLabel>
+                            <OutlinedInput
+                                className={classes.textFieldForm}
+                                id="email"
+                                value={values.mail}
+                                onChange={handleChange('mail')}
+                                endAdornment={<InputAdornment position="end"></InputAdornment>}
+                                aria-describedby="mail"
+                                inputProps={{
+                                    'aria-label': 'email',
+                                }}
+                            />
+                        </FormControl>
+                        <FormControl required={true} fullWidth={true} variant={"filled"}>
+                            <InputLabel>Username</InputLabel>
+                            <OutlinedInput
+                                className={classes.textFieldForm}
+                                id="username"
+                                value={values.username}
+                                onChange={handleChange('username')}
+                                endAdornment={<InputAdornment position="end"></InputAdornment>}
+                                aria-describedby="username"
+                                inputProps={{
+                                    'aria-label': 'username',
+                                }}
+                            />
+                        </FormControl>
+                        <FormControl variant="filled">
+                            <InputLabel >Password</InputLabel>
+                            <OutlinedInput
+                                className={classes.textFieldForm}
+                                id="password"
+                                type={values.showPassword ? 'text' : 'password'}
+                                value={values.password}
+                                onChange={handleChange('password')}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                            />
+                        </FormControl>
+                        <FormControl variant="filled">
+                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                            <OutlinedInput
+                                className={classes.textFieldForm}
+                                id="password2"
+                                type={values.showPassword ? 'text' : 'password'}
+                                value={values.password2}
+                                onChange={handleChange('password2')}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                            />
+                        </FormControl>
                     </Grid>
                     <Fab color={"primary"}
                          disabled={false}
