@@ -43,7 +43,7 @@ services:
       - ./mongo/:/docker-entrypoint-initdb.d/:ro
       # The named volume dbdata will persist the data stored in Mongo’s default data directory, /data/db.
       # This will ensure that you don’t lose data in cases where you stop or remove containers.
-      # - dbdata:/data/db
+      - ./mongo/dbdata:/data/db
     command: [--auth]
 networks:
   gymmy-network:

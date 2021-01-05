@@ -18,6 +18,7 @@ services:
   api-service:
     image: "gymmy-api:dev"
     container_name: "gymmy-api_dev"
+    env_file: .prod.docker-compose.env
     build:
       context: api
       dockerfile: dev.Dockerfile
@@ -28,26 +29,29 @@ services:
       - ./api:/app
     networks:
       - gymmy-network
+    depends_on:
+      - mongo
   mongo:
     image: mongo:4.2.8
     container_name: mongo
     restart: unless-stopped
-    #load env vars
     env_file: .prod.docker-compose.env
-    environment:
-      # MONGO_INITDB_ROOT_USERNAME and MONGO_INITDB_ROOT_PASSWORD together create
-      # a root user in the admin authentication database and ensure that authentication is enabled
-      # when the container starts. We have set MONGO_INITDB_ROOT_USERNAME and MONGO_INITDB_ROOT_PASSWORD
-      # using the values from our .prod.docker-compose.env file, which we pass to the db service using the env_file option.
-      - MONGO_INITDB_ROOT_USERNAME=$DB_ADMIN
-      - MONGO_INITDB_ROOT_PASSWORD=$DB_ADMIN_PWD
-      - MONGO_INITDB_DATABASE=$DB_NAME
     ports:
-       - 27017:27017
+      - 27018:27017
+    networks:
+      - gymmy-network
     volumes:
       - ./mongo/:/docker-entrypoint-initdb.d/:ro
       # The named volume dbdata will persist the data stored in Mongo’s default data directory, /data/db.
       # This will ensure that you don’t lose data in cases where you stop or remove containers.
-      # - dbdata:/data/db
+      - ./mongo/dbdata:/data/db
+    command: [ --auth ]
 networks:
   gymmy-network:
+    name: gymmy-network
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.18.0.0/16"
+          gateway: "172.18.0.1"
