@@ -19,12 +19,17 @@ import {Box, Container, Fab, Grid, useMediaQuery} from "@material-ui/core";
 import CreateIcon from '@material-ui/icons/Create';
 
 const useStyles = makeStyles(theme => ({
-    rootBox:{
-        padding: 20,
-        height: "100%",
+    rootGrid:{
+        [theme.breakpoints.up('md')]: {
+            height: "95vh",
+        },
+        [theme.breakpoints.down('md')]: {
+            paddingTop: 20,
+            marginBottom: 100,
+        },
     },
     card: {
-        maxWidth: 345,
+        maxWidth: 500,
     },
     mediaPersonal: {
         height: 100,
@@ -33,7 +38,12 @@ const useStyles = makeStyles(theme => ({
         marginLeft: '30%'
     },
     customFab: {
-        marginBottom: 60
+        margin: 0,
+        top: 'auto',
+        right: 10,
+        bottom: 65,
+        left: 'auto',
+        position: 'fixed',
     },
     mediaTarget: {
         height: 100,
@@ -59,15 +69,15 @@ const useStyles = makeStyles(theme => ({
 function Personal() {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
-    const big = useMediaQuery(theme => theme.breakpoints.up('sm'))
+    const big = useMediaQuery(theme => theme.breakpoints.up('md'))
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
     return (
-        <Box component={"div"} className={classes.rootBox}>
-              <Grid container direction={"row"} justify="space-around" alignItems="center" sm={12} spacing={2}>
+        <Container maxWidth={"lg"} >
+              <Grid container direction={"row"} justify="space-around" alignItems="center" md={12} spacing={2} className={classes.rootGrid}>
                   <Grid item>
                       <Card className={classes.card}>
                           <CardHeader
@@ -182,20 +192,17 @@ function Personal() {
                           </Collapse>
                       </Card>
                   </Grid>
-
-
-                  <Grid item container direction="row" justify={big ? "center": "flex-end"} className={classes.customFab}>
                       <Fab color={"primary"}
                            disabled={false}
                            href={""}
                            iconTheme={"Filled"}
                            size={"large"}
-                           variant={"round"}>
+                           variant={"round"}
+                           className={classes.customFab}>
                           <CreateIcon />
                       </Fab>
-                  </Grid>
               </Grid>
-        </Box>
+        </Container>
     );
 }
 
