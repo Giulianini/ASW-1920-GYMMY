@@ -15,7 +15,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import {Box, Fab, Grid} from "@material-ui/core";
+import {Box, Fab, Grid, useMediaQuery} from "@material-ui/core";
 import CreateIcon from '@material-ui/icons/Create';
 
 const useStyles = makeStyles(theme => ({
@@ -58,15 +58,16 @@ const useStyles = makeStyles(theme => ({
 function Personal() {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
+    const big = useMediaQuery(theme => theme.breakpoints.up('sm'))
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
     return (
-      <Box justifyContent="center" p={1}>
-              <Grid container direction="column" alignItems="flex-start" spacing={2}>
-                  <Grid item xs={7} md={4} lg={3} className={classes.containerBox}>
+      <Box p={1} height={"100%"} >
+              <Grid container direction={"row"} justify="center" alignItems="center" sm={12} spacing={2}>
+                  <Grid item className={classes.containerBox}>
                       <Card className={classes.root}>
                           <CardHeader
                               avatar={
@@ -111,20 +112,22 @@ function Personal() {
                           </CardActions>
                           <Collapse in={expanded} timeout="auto" unmountOnExit>
                               <CardContent>
-                                  <Typography paragraph>Username:</Typography>
-                                  <Typography paragraph>Username from DB</Typography>
-                                  <Typography paragraph>Age:</Typography>
-                                  <Typography paragraph>Age from DB</Typography>
-                                  <Typography paragraph>Height:</Typography>
-                                  <Typography paragraph>Height from DB</Typography>
-                                  <Typography paragraph>Weight:</Typography>
-                                  <Typography paragraph>Weight from DB</Typography>
+                                  <Box component={"span"} fontWeight={"fontWeightBold"}>
+                                      <Typography paragraph>Username:</Typography>
+                                      <Typography paragraph>Username from DB</Typography>
+                                      <Typography paragraph>Age:</Typography>
+                                      <Typography paragraph>Age from DB</Typography>
+                                      <Typography paragraph>Height:</Typography>
+                                      <Typography paragraph>Height from DB</Typography>
+                                      <Typography paragraph>Weight:</Typography>
+                                      <Typography paragraph>Weight from DB</Typography>
+                                  </Box>
                               </CardContent>
                           </Collapse>
                       </Card>
                   </Grid>
 
-                  <Grid item xs={7} md={4} lg={3} className={classes.containerBox}>
+                  <Grid item className={classes.containerBox}>
                       <Card className={classes.root}>
                           <CardHeader
                               action={
@@ -179,7 +182,8 @@ function Personal() {
                       </Card>
                   </Grid>
 
-                  <Grid container item direction="row" justify="flex-end" className={classes.customFab}>
+
+                  <Grid item container direction="row" justify={big ? "center": "flex-end"} className={classes.customFab}>
                       <Fab color={"primary"}
                            disabled={false}
                            href={""}
