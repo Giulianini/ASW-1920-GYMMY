@@ -28,7 +28,7 @@ exports.createUser = async function (req, res) {
         })
         try {
             await user.save();
-            res.status(200).json({
+            res.status(201).json({
                 username: username,
                 email: email,
                 role: "user"

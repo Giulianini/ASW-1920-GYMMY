@@ -26,11 +26,15 @@ const bodyParser = require("body-parser")
 
 const usersRoute = require('./routes/usersRoute')
 const sessionRoute = require('./routes/sessionRoute')
+const locationsRoute = require('./routes/locationsRoute')
+
 app.use(bodyParser.json())
 
 app.use('/users', usersRoute)
 
 app.use('/session', sessionRoute)
+
+app.use('/locations', locationsRoute)
 
 app.get("/", (req, res) => {
     res.send("Gymmy API")
