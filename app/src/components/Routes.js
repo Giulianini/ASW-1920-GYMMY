@@ -15,6 +15,14 @@ const routes = {
         name: "Training",
         value: "training",
     },
+    login: {
+        name: "Login",
+        value: "login",
+    },
+    signup: {
+        name: "Signup",
+        value: "signup",
+    },
 }
 
 export default routes
