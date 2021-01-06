@@ -23,6 +23,7 @@ const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
 const bodyParser = require("body-parser")
+const log = require('./middleware/log')
 
 const usersRoute = require('./routes/usersRoute')
 const sessionRoute = require('./routes/sessionRoute')
@@ -30,6 +31,7 @@ const locationsRoute = require('./routes/locationsRoute')
 const exercisesRoute = require('./routes/exercisesRoute')
 
 app.use(bodyParser.json())
+app.use(log)
 
 app.use('/users', usersRoute)
 
