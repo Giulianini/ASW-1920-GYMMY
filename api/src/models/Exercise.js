@@ -1,5 +1,4 @@
 const mongoose= require('mongoose')
-const { LocationSchema } = require('Location');
 
 const ExerciseSchema = new mongoose.Schema({
     name: {
@@ -15,9 +14,10 @@ const ExerciseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    locations: [
-        LocationSchema
-    ]
+    locations: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Location'
+    }]
 })
 
 module.exports = mongoose.model("Exercises", ExerciseSchema)
