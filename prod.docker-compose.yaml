@@ -3,7 +3,6 @@ services:
   app-service:
     image: "gymmy-app:prod"
     container_name: "gymmy-app_prod"
-    env_file: .prod.docker-compose.env
     build:
       context: app
       dockerfile: prod.Dockerfile
@@ -17,7 +16,7 @@ services:
   api-service:
     image: "gymmy-api:prod"
     container_name: "gymmy-api_prod"
-    env_file: .prod.docker-compose.env
+    env_file: api/docker_envs/.env.production
     build:
       context: api
       dockerfile: prod.Dockerfile
@@ -34,7 +33,7 @@ services:
     image: mongo:4.2.8
     container_name: mongo
     restart: unless-stopped
-    env_file: .prod.docker-compose.env
+    env_file: mongo/docker_envs/.env.production
     ports:
        - 27018:27017
     networks:
