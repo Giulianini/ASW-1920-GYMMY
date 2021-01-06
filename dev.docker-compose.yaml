@@ -18,7 +18,7 @@ services:
   api-service:
     image: "gymmy-api:dev"
     container_name: "gymmy-api_dev"
-    env_file: .prod.docker-compose.env
+    env_file: api/docker_envs/.env.development
     build:
       context: api
       dockerfile: dev.Dockerfile
@@ -35,7 +35,7 @@ services:
     image: mongo:4.2.8
     container_name: mongo
     restart: unless-stopped
-    env_file: .prod.docker-compose.env
+    env_file: mongo/docker_envs/.env.development
     ports:
       - 27018:27017
     networks:
