@@ -8,7 +8,7 @@ const certificate = fs.readFileSync(path.resolve(__dirname, './security/cert.pem
 
 require('dotenv').config({path: path.resolve(__dirname, '../.env')})
 
-console.log(process.env.DOCKER)
+console.log("Docker: " + process.env.DOCKER)
 
 const credentials = {key: privateKey, cert: certificate};
 const express = require('express');
@@ -36,16 +36,18 @@ app.get("/", (req, res) => {
 
 const dbConnection = process.env.DB_CONNECTION;
 const dbName = process.env.DB_NAME;
+const dbAdmin = process.env.DB_ADMIN
+const dbPassword = process.env.DB_ADMIN_PWD
 console.log("connection " + dbConnection)
 console.log("name " + dbName)
 mongoose.connect(
     dbConnection.concat(dbName),
     {
-        "auth": {"authSource": "admin"},
-        "user": "admin",
-        "pass": "password",
-        "useNewUrlParser": true,
-        "useUnifiedTopology": true
+        auth: {authSource: "admin"},
+        user: dbAdmin,
+        pass: dbPassword,
+        useNewUrlParser: true,
+        useUnifiedTopology: true
     },
     (err, db) => {
         if (err) {
