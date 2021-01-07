@@ -45,3 +45,15 @@ exports.createUser = async function (req, res) {
 
     }
 }
+
+exports.getUser = async function(req, res) {
+    const username = req.params.username
+    const foundUser = await User.findOne({ username: username })
+        .select('-_id username email role')
+        .exec()
+    if (foundUser) {
+        responses.json(res)(foundUser)
+    } else {
+        responses.notFound(res)
+    }
+}
