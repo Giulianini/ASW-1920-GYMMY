@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 // "bcrypt": "^5.0.0",
+const responses = require('./util/responses')
 
 exports.getUserList = async function(req, res) {
     try {
@@ -19,22 +20,28 @@ exports.createUser = async function (req, res) {
     const password = req.body.password
     const userRole = "user"
 
-    bcrypt.hash(password, saltRounds, async (err, hash) => {
-        const user = new User({
-            username: username,
-            email: email,
-            password: hash,
-            role: userRole
-        })
-        try {
-            await user.save();
-            res.status(201).json({
+    const usernameExists = await User.exists({ username: username })
+    if (usernameExists) {
+        responses.conflict(res)
+    } else {
+        bcrypt.hash(password, saltRounds, async (err, hash) => {
+            const user = new User({
                 username: username,
                 email: email,
-                role: "user"
+                password: hash,
+                role: userRole
             })
-        } catch (err) {
-            res.status(500).json({ message: err })
-        }
-    })
+            try {
+                await user.save();
+                res.status(201).json({
+                    username: username,
+                    email: email,
+                    role: "user"
+                })
+            } catch (err) {
+                res.status(500).json({ message: err })
+            }
+        })
+
+    }
 }
