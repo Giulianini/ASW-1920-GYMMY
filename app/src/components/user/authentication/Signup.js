@@ -13,6 +13,7 @@ import SendIcon from '@material-ui/icons/Send';
 import {makeStyles} from "@material-ui/core/styles";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
+import {fontSize} from "@material-ui/system";
 
 const backgroundImage = "authLanding.jpeg";
 
@@ -32,6 +33,11 @@ const useStyles = makeStyles(theme => ({
         paddingTop: 10,
         paddingBottom: 5,
         fontWeight: 300,
+    },
+
+    title: {
+        fontSize: 50,
+        fontWeight: 100
     },
 
     textFieldGrid: {
@@ -61,6 +67,7 @@ export default function Signup() {
         password2: '',
         showPassword: false,
     });
+    const {mail, username, password, password2} = values
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -74,15 +81,17 @@ export default function Signup() {
         event.preventDefault();
     };
 
+    const handleSubmit = () => {
+        console.log("Diocane")
+    }
+
     return (
         <Box className={classes.rootBox}>
             <Box py={10}>
                 <Grid container direction="column" alignItems="center" justify={"center"} >
                     <Grid item>
-                        <Typography>
-                            <Box fontSize={50} fontWeight="100">
-                                Sign up
-                            </Box>
+                        <Typography component={"div"} className={classes.title}>
+                            Sign up
                         </Typography>
                     </Grid>
                     <Grid item md={6} lg={4} xl={3} container direction="column" className={classes.textFieldGrid} >
@@ -162,6 +171,7 @@ export default function Signup() {
                          href={""}
                          icontheme={"Filled"}
                          size={"large"}
+                         onClick={handleSubmit}
                          variant={"round"}>
                         <SendIcon />
                     </Fab>
