@@ -1,9 +1,18 @@
 const Location = require('../models/Location')
 const responses = require('./util/responses')
 
+const WITHOUT_ID = '-_id -__v'
+
+exports.getAllLocations = async (req, res) => {
+    const locations = await Location.find()
+        .select(WITHOUT_ID)
+        .exec()
+    responses.json(res)(locations)
+}
+
 async function findLocation(locationNumber) {
     return Location.findOne({ location: locationNumber })
-        .select('-_id')
+        .select(WITHOUT_ID)
         .exec()
 }
 
