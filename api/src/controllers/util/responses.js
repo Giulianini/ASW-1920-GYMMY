@@ -4,12 +4,12 @@ exports.ok = (res) => {
     res.sendStatus(200)
 }
 
-exports.json = (res) => (json) => {
-    res.status(200).json(json)
+exports.json = (res) => (payload) => {
+    res.status(200).json(payload)
 }
 
-exports.created = (res) => (json) => {
-    res.status(201).json(json)
+exports.created = (res) => (payload) => {
+    res.status(201).json(payload)
 }
 
 exports.noContent = (res) => {

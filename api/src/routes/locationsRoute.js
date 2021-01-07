@@ -1,9 +1,11 @@
-const { createLocation } = require("../controllers/locationsController")
+const locationsController = require("../controllers/locationsController")
 
 const express = require('express')
 const router = express.Router()
 const authenticate = require('../middleware/auth')
 
-router.post('/', /*authenticate,*/ createLocation)
+router.get('/:location', locationsController.getLocation)
+
+router.post('/', /*authenticate,*/ locationsController.createLocation)
 
 module.exports = router

@@ -1,4 +1,21 @@
-const { Location } = require('../models/Location')
+const Location = require('../models/Location')
+const responses = require('./util/responses')
+
+async function findLocation(locationNumber) {
+    return Location.findOne({ location: locationNumber })
+        .select('-_id')
+        .exec()
+}
+
+exports.getLocation = async (req, res) => {
+    const locationNumber = req.params.location
+    const foundLocation = await findLocation(locationNumber)
+    if (foundLocation) {
+        responses.json(res)(foundLocation)
+    } else {
+        responses.notFound(res)
+    }
+}
 
 exports.createLocation = async function(req, res) {
     const id = req.body.location
@@ -9,8 +26,8 @@ exports.createLocation = async function(req, res) {
             description: description
         })
         const createdLocation = await location.save();
-        res.status(201).json(createdLocation)
+        responses.created(res)(createdLocation)
     } catch (err) {
-        res.status(500).json({ message: err })
+        responses.error(res)(err)
     }
 }
