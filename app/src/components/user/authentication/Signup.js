@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
     Box,
     Fab,
@@ -13,7 +13,8 @@ import SendIcon from '@material-ui/icons/Send';
 import {makeStyles} from "@material-ui/core/styles";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
-import {fontSize} from "@material-ui/system";
+import {baseAxios} from "../../../Api";
+import SnackBar from "../utils/Snackbar";
 
 const backgroundImage = "authLanding.jpeg";
 
@@ -60,6 +61,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Signup() {
     const classes = useStyles();
+    const snackRef = useRef(SnackBar.$$typeof)
     const [values, setValues] = React.useState({
         mail: '',
         username: '',
@@ -67,7 +69,6 @@ export default function Signup() {
         password2: '',
         showPassword: false,
     });
-    const {mail, username, password, password2} = values
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -82,11 +83,20 @@ export default function Signup() {
     };
 
     const handleSubmit = () => {
-        console.log("Diocane")
+        baseAxios.post('/users', {
+            "username": values['username'],
+            "email": values['mail'],
+            "password": values['password'],
+        }).then(res => {
+            snackRef.current.handleMessage(`${res.data["username"]} registered as ${res.data["role"]}`, "success")
+        }).catch(err => {
+            snackRef.current.handleMessage(`Error registering user ${err}`, "error")
+        })
     }
 
     return (
         <Box className={classes.rootBox}>
+            <SnackBar ref={snackRef}/>
             <Box py={10}>
                 <Grid container direction="column" alignItems="center" justify={"center"} >
                     <Grid item>

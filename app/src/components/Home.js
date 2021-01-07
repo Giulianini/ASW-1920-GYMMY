@@ -69,7 +69,7 @@ function Home() {
         }, (err) => {
             setSnackState({...snackState, open: true, snackMessage: `${err}`})
         })
-    },[])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     function TransitionRight(props) {
         return <Slide {...props} direction="left" />
