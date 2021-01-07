@@ -3,7 +3,7 @@ const responses = require('./util/responses')
 
 const WITHOUT_ID = '-_id -__v'
 
-exports.getAllLocations = async (req, res) => {
+exports.getAllLocations = async function(req, res) {
     const locations = await Location.find()
         .select(WITHOUT_ID)
         .exec()
@@ -16,7 +16,7 @@ async function findLocation(locationNumber) {
         .exec()
 }
 
-exports.getLocation = async (req, res) => {
+exports.getLocation = async function(req, res) {
     const locationNumber = req.params.location
     const foundLocation = await findLocation(locationNumber)
     if (foundLocation) {
@@ -46,4 +46,22 @@ exports.createLocation = async function(req, res) {
         }
 
     }
+}
+
+exports.updateLocationDescription = async function(req, res) {
+    const location = req.params.location
+    const description = req.body.description
+
+    const foundLocation = await findLocation(location)
+    if (foundLocation) {
+        try {
+            await Location.updateOne({ location: location }, { description: description}).exec()
+            responses.noContent(res)
+        } catch (err) {
+            responses.error(res)(err)
+        }
+    } else {
+        responses.notFound(res)
+    }
+
 }

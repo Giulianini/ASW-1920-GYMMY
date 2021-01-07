@@ -10,4 +10,6 @@ router.get('/:location', locationsController.getLocation)
 
 router.post('/', /*authenticate,*/ locationsController.createLocation)
 
+router.patch('/:location', /*authenticate,*/ locationsController.updateLocationDescription)
+
 module.exports = router
