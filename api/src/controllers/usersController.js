@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 // "bcrypt": "^5.0.0",
 const responses = require('./util/responses')
 
-exports.getUserList = async function(req, res) {
+exports.getAllUsers = async function(req, res) {
     try {
         const users = await User.find().select('-password -_id -__v').exec();
         res.status(200).json(users)
