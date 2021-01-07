@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import 'typeface-roboto';
 import checkApiEndpoint, {baseAxios} from "./Api";
 
-checkApiEndpoint((message, apiUrl) => console.log(`Connected to ${apiUrl}: ${message}`), (error) => `Error: ${error}`)
+checkApiEndpoint((message, apiUrl) => console.log(`Connected to ${apiUrl}: ${message}`), (error) => `${error}`)
 ReactDOM.render(
   //<React.StrictMode>
     <App/>,
