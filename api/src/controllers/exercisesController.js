@@ -1,5 +1,6 @@
 const Exercise = require('../models/Exercise')
 const Location = require('../models/Location')
+const responses = require('./util/responses')
 
 exports.createExercise = async function(req, res) {
     const name = req.body.name
@@ -30,7 +31,8 @@ exports.createExercise = async function(req, res) {
             })
             .exec()
 
-        res.status(201).json(populatedExercise)
+        // res.status(201).json(populatedExercise)
+        responses.created(res)(populatedExercise)
     } catch (err) {
         res.status(500).json({ message: err })
     }
