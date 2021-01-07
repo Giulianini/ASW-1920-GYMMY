@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {
     Box,
     Fab,
@@ -62,6 +62,7 @@ const useStyles = makeStyles(theme => ({
 export default function Signup() {
     const classes = useStyles();
     const snackRef = useRef(SnackBar.$$typeof)
+    const [passError, setPassError] = useState(false)
     const [values, setValues] = React.useState({
         mail: '',
         username: '',
@@ -83,15 +84,21 @@ export default function Signup() {
     };
 
     const handleSubmit = () => {
-        baseAxios.post('/users', {
-            "username": values['username'],
-            "email": values['mail'],
-            "password": values['password'],
-        }).then(res => {
-            snackRef.current.handleMessage(`${res.data["username"]} registered as ${res.data["role"]}`, "success")
-        }).catch(err => {
-            snackRef.current.handleMessage(`Error registering user ${err}`, "error")
-        })
+        if (values['password'] === values['password2']) {
+            setPassError(false)
+            baseAxios.post('/users', {
+                "username": values['username'],
+                "email": values['mail'],
+                "password": values['password'],
+            }).then(res => {
+                snackRef.current.handleMessage(`${res.data["username"]} registered as ${res.data["role"]}`, "success")
+            }).catch(err => {
+                snackRef.current.handleMessage(`Error registering user ${err}`, "error")
+            })
+        } else {
+            setPassError(true)
+            snackRef.current.handleMessage(`Check password!`, "warning")
+        }
     }
 
     return (
@@ -158,6 +165,7 @@ export default function Signup() {
                             <OutlinedInput
                                 className={classes.textFieldForm}
                                 id="password2"
+                                error={passError}
                                 type={values.showPassword ? 'text' : 'password'}
                                 value={values.password2}
                                 onChange={handleChange('password2')}
