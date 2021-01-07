@@ -20,14 +20,21 @@ exports.getLocation = async (req, res) => {
 exports.createLocation = async function(req, res) {
     const id = req.body.location
     const description = req.body.description
-    try {
-        const location = new Location({
-            location: id,
-            description: description
-        })
-        const createdLocation = await location.save();
-        responses.created(res)(createdLocation)
-    } catch (err) {
-        responses.error(res)(err)
+
+    const foundLocation = await findLocation(id)
+    if (foundLocation) {
+        responses.conflict(res)
+    } else {
+        try {
+            const location = new Location({
+                location: id,
+                description: description
+            })
+            const createdLocation = await location.save();
+            responses.created(res)(createdLocation)
+        } catch (err) {
+            responses.error(res)(err)
+        }
+
     }
 }
