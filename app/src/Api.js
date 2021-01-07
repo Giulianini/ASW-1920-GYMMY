@@ -13,8 +13,8 @@ export const authAxios = axios.create({
     }
 })
 
-export default async function checkApiEndpoint() {
-    baseAxios.get("/").then((res) => {
-        console.log(`Checking connection to api endpoint: ${apiUrl}\nSite response with: ${res.data}`)
-    })
+export default function checkApiEndpoint(onMessage, onError) {
+    baseAxios.get("/")
+        .then(res => onMessage(res.data, apiUrl))
+        .catch(err => onError(err))
 }

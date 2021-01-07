@@ -24,8 +24,6 @@ function User() {
 
     return (
         <ThemeProvider theme={localDarkMode ? darkMode : theme}>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline/>
                 <Header toggleDrawer={toggleDrawer}/>
                 <Drawer localDarkMode={localDarkMode} setLocalDarkMode={setLocalDarkMode}
                         drawerIsOpen={drawerIsOpen} setDrawerIsOpen={setDrawerIsOpen}
