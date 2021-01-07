@@ -8,7 +8,7 @@ exports.createExercise = async function(req, res) {
     try {
         const locationIds = await Promise.all(locations.map(async location => {
             try {
-                return await Location.findOne({location: location})
+                return Location.findOne({location: location})
                     .select('_id')
                     .exec()
             } catch (err) {
