@@ -4,9 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'typeface-roboto';
-import initEnvs from "./Api";
+import checkApiEndpoint, {baseAxios} from "./Api";
 
-initEnvs()
+checkApiEndpoint()
 ReactDOM.render(
   //<React.StrictMode>
     <App/>,
