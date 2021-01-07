@@ -66,6 +66,8 @@ function Home() {
     useEffect(() => {
         checkApiEndpoint((message, apiUrl) => {
             setSnackState({...snackState, open: true, snackMessage: `Endpoint ${message} @ ${apiUrl}`})
+        }, (err) => {
+            setSnackState({...snackState, open: true, snackMessage: `${err}`})
         })
     },[])
 
