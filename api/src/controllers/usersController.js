@@ -46,13 +46,30 @@ exports.createUser = async function (req, res) {
     }
 }
 
-exports.getUser = async function(req, res) {
-    const username = req.params.username
-    const foundUser = await User.findOne({ username: username })
+async function findUser(username) {
+    return User.findOne({ username: username })
         .select('-_id username email role')
         .exec()
+}
+
+exports.getUser = async function(req, res) {
+    const foundUser = await findUser(req.params.username)
     if (foundUser) {
         responses.json(res)(foundUser)
+    } else {
+        responses.notFound(res)
+    }
+}
+
+exports.removeUser = async function(req, res) {
+    const username = req.params.username
+    const foundUser = await findUser(username)
+    if (foundUser) {
+        User.deleteOne({username: username})
+            .exec()
+            .then(() => {
+                responses.noContent(res)
+            })
     } else {
         responses.notFound(res)
     }
