@@ -1,7 +1,7 @@
 import axios from "axios";
+import routes from "./components/Routes";
 
 const apiUrl = process.env.REACT_APP_API_URL
-export let jwtToken = undefined
 
 export const baseAxios = axios.create({
     baseURL: apiUrl
@@ -10,7 +10,7 @@ export const baseAxios = axios.create({
 export const authAxios = axios.create({
     baseURL: apiUrl,
     headers: {
-        Authorization: `Bearer ${jwtToken}`
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`
     }
 })
 
@@ -19,3 +19,15 @@ export default function checkApiEndpoint(onMessage, onError) {
         .then(res => onMessage(res.data, apiUrl))
         .catch(err => onError(err))
 }
+
+
+// Add a 401 response interceptor
+authAxios.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+    if (401 === error.response.status) {
+        window.location.href = `${routes.login.value}`
+    } else {
+        return Promise.reject(error);
+    }
+});
