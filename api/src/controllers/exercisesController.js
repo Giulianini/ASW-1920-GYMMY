@@ -41,33 +41,26 @@ exports.getAllExercises = async function(req, res) {
 exports.createExercise = async function(req, res) {
     const name = req.body.name
     const description = req.body.description
-    const locations = req.body.locations
     try {
-        const locationIds = await Promise.all(locations.map(async location => {
-            try {
-                return Location.findOne({location: location})
-                    .select('_id')
-                    .exec()
-            } catch (err) {
-                responses.error(res)(err)
-            }
-        }))
-        const actualLocationIds = locationIds.map(location => location._id)
-
-        const exercise = new Exercise({
-            name: name,
-            description: description,
-            locations: actualLocationIds
-        })
-        const savedExercise = await exercise.save()
-        const populatedExercise = await Exercise.findOne({_id: savedExercise._id})
-            .populate({
-                path: 'locations',
-                model: Location
+        const locations = req.body.locations
+        const locationIds = await getLocationIds(locations)
+        if (locations.length !== locationIds.length) {
+            responses.badRequest(res)
+        } else {
+            const exercise = new Exercise({
+                name: name,
+                description: description,
+                locations: locationIds
             })
-            .exec()
-
-        responses.created(res)(populatedExercise)
+            const savedExercise = await exercise.save()
+            const populatedExercise = await Exercise.findOne({_id: savedExercise._id})
+                .populate({
+                    path: 'locations',
+                    model: Location
+                })
+                .exec()
+            responses.created(res)(populatedExercise)
+        }
     } catch (err) {
         responses.error(res)(err)
     }
