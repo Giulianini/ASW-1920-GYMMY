@@ -25,6 +25,7 @@ export default function checkApiEndpoint(onMessage, onError) {
 authAxios.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
+    console.log(error)
     if (401 === error.response.status) {
         window.location.href = `${routes.login.value}`
     } else {
