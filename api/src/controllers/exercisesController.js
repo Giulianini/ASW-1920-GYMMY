@@ -13,7 +13,7 @@ exports.createExercise = async function(req, res) {
                     .select('_id')
                     .exec()
             } catch (err) {
-                res.status(500).json({ message: err })
+                responses.error(res)(err)
             }
         }))
         const actualLocationIds = locationIds.map(location => location._id)
@@ -31,9 +31,8 @@ exports.createExercise = async function(req, res) {
             })
             .exec()
 
-        // res.status(201).json(populatedExercise)
         responses.created(res)(populatedExercise)
     } catch (err) {
-        res.status(500).json({ message: err })
+        responses.error(res)(err)
     }
 }
