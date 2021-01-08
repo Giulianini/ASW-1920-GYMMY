@@ -11,6 +11,7 @@ import {darkMode, theme} from "../../theme";
 import {ThemeProvider} from "@material-ui/core/styles";
 import Drawer from "./Drawer";
 import routes from "../Routes";
+import {CssBaseline} from "@material-ui/core";
 
 function User() {
     const [drawerIsOpen, setDrawerIsOpen] = useState(false)
@@ -23,6 +24,7 @@ function User() {
 
     return (
         <ThemeProvider theme={localDarkMode ? darkMode : theme}>
+                <CssBaseline/>
                 <Header toggleDrawer={toggleDrawer}/>
                 <Drawer localDarkMode={localDarkMode} setLocalDarkMode={setLocalDarkMode}
                         drawerIsOpen={drawerIsOpen} setDrawerIsOpen={setDrawerIsOpen}
