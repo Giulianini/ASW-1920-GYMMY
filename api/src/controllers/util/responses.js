@@ -18,8 +18,8 @@ exports.noContent = (res) => {
 
 /* 4-- */
 
-exports.badRequest = (res) => {
-    res.sendStatus(400)
+exports.badRequest = (res) => (message) => {
+    res.status(400).send(message)
 }
 
 exports.notFound = (res) => {

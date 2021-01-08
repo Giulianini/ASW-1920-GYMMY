@@ -42,7 +42,7 @@ exports.createExercise = async function(req, res) {
         const locations = req.body.locations
         const locationIds = await getLocationIds(locations)
         if (locations.length !== locationIds.length) {
-            responses.badRequest(res)
+            responses.badRequest(res)('Some locations do not exist')
         } else {
             const exercise = new Exercise({
                 name: name,
@@ -85,7 +85,7 @@ exports.updateExerciseLocations = async function(req, res) {
         const locationIds = await getLocationIds(locations, res)
 
         if (locations.length !== locationIds.length) {
-            responses.badRequest(res)
+            responses.badRequest(res)('Some locations do not exist')
         } else {
             await Exercise.updateOne({name: exerciseName}, { locations: locationIds }).exec()
             responses.noContent(res)
