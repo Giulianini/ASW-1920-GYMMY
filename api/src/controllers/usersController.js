@@ -1,8 +1,9 @@
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 // "bcrypt": "^5.0.0",
+const responses = require('./util/responses')
 
-exports.getUserList = async function(req, res) {
+exports.getAllUsers = async function(req, res) {
     try {
         const users = await User.find().select('-password -_id -__v').exec();
         res.status(200).json(users)
@@ -19,22 +20,57 @@ exports.createUser = async function (req, res) {
     const password = req.body.password
     const userRole = "user"
 
-    bcrypt.hash(password, saltRounds, async (err, hash) => {
-        const user = new User({
-            username: username,
-            email: email,
-            password: hash,
-            role: userRole
-        })
-        try {
-            await user.save();
-            res.status(201).json({
+    const usernameExists = await User.exists({ username: username })
+    if (usernameExists) {
+        responses.conflict(res)
+    } else {
+        bcrypt.hash(password, saltRounds, async (err, hash) => {
+            const user = new User({
                 username: username,
                 email: email,
-                role: "user"
+                password: hash,
+                role: userRole
             })
-        } catch (err) {
-            res.status(500).json({ message: err })
-        }
-    })
+            try {
+                await user.save();
+                res.status(201).json({
+                    username: username,
+                    email: email,
+                    role: "user"
+                })
+            } catch (err) {
+                res.status(500).json({ message: err })
+            }
+        })
+
+    }
+}
+
+async function findUser(username) {
+    return User.findOne({ username: username })
+        .select('-_id username email role')
+        .exec()
+}
+
+exports.getUser = async function(req, res) {
+    const foundUser = await findUser(req.params.username)
+    if (foundUser) {
+        responses.json(res)(foundUser)
+    } else {
+        responses.notFound(res)
+    }
+}
+
+exports.removeUser = async function(req, res) {
+    const username = req.params.username
+    const foundUser = await findUser(username)
+    if (foundUser) {
+        User.deleteOne({username: username})
+            .exec()
+            .then(() => {
+                responses.noContent(res)
+            })
+    } else {
+        responses.notFound(res)
+    }
 }
