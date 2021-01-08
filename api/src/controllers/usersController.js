@@ -70,6 +70,21 @@ exports.getUser = async function(req, res) {
     }
 }
 
+exports.updateMeasures = async function(req, res) {
+    const username = req.params.username
+    const age = req.body.age
+    const height = req.body.height
+    const weight = req.body.weight
+
+    const usernameExists = await User.exists({ username: username })
+    if (!usernameExists) {
+        responses.notFound(res)
+    } else {
+        await User.updateOne({ username: username}, { age: age, height: height, weight: weight}).exec()
+        responses.noContent(res)
+    }
+}
+
 exports.removeUser = async function(req, res) {
     const username = req.params.username
     const foundUser = await findUser(username)
