@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const jwt = require("jsonwebtoken")
+const responses = require('./util/responses')
 
 const secret = process.env.JWT_SECRET
 
@@ -15,15 +16,15 @@ exports.createSession = async function (req, res) {
                         username: foundUser.username,
                         role: foundUser.role
                     }, secret)
-                    res.status(200).json({ accessToken })
+                    responses.json(res)({ username: foundUser.username, accessToken })
                 } else {
-                    res.sendStatus(401)
+                    responses.unauthorized(res)
                 }
             })
         } else {
-            res.sendStatus(401)
+            responses.unauthorized(res)
         }
     } catch (err) {
-        res.status(500).json({ message: err })
+        responses.error(res)(err)
     }
 }
