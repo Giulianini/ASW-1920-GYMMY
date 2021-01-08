@@ -2,6 +2,18 @@ const Exercise = require('../models/Exercise')
 const Location = require('../models/Location')
 const responses = require('./util/responses')
 
+async function getLocationIds(locations, res) {
+    const locationDocs = await Location.find()
+        .where('location')
+        .in(locations)
+        .select('_id')
+        .exec()
+        .catch(() => {
+            responses.notFound(res)
+        })
+    return locationDocs.map(doc => doc._id)
+}
+
 exports.getExercise = async function(req, res) {
     const exerciseName = req.params.exerciseName
     const foundExercise = await Exercise.findOne({ name: exerciseName })
@@ -71,6 +83,24 @@ exports.removeExercise = async function(req, res) {
                 responses.noContent(res)
             })
     } else {
+        responses.notFound(res)
+    }
+}
+
+exports.updateExerciseLocations = async function(req, res) {
+    const exerciseName = req.params.exerciseName
+    const foundExercise = await Exercise.findOne({ name: exerciseName }).exec()
+    if (foundExercise) {
+        const locations = req.body.locations
+        const locationIds = await getLocationIds(locations, res)
+
+        if (locations.length !== locationIds.length) {
+            responses.badRequest(res)
+        } else {
+            await Exercise.updateOne({name: exerciseName}, { locations: locationIds }).exec()
+            responses.noContent(res)
+        }
+     } else {
         responses.notFound(res)
     }
 }

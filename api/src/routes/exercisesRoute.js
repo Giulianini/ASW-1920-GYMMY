@@ -10,6 +10,8 @@ router.get('/:exerciseName', exercisesController.getExercise)
 
 router.post('/', /*authenticate,*/ exercisesController.createExercise)
 
+router.patch('/:exerciseName', exercisesController.updateExerciseLocations)
+
 router.delete('/:exerciseName', exercisesController.removeExercise)
 
 module.exports = router
