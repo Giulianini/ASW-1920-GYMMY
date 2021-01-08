@@ -28,6 +28,7 @@ const usersRoute = require('./routes/usersRoute')
 const sessionRoute = require('./routes/sessionRoute')
 const locationsRoute = require('./routes/locationsRoute')
 const exercisesRoute = require('./routes/exercisesRoute')
+const trainingCardsRoute = require('./routes/trainingCardsRoute')
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -40,6 +41,8 @@ app.use('/session', sessionRoute)
 app.use('/locations', locationsRoute)
 
 app.use('/exercises', exercisesRoute)
+
+app.use('/cards', trainingCardsRoute)
 
 app.get("/", (req, res) => {
     res.send("Gymmy API")
