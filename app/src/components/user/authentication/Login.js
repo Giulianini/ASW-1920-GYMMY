@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
     Box,
     Fab,
@@ -13,6 +13,8 @@ import SendIcon from '@material-ui/icons/Send';
 import {makeStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
+import SnackBar from "../utils/Snackbar";
+import {authAxios, baseAxios} from "../../../Api";
 
 const backgroundImage = "authLanding.jpeg";
 
@@ -26,6 +28,11 @@ const useStyles = makeStyles(theme => ({
     },
     buttonStyle: {
         color: "red",
+    },
+
+    title: {
+        fontSize: 50,
+        fontWeight: 100
     },
 
     textFieldForm: {
@@ -54,8 +61,17 @@ const useStyles = makeStyles(theme => ({
 
 function Login() {
     const classes = useStyles();
+    const snackRef = useRef({})
     const [values, setValues] = React.useState({
+        username: '',
+        password: '',
+        showPassword: false,
     });
+
+    const handleSubmit = () => {
+       console.log(values)
+        snackRef.current.handleMessage(`${values}`, "warning")
+    }
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -71,13 +87,12 @@ function Login() {
 
     return (
         <Box className={classes.rootBox}>
+            <SnackBar ref={snackRef}/>
             <Box py={10}>
                 <Grid container direction="column" alignItems="center" justify={"center"} >
                     <Grid item>
-                        <Typography>
-                            <Box fontSize={50} fontWeight="100">
-                                Login
-                            </Box>
+                        <Typography className={classes.title}>
+                            Login
                         </Typography>
                     </Grid>
                     <Grid item md={6} lg={4} xl={3} container direction="column" className={classes.textFieldGrid} >
@@ -118,6 +133,7 @@ function Login() {
                         </FormControl>
                     </Grid>
                     <Fab color={"primary"}
+                         onClick={handleSubmit}
                          disabled={false}
                          href={""}
                          icontheme={"Filled"}

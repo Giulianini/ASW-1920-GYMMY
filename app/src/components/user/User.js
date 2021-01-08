@@ -7,7 +7,6 @@ import Training from "./training/Training";
 import BottomBar from "./BottomBar";
 import Header from "./Header";
 
-import {CssBaseline} from "@material-ui/core";
 import {darkMode, theme} from "../../theme";
 import {ThemeProvider} from "@material-ui/core/styles";
 import Drawer from "./Drawer";
