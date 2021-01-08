@@ -2,6 +2,21 @@ const Exercise = require('../models/Exercise')
 const Location = require('../models/Location')
 const responses = require('./util/responses')
 
+exports.getExercise = async function (req, res) {
+    const exerciseName = req.params.exerciseName
+    const foundExercise = await Exercise.findOne({ name: exerciseName })
+        .populate({
+            path: 'locations',
+            model: Location
+        })
+        .exec()
+    if (foundExercise) {
+        responses.json(res)(foundExercise)
+    } else {
+        responses.notFound(res)
+    }
+}
+
 exports.createExercise = async function(req, res) {
     const name = req.body.name
     const description = req.body.description
