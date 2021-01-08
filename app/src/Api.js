@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const apiUrl = process.env.REACT_APP_API_URL
+export let jwtToken = undefined
 
 export const baseAxios = axios.create({
     baseURL: apiUrl
@@ -9,7 +10,7 @@ export const baseAxios = axios.create({
 export const authAxios = axios.create({
     baseURL: apiUrl,
     headers: {
-        Authorization: `Bearer ciao`
+        Authorization: `Bearer ${jwtToken}`
     }
 })
 

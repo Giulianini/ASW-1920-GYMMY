@@ -14,7 +14,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
 import SnackBar from "../utils/Snackbar";
-import {authAxios, baseAxios} from "../../../Api";
+import {baseAxios, jwtToken} from "../../../Api";
 
 const backgroundImage = "authLanding.jpeg";
 
@@ -69,8 +69,16 @@ function Login() {
     });
 
     const handleSubmit = () => {
+        baseAxios.post('/session', {
+            "username": values['username'],
+            "password": values['password'],
+        }).then(res => {
+            jwtToken = res.data.accessToken
+        }).catch(_ => {
+            snackRef.current.handleMessage("Login failed", "error")
+        })
        console.log(values)
-        snackRef.current.handleMessage(`${values}`, "warning")
+
     }
 
     const handleChange = (prop) => (event) => {
