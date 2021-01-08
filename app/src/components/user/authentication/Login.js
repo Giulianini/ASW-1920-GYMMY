@@ -7,7 +7,6 @@ import {
     InputAdornment,
     InputLabel,
     OutlinedInput,
-    TextField,
     Typography
 } from "@material-ui/core";
 import SendIcon from '@material-ui/icons/Send';
@@ -56,11 +55,6 @@ const useStyles = makeStyles(theme => ({
 function Login() {
     const classes = useStyles();
     const [values, setValues] = React.useState({
-        mail: '',
-        username: '',
-        password: '',
-        password2: '',
-        showPassword: false,
     });
 
     const handleChange = (prop) => (event) => {
