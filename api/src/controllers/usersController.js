@@ -18,6 +18,9 @@ exports.createUser = async function (req, res) {
     const username = req.body.username
     const email = req.body.email
     const password = req.body.password
+    const age = req.body.age
+    const height = req.body.height
+    const weight = req.body.weight
     const userRole = "user"
 
     const usernameExists = await User.exists({ username: username })
@@ -29,17 +32,23 @@ exports.createUser = async function (req, res) {
                 username: username,
                 email: email,
                 password: hash,
-                role: userRole
+                role: userRole,
+                age: age,
+                height: height,
+                weight: weight
             })
             try {
                 await user.save();
-                res.status(201).json({
+                responses.created(res)({
                     username: username,
                     email: email,
-                    role: "user"
+                    role: "user",
+                    age: age,
+                    height: height,
+                    weight: weight
                 })
             } catch (err) {
-                res.status(500).json({ message: err })
+                responses.error(res)(err)
             }
         })
 
