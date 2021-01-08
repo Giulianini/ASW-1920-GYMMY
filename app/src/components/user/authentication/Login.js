@@ -9,12 +9,14 @@ import {
     OutlinedInput,
     Typography
 } from "@material-ui/core";
+import {useHistory} from "react-router-dom"
 import SendIcon from '@material-ui/icons/Send';
 import {makeStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
 import SnackBar from "../utils/Snackbar";
 import {baseAxios} from "../../../Api";
+import routes from "../../Routes";
 
 const backgroundImage = "authLanding.jpeg";
 
@@ -62,6 +64,7 @@ const useStyles = makeStyles(theme => ({
 function Login() {
     const classes = useStyles();
     const snackRef = useRef({})
+    const history = useHistory()
     const [values, setValues] = React.useState({
         username: '',
         password: '',
@@ -74,6 +77,7 @@ function Login() {
             "password": values['password'],
         }).then(res => {
             localStorage.setItem("jwt", res.data.accessToken)
+            history.push(routes.dashboard.value)
         }).catch(reason => {
             snackRef.current.handleMessage("Login failed", "error")
         })
