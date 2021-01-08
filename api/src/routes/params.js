@@ -1,0 +1,1 @@
+exports.EXERCISE_NAME_PARAM = 'exerciseName'
