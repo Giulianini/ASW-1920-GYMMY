@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Signup() {
     const classes = useStyles();
-    const snackRef = useRef(SnackBar.$$typeof)
+    const snackRef = useRef({})
     const [passError, setPassError] = useState(false)
     const [values, setValues] = React.useState({
         mail: '',
