@@ -8,9 +8,6 @@ async function getLocationIds(locations, res) {
         .in(locations)
         .select('_id')
         .exec()
-        .catch(() => {
-            responses.notFound(res)
-        })
     return locationDocs.map(doc => doc._id)
 }
 
