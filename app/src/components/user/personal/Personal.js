@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -15,8 +15,9 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import {Box, Container, Fab, Grid} from "@material-ui/core";
+import {Container, Fab, Grid} from "@material-ui/core";
 import CreateIcon from '@material-ui/icons/Create';
+import {authAxios} from "../../../Api";
 
 const useStyles = makeStyles(theme => ({
     rootGrid:{
@@ -69,11 +70,25 @@ const useStyles = makeStyles(theme => ({
 function Personal() {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
+    const [userInfo, setUserInfo] = React.useState({
+        "username": undefined,
+        "age": undefined,
+        "height": undefined,
+        "weight": undefined
+    })
     //const big = useMediaQuery(theme => theme.breakpoints.up('md'))
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+
+    useEffect(() => {
+        authAxios.get(`/users/${localStorage.getItem("username")}`).then(res => {
+            setUserInfo({...res.data})
+        }).catch(reason => {
+            console.log(reason)
+        })
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Container maxWidth={"lg"} >
@@ -123,16 +138,10 @@ function Personal() {
                           </CardActions>
                           <Collapse in={expanded} timeout="auto" unmountOnExit>
                               <CardContent>
-                                  <Box component={"span"} fontWeight={"fontWeightBold"}>
-                                      <Typography paragraph>Username:</Typography>
-                                      <Typography paragraph>Username from DB</Typography>
-                                      <Typography paragraph>Age:</Typography>
-                                      <Typography paragraph>Age from DB</Typography>
-                                      <Typography paragraph>Height:</Typography>
-                                      <Typography paragraph>Height from DB</Typography>
-                                      <Typography paragraph>Weight:</Typography>
-                                      <Typography paragraph>Weight from DB</Typography>
-                                  </Box>
+                                  <Typography paragraph>Username: {userInfo.username}</Typography>
+                                  <Typography paragraph>Age: {userInfo.age}</Typography>
+                                  <Typography paragraph>Height: {userInfo.height}</Typography>
+                                  <Typography paragraph>Weight: {userInfo.weight}</Typography>
                               </CardContent>
                           </Collapse>
                       </Card>

@@ -77,6 +77,7 @@ function Login() {
             "password": values['password'],
         }).then(res => {
             localStorage.setItem("jwt", res.data.accessToken)
+            localStorage.setItem("username", res.data.username)
             history.push(routes.dashboard.value)
         }).catch(reason => {
             snackRef.current.handleMessage("Login failed", "error")
