@@ -13,7 +13,7 @@ import {
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown"
-import {authAxios} from "../../../Api";
+import {userAxios} from "../../../Api";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -56,15 +56,12 @@ const EditPersonalDialog = forwardRef((props, ref) => {
         const handleSave = () => {
             //Todo check if all numbers
             handleClose()
-            let username = localStorage.getItem("username")
-            authAxios.patch(
-                `/users/${username}/measures`,
-                {...saveUserInfo})
+            userAxios.patch('/measures', {...saveUserInfo})
                 .then(() => {
                     props.setUserInfo({...saveUserInfo})
-            }).catch(reason => {
+                }).catch(reason => {
                 //Todo
-            })
+                })
         }
 
         useImperativeHandle(ref, () => {
