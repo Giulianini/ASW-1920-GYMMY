@@ -14,6 +14,14 @@ export const authAxios = axios.create({
     }
 })
 
+export const userAxios = axios.create({
+    baseURL: `${apiUrl}/users/${localStorage.getItem("username")}`,
+    headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`
+    }
+})
+
+
 export default function checkApiEndpoint(onMessage, onError) {
     baseAxios.get("/")
         .then(res => onMessage(res.data, apiUrl))
