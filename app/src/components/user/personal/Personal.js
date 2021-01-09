@@ -17,7 +17,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {Container, Fab, Grid} from "@material-ui/core";
 import CreateIcon from '@material-ui/icons/Create';
-import {authAxios} from "../../../Api";
+import {authAxios, userAxios} from "../../../Api";
 import EditPersonalDialog from "./EditPersonalDialog";
 
 const useStyles = makeStyles(theme => ({
@@ -85,8 +85,7 @@ function Personal() {
     };
 
     useEffect(() => {
-        let username = localStorage.getItem("username")
-        authAxios.get(`/users/${username}`).then(res => {
+        userAxios.get().then(res => {
             setUserInfo({...res.data})
         }).catch(reason => {
             console.log(reason)
