@@ -40,6 +40,9 @@ const useStyles = makeStyles(theme => ({
     control: {
         padding: theme.spacing(3)
     },
+    centered: {
+        margin: "auto"
+    },
     vSpace: {
         paddingTop: 5,
         paddingBottom: 5
@@ -47,6 +50,9 @@ const useStyles = makeStyles(theme => ({
     hSpace: {
         marginLeft: 5,
         marginRight: 5
+    },
+    mediaPersonal: {
+        paddingTop: '40%', // 16:9
     },
     score: {
         fontSize: 30,
@@ -58,7 +64,10 @@ const useStyles = makeStyles(theme => ({
         fontSize: 23,
         fontWeight: "lighter",
     },
-
+    scrollablePane: {
+        maxHeight: 300,
+        overflow: 'auto'
+    }
 }));
 
 function Dashboard() {
@@ -130,31 +139,31 @@ function Dashboard() {
                         </Typography>
                     </Grid>
 
-                    <Grid item container style={{maxHeight: 300, overflow: 'auto'}}>
+                    <Grid item container direction={"row"} className={classes.scrollablePane}>
                         <Grid item className={classes.vSpace}>
                             <Card>
                                 <CardActionArea>
                                     <CardMedia
-                                        className={classes.media}
-                                        image="/static/images/cards/contemplative-reptile.jpg"
-                                        title="Contemplative Reptile"
+                                        className={classes.mediaPersonal}
+                                        image="/pushUp.jpg"
+                                        title="Push up"
                                     />
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="h2">
                                             Push-up challenge
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                                            across all continents except Antarctica
+                                            Completa quanti più push-ups puoi e scala la classifica!
+                                            Accetta la sfida mediante l'apposito pulsante.
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
                                 <CardActions>
                                     <Button size="small" color="primary">
-                                        Join
+                                        Accetta
                                     </Button>
                                     <Button size="small" color="primary">
-                                        Learn More
+                                        100 punti
                                     </Button>
                                 </CardActions>
                             </Card>
@@ -164,26 +173,26 @@ function Dashboard() {
                             <Card>
                                 <CardActionArea>
                                     <CardMedia
-                                        className={classes.media}
-                                        image="/static/images/cards/contemplative-reptile.jpg"
-                                        title="Contemplative Reptile"
+                                        className={classes.mediaPersonal}
+                                        image="/benchPress.jpg"
+                                        title="Bench press"
                                     />
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="h2">
                                             Bench press challenge
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                                            across all continents except Antarctica
+                                            Completa quante più bench-presses puoi e scala la classifica!
+                                            Accetta la sfida mediante l'apposito pulsante.
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
                                 <CardActions>
                                     <Button size="small" color="primary">
-                                        Join
+                                        Accetta
                                     </Button>
                                     <Button size="small" color="primary">
-                                        Learn More
+                                        200 punti
                                     </Button>
                                 </CardActions>
                             </Card>
@@ -193,26 +202,26 @@ function Dashboard() {
                             <Card>
                                 <CardActionArea>
                                     <CardMedia
-                                        className={classes.media}
-                                        image="/static/images/cards/contemplative-reptile.jpg"
-                                        title="Contemplative Reptile"
+                                        className={classes.mediaPersonal}
+                                        image="/pullUp.jpg"
+                                        title="Pull up"
                                     />
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="h2">
                                             Pull-up challenge
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                                            across all continents except Antarctica
+                                            Completa quanti più pull-ups puoi e scala la classifica!
+                                            Accetta la sfida mediante l'apposito pulsante.
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
                                 <CardActions>
                                     <Button size="small" color="primary">
-                                        Join
+                                        Accetta
                                     </Button>
                                     <Button size="small" color="primary">
-                                        Learn More
+                                        150 punti
                                     </Button>
                                 </CardActions>
                             </Card>

@@ -169,7 +169,7 @@ function Personal() {
                       <CardMedia
                           className={classes.mediaTarget}
                           image="/fire.png"
-                          title="Paella dish"
+                          title="fire"
                       />
                       <CardContent>
                           <Typography variant="body2" color="textSecondary" component="p">
