@@ -11,11 +11,9 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import {Container, Fab, Grid} from "@material-ui/core";
+import {Container, Grid, Tooltip} from "@material-ui/core";
 import CreateIcon from '@material-ui/icons/Create';
 import {userAxios} from "../../../Api";
 import EditPersonalDialog from "./EditPersonalDialog";
@@ -73,9 +71,12 @@ function Personal() {
     const classes = useStyles();
     const dialogRef = useRef({})
     const snackRef = useRef({})
-    const [expanded, setExpanded] = React.useState(false)
+    const [expanded, setExpanded] = React.useState({
+        "personal": false,
+        "objectives": false,
+    })
     const [userInfo, setUserInfo] = React.useState({
-        "username": undefined,
+        "username": "",
         "age": undefined,
         "height": undefined,
         "weight": undefined,
@@ -87,8 +88,8 @@ function Personal() {
     })
     //const big = useMediaQuery(theme => theme.breakpoints.up('md'))
 
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
+    const handleExpandClick = (value)  => {
+        setExpanded({...expanded, [value]: !expanded[value] });
     };
 
     useEffect(() => {
@@ -107,18 +108,18 @@ function Personal() {
               <Grid item>
                   <Card className={classes.card}>
                       <CardHeader
-                          avatar={
-                              <Avatar aria-label="personalAvatar" className={classes.avatar}>
-                                  AC
-                              </Avatar>
-                          }
                           action={
-                              <IconButton aria-label="settings">
-                                  <MoreVertIcon />
+                              <Tooltip title={"Edit information"}>
+                              <IconButton
+                                  onClick={() => dialogRef.current.handleClickOpen()}
+                                  type={"button"}
+                                  aria-label="modify">
+                                  <CreateIcon/>
                               </IconButton>
+                              </Tooltip>
                           }
-                          title="Info"
-                          subheader="Le tue informazioni personali"
+                          title="Information"
+                          subheader="Your Personal information"
                       />
                       <CardMedia
                           className={classes.mediaPersonal}
@@ -126,28 +127,24 @@ function Personal() {
                       />
                       <CardContent>
                           <Typography variant="body2" color="textSecondary" component="p">
-                              Expanding this card you will find all your personal information: username, age, height and weight.
+                              Expand to see and verify all your personal information.
                           </Typography>
                       </CardContent>
                       <CardActions disableSpacing>
-                          <IconButton aria-label="add to favorites">
-                              <FavoriteIcon />
-                          </IconButton>
-                          <IconButton aria-label="share">
-                              <ShareIcon />
-                          </IconButton>
+                          <Tooltip title={"Expand"}>
                           <IconButton
                               className={clsx(classes.expand, {
-                                  [classes.expandOpen]: expanded,
+                                  [classes.expandOpen]: expanded.personal,
                               })}
-                              onClick={handleExpandClick}
-                              aria-expanded={expanded}
+                              onClick={() => handleExpandClick("personal")}
+                              aria-expanded={expanded.personal}
                               aria-label="show more"
                           >
                               <ExpandMoreIcon />
                           </IconButton>
+                          </Tooltip>
                       </CardActions>
-                      <Collapse in={expanded} timeout="auto" unmountOnExit>
+                      <Collapse in={expanded.personal} timeout="auto" unmountOnExit>
                           <CardContent>
                               <Typography paragraph>Username: {userInfo.username}</Typography>
                               <Typography paragraph>Age: {userInfo.age}</Typography>
@@ -162,12 +159,14 @@ function Personal() {
                   <Card className={classes.card}>
                       <CardHeader
                           action={
+                              <Tooltip title={"More info"}>
                               <IconButton aria-label="settings">
                                   <MoreVertIcon />
                               </IconButton>
+                              </Tooltip>
                           }
-                          title={userInfo.mainGoal}  // {userInfo.mainGoal} --> from DB
-                          subheader="I tuoi obiettivi personali"
+                          title={"Lose Weight"}  // {userInfo.mainGoal} --> from DB
+                          subheader="Your personal goals"
                       />
                       <CardMedia
                           className={classes.mediaTarget}
@@ -176,29 +175,24 @@ function Personal() {
                       />
                       <CardContent>
                           <Typography variant="body2" color="textSecondary" component="p">
-                              Expanding this card you will find your fitness targets: weight, body fat, calories
-                              and minimum number of workouts per week according to your schedule.
+                              Expand to see the goals assigned by your personal trainer.
                           </Typography>
                       </CardContent>
                       <CardActions disableSpacing>
-                          <IconButton aria-label="add to favorites">
-                              <FavoriteIcon />
-                          </IconButton>
-                          <IconButton aria-label="share">
-                              <ShareIcon />
-                          </IconButton>
+                          <Tooltip title={"Expand"}>
                           <IconButton
                               className={clsx(classes.expand, {
-                                  [classes.expandOpen]: expanded,
+                                  [classes.expandOpen]: expanded.objectives,
                               })}
-                              onClick={handleExpandClick}
-                              aria-expanded={expanded}
+                              onClick={() => handleExpandClick("objectives")}
+                              aria-expanded={expanded.objectives}
                               aria-label="show more"
                           >
                               <ExpandMoreIcon />
                           </IconButton>
+                          </Tooltip>
                       </CardActions>
-                      <Collapse in={expanded} timeout="auto" unmountOnExit>
+                      <Collapse in={expanded.objectives} timeout="auto" unmountOnExit>
                           <CardContent>
                               <Typography paragraph>Target weight: {userInfo.targetWeight}</Typography>
                               <Typography paragraph>Target body fat: {userInfo.targetBMI}</Typography>
@@ -208,6 +202,7 @@ function Personal() {
                       </Collapse>
                   </Card>
               </Grid>
+{/*
                   <Fab color={"primary"}
                        disabled={false}
                        href={""}
@@ -218,6 +213,7 @@ function Personal() {
                        className={classes.customFab}>
                       <CreateIcon />
                   </Fab>
+*/}
             </Grid>
         </Container>
     );
