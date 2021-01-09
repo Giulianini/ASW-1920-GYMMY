@@ -57,7 +57,7 @@ exports.createUser = async function (req, res) {
 
 async function findUser(username) {
     return User.findOne({ username: username })
-        .select('-_id username email role')
+        .select('-_id')
         .exec()
 }
 
