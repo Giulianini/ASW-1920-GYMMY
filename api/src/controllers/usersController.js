@@ -7,6 +7,10 @@ const TrainingCard = require('../models/TrainingCard')
 const Exercise = require('../models/Exercise')
 const Location = require('../models/Location')
 
+async function getUserId(username) {
+    return User.findOne({ username: username }).map(doc => doc._id).exec()
+}
+
 exports.getAllUsers = async function(req, res) {
     try {
         const users = await User.find().select('-password -_id -__v').exec();
@@ -116,7 +120,7 @@ exports.getUserCard = async function (req, res){
         return responses.badRequest(res)("Invalid card index")
     }
 
-    const userId = await User.findOne({ username: username }).map(doc => doc._id).exec();
+    const userId = await getUserId(username)
     const userCards = await TrainingCard.find({ user: userId }).exec()
 
     const userCardsAmount = userCards.length
@@ -132,7 +136,7 @@ exports.getUserCards = async function(req, res) {
 
     const usernameExists = await User.exists({ username: username })
     if (usernameExists) {
-        const userId = await User.findOne({ username: username }).map(doc => doc._id).exec();
+        const userId = await getUserId(username)
         const userCards = await TrainingCard.find({ user: userId })
             .populate({
                 path: 'user',
