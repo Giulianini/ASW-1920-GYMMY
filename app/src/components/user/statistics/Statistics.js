@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid} from "@material-ui/core";
+import {Container, Grid} from "@material-ui/core";
 import {Bar, Line} from 'react-chartjs-2';
 import {makeStyles} from "@material-ui/core/styles";
 
@@ -11,8 +11,9 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.down('md')]: {
             paddingTop: 20,
             marginBottom: 100,
-        }
-}}));
+        },
+    }
+}));
 
 const distanceData = {
     labels: ['January', 'February', 'March',
@@ -52,7 +53,7 @@ const workoutData = {
             backgroundColor: 'rgba(240,124,0)',
             borderColor: 'rgba(0,0,0,1)',
             borderWidth: 1,
-            data: [120, 340, 664, 753, 1130]
+            data: [120, 340, 664, 753]
         }
     ],
     fill: 'origin'
@@ -60,65 +61,77 @@ const workoutData = {
 function Statistics() {
     const classes = useStyles();
     return (
-        <Grid container direction={"column"} alignItems={"center"}>
-            <Grid item>
-                <Line
-                    data={distanceData}
-                    options={{
-                        title:{
-                            display:true,
-                            text:'Distance covered',
-                            fontSize:20
-                        },
-                        legend:{
-                            display:true,
-                            position:'right'
-                        }
-                    }}
-                />
-            </Grid>
+        <Container maxWidth={"lg"}>
+            <Grid container direction={"column"} alignItems="center" className={classes.rootGrid}>
+                <Grid item >
+                    <Line
+                        data={distanceData}
+                        options={{
+                            title:{
+                                display:true,
+                                text: 'Distance covered (km)',
+                                fontSize:20
+                            },
+                            subtitle:{
+                                text: 'Subtitle',
+                            },
+                            legend:{
+                                display:false,
+                            }
+                        }}
+                    />
+                </Grid>
 
-            <Grid item>
-                <Bar
-                    data={activityData}
-                    options={{
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    min: 0,
-                                    max: 10
-                                }
-                            }]
-                        },
-                        title:{
-                            display:true,
-                            text:'Completed activities',
-                            fontSize:20
-                        },
-                        legend:{
-                            display:false
-                        }
-                    }}
-                />
-            </Grid>
+                <Grid item>
+                    <Bar
+                        data={activityData}
+                        options={{
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        min: 0,
+                                        max: 10
+                                    }
+                                }]
+                            },
+                            title:{
+                                display:true,
+                                text:'Completed activities',
+                                fontSize:20
+                            },
+                            legend:{
+                                display:false
+                            }
+                        }}
+                    />
+                </Grid>
 
-            <Grid item>
-                <Line
-                    data={workoutData}
-                    options={{
-                        title:{
-                            display:true,
-                            text:'Workout time',
-                            fontSize:20
-                        },
-                        legend:{
-                            display:true,
-                            position:'right'
-                        }
-                    }}
-                />
+                <Grid item>
+                    <Line
+                        data={workoutData}
+                        options={{
+                            title:{
+                                display:true,
+                                text: 'Workout time (minutes)',
+                                fontSize:20
+                            },
+                            legend:{
+                                display:false,
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        min: 0,
+                                        max: 800,
+                                        padding: 0
+                                    }
+                                }],
+                            },
+                        }}
+                    />
+                </Grid>
             </Grid>
-        </Grid>
+        </Container>
     );
 }
 

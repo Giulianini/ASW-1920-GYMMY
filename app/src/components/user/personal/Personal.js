@@ -76,7 +76,12 @@ function Personal() {
         "username": undefined,
         "age": undefined,
         "height": undefined,
-        "weight": undefined
+        "weight": undefined,
+        "mainGoal": undefined,
+        "targetWeight": undefined,
+        "targetBMI": undefined,
+        "caloriesTarget": undefined,
+        "minWorkoutsTarget": undefined
     })
     //const big = useMediaQuery(theme => theme.breakpoints.up('md'))
 
@@ -159,7 +164,7 @@ function Personal() {
                                   <MoreVertIcon />
                               </IconButton>
                           }
-                          title="Perdi peso"
+                          title={"Perdi peso"}  // {userInfo.mainGoal} --> from DB
                           subheader="I tuoi obiettivi personali"
                       />
                       <CardMedia
@@ -193,14 +198,10 @@ function Personal() {
                       </CardActions>
                       <Collapse in={expanded} timeout="auto" unmountOnExit>
                           <CardContent>
-                              <Typography paragraph>Peso target:</Typography>
-                              <Typography paragraph>Peso target from DB</Typography>
-                              <Typography paragraph>Indice di massa grassa target:</Typography>
-                              <Typography paragraph>Indice di massa grassa target from DB</Typography>
-                              <Typography paragraph>Calorie giornaliere da assumere:</Typography>
-                              <Typography paragraph>Calorie giornaliere da assumere from DB</Typography>
-                              <Typography paragraph>Allenamenti settimanali:</Typography>
-                              <Typography paragraph>Allenamenti settimanali from DB</Typography>
+                              <Typography paragraph>Peso target: {userInfo.targetWeight}</Typography>
+                              <Typography paragraph>Indice di massa grassa target: {userInfo.targetBMI}</Typography>
+                              <Typography paragraph>Calorie giornaliere da assumere: {userInfo.caloriesTarget}</Typography>
+                              <Typography paragraph>Allenamenti settimanali: {userInfo.minWorkoutsTarget}</Typography>
                           </CardContent>
                       </Collapse>
                   </Card>
