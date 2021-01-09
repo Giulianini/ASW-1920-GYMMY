@@ -99,7 +99,7 @@ function Personal() {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <Container maxWidth={"lg"} >
+        <Container maxWidth={"lg"}>
             <EditPersonalDialog ref={dialogRef} userInfo={userInfo} setUserInfo={setUserInfo}/>
             <Grid container direction={"row"} justify="space-around" alignItems="center" spacing={2} className={classes.rootGrid}>
               <Grid item>
@@ -124,7 +124,7 @@ function Personal() {
                       />
                       <CardContent>
                           <Typography variant="body2" color="textSecondary" component="p">
-                              Espandendo questa scheda troverai tutte le tue informazioni personale, quali: username, età, altezza e peso.
+                              Espandendo questa scheda troverai le tue informazioni personali, quali: username, età, altezza e peso.
                           </Typography>
                       </CardContent>
                       <CardActions disableSpacing>
@@ -148,9 +148,9 @@ function Personal() {
                       <Collapse in={expanded} timeout="auto" unmountOnExit>
                           <CardContent>
                               <Typography paragraph>Username: {userInfo.username}</Typography>
-                              <Typography paragraph>Age: {userInfo.age}</Typography>
-                              <Typography paragraph>Height: {userInfo.height}</Typography>
-                              <Typography paragraph>Weight: {userInfo.weight}</Typography>
+                              <Typography paragraph>Età: {userInfo.age}</Typography>
+                              <Typography paragraph>Altezza: {userInfo.height}</Typography>
+                              <Typography paragraph>Peso: {userInfo.weight}</Typography>
                           </CardContent>
                       </Collapse>
                   </Card>
@@ -174,8 +174,8 @@ function Personal() {
                       />
                       <CardContent>
                           <Typography variant="body2" color="textSecondary" component="p">
-                              Espandendo questa scheda troverai i tuoi obiettivi di fitness, quali: peso target, indice di massa grassa target,
-                              calorie giornaliere e numero di allenamenti settianali previsti dalla tua scheda.
+                              Espandendo questa scheda troverai i tuoi obiettivi di fitness, quali: peso target, indice di massa corporea target,
+                              calorie giornaliere e numero di allenamenti settimanali previsti dalla tua scheda.
                           </Typography>
                       </CardContent>
                       <CardActions disableSpacing>

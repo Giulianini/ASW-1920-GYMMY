@@ -40,7 +40,6 @@ const EditPersonalDialog = forwardRef((props, ref) => {
             "weight": ""
         })
 
-
         const handleClickOpen = () => {
             setOpen(true);
         };
