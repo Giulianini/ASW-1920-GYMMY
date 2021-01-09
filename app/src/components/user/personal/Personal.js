@@ -17,8 +17,9 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {Container, Fab, Grid} from "@material-ui/core";
 import CreateIcon from '@material-ui/icons/Create';
-import {authAxios, userAxios} from "../../../Api";
+import {userAxios} from "../../../Api";
 import EditPersonalDialog from "./EditPersonalDialog";
+import SnackBar from "../utils/Snackbar";
 
 const useStyles = makeStyles(theme => ({
     rootGrid:{
@@ -71,7 +72,8 @@ const useStyles = makeStyles(theme => ({
 function Personal() {
     const classes = useStyles();
     const dialogRef = useRef({})
-    const [expanded, setExpanded] = React.useState(false);
+    const snackRef = useRef({})
+    const [expanded, setExpanded] = React.useState(false)
     const [userInfo, setUserInfo] = React.useState({
         "username": undefined,
         "age": undefined,
@@ -80,8 +82,8 @@ function Personal() {
         "mainGoal": undefined,
         "targetWeight": undefined,
         "targetBMI": undefined,
-        "caloriesTarget": undefined,
-        "minWorkoutsTarget": undefined
+        "targetCalories": undefined,
+        "targetMinWorkouts": undefined
     })
     //const big = useMediaQuery(theme => theme.breakpoints.up('md'))
 
@@ -99,6 +101,7 @@ function Personal() {
 
     return (
         <Container maxWidth={"lg"} >
+            <SnackBar ref={snackRef}/>
             <EditPersonalDialog ref={dialogRef} userInfo={userInfo} setUserInfo={setUserInfo}/>
             <Grid container direction={"row"} justify="space-around" alignItems="center" spacing={2} className={classes.rootGrid}>
               <Grid item>
@@ -123,7 +126,7 @@ function Personal() {
                       />
                       <CardContent>
                           <Typography variant="body2" color="textSecondary" component="p">
-                              Espandendo questa scheda troverai tutte le tue informazioni personale, quali: username, età, altezza e peso.
+                              Expanding this card you will find all your personal information: username, age, height and weight.
                           </Typography>
                       </CardContent>
                       <CardActions disableSpacing>
@@ -148,8 +151,8 @@ function Personal() {
                           <CardContent>
                               <Typography paragraph>Username: {userInfo.username}</Typography>
                               <Typography paragraph>Age: {userInfo.age}</Typography>
-                              <Typography paragraph>Height: {userInfo.height}</Typography>
-                              <Typography paragraph>Weight: {userInfo.weight}</Typography>
+                              <Typography paragraph>Height: {userInfo.height} cm</Typography>
+                              <Typography paragraph>Weight: {userInfo.weight} kg</Typography>
                           </CardContent>
                       </Collapse>
                   </Card>
@@ -163,7 +166,7 @@ function Personal() {
                                   <MoreVertIcon />
                               </IconButton>
                           }
-                          title={"Perdi peso"}  // {userInfo.mainGoal} --> from DB
+                          title={userInfo.mainGoal}  // {userInfo.mainGoal} --> from DB
                           subheader="I tuoi obiettivi personali"
                       />
                       <CardMedia
@@ -173,8 +176,8 @@ function Personal() {
                       />
                       <CardContent>
                           <Typography variant="body2" color="textSecondary" component="p">
-                              Espandendo questa scheda troverai i tuoi obiettivi di fitness, quali: peso target, indice di massa grassa target,
-                              calorie giornaliere e numero di allenamenti settianali previsti dalla tua scheda.
+                              Expanding this card you will find your fitness targets: weight, body fat, calories
+                              and minimum number of workouts per week according to your schedule.
                           </Typography>
                       </CardContent>
                       <CardActions disableSpacing>
@@ -197,10 +200,10 @@ function Personal() {
                       </CardActions>
                       <Collapse in={expanded} timeout="auto" unmountOnExit>
                           <CardContent>
-                              <Typography paragraph>Peso target: {userInfo.targetWeight}</Typography>
-                              <Typography paragraph>Indice di massa grassa target: {userInfo.targetBMI}</Typography>
-                              <Typography paragraph>Calorie giornaliere da assumere: {userInfo.caloriesTarget}</Typography>
-                              <Typography paragraph>Allenamenti settimanali: {userInfo.minWorkoutsTarget}</Typography>
+                              <Typography paragraph>Target weight: {userInfo.targetWeight}</Typography>
+                              <Typography paragraph>Target body fat: {userInfo.targetBMI}</Typography>
+                              <Typography paragraph>Target calories: {userInfo.targetCalories}</Typography>
+                              <Typography paragraph>Weekly workout rate: {userInfo.targetMinWorkouts}</Typography>
                           </CardContent>
                       </Collapse>
                   </Card>

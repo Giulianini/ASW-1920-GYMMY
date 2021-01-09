@@ -1,4 +1,4 @@
-import React, {forwardRef, useImperativeHandle} from 'react';
+import React, {forwardRef, useImperativeHandle, useRef} from 'react';
 import {
     AppBar,
     Button,
@@ -14,6 +14,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown"
 import {userAxios} from "../../../Api";
+import SnackBar from "../utils/Snackbar";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,13 +34,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const EditPersonalDialog = forwardRef((props, ref) => {
     function MyEditPersonalDialog(props) {
         const classes = useStyles();
+        const snackRef = useRef({})
         const [open, setOpen] = React.useState(false);
+        const [errors, setErrors] = React.useState({
+            "age": false,
+            "height": false,
+            "weight": false
+        })
         const [saveUserInfo, setSaveUserInfo] = React.useState({
             "age": "",
             "height": "",
             "weight": ""
         })
-
 
         const handleClickOpen = () => {
             setOpen(true);
@@ -50,18 +56,36 @@ const EditPersonalDialog = forwardRef((props, ref) => {
         };
 
         const handleChange = (prop) => (event) => {
-            setSaveUserInfo({ ...saveUserInfo, [prop]: event.target.value });
-        };
+            let value = event.target.value
+            isNaN(value) ? setErrors({...errors, [prop]: true}) : setErrors({...errors, [prop]: false})
+            setSaveUserInfo({ ...saveUserInfo, [prop]: value });
+        }
+
+        const openSnack = (msg, severity) => {
+            snackRef.current.handleMessage(msg, severity)
+        }
 
         const handleSave = () => {
-            //Todo check if all numbers
-            handleClose()
-            userAxios.patch('/measures', {...saveUserInfo})
-                .then(() => {
-                    props.setUserInfo({...saveUserInfo})
-                }).catch(reason => {
-                //Todo
-                })
+            let check = true
+            let erroredFields = []
+            for (let error in errors) {
+                if (errors[error]) {
+                    check = false
+                    erroredFields.push(error)
+                    console.log(erroredFields)
+                }
+            }
+            if (check) {
+                handleClose()
+                userAxios.patch('/measures', {...saveUserInfo})
+                    .then(() => {
+                        props.setUserInfo({...saveUserInfo})
+                    }).catch(reason => {
+                    //Todo
+                    })
+            } else {
+                openSnack(`${erroredFields.join(" and ")} must be numbers!`, "warning")
+            }
         }
 
         useImperativeHandle(ref, () => {
@@ -73,6 +97,7 @@ const EditPersonalDialog = forwardRef((props, ref) => {
 
         return (
             <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+                <SnackBar ref={snackRef}/>
                 <AppBar className={classes.appBar}>
                     <Toolbar>
                         <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
@@ -96,6 +121,7 @@ const EditPersonalDialog = forwardRef((props, ref) => {
                         label="Age"
                         type="text"
                         fullWidth
+                        error={errors.age}
                         onChange={handleChange("age")}
                         value={saveUserInfo.age}
                     />
@@ -105,6 +131,7 @@ const EditPersonalDialog = forwardRef((props, ref) => {
                         label="Height"
                         type="text"
                         fullWidth
+                        error={errors.height}
                         onChange={handleChange("height")}
                         value={saveUserInfo.height}
                     />
@@ -114,6 +141,7 @@ const EditPersonalDialog = forwardRef((props, ref) => {
                         label="Weight"
                         type="text"
                         fullWidth
+                        error={errors.weight}
                         onChange={handleChange("weight")}
                         value={saveUserInfo.weight}
                     />
