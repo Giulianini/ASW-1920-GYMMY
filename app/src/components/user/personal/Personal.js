@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -15,12 +15,23 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import {Box, Fab, Grid} from "@material-ui/core";
+import {Container, Fab, Grid} from "@material-ui/core";
 import CreateIcon from '@material-ui/icons/Create';
+import {authAxios, userAxios} from "../../../Api";
+import EditPersonalDialog from "./EditPersonalDialog";
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        maxWidth: 345,
+    rootGrid:{
+        [theme.breakpoints.up('md')]: {
+            height: "95vh",
+        },
+        [theme.breakpoints.down('md')]: {
+            paddingTop: 20,
+            marginBottom: 100,
+        },
+    },
+    card: {
+        maxWidth: 500,
     },
     mediaPersonal: {
         height: 100,
@@ -28,11 +39,13 @@ const useStyles = makeStyles(theme => ({
         paddingTop: '60%', // 16:9
         marginLeft: '30%'
     },
-    containerBox: {
-        margin: "auto"
-    },
     customFab: {
-        marginBottom: 60
+        margin: 0,
+        top: 'auto',
+        right: 10,
+        bottom: 65,
+        left: 'auto',
+        position: 'fixed',
     },
     mediaTarget: {
         height: 100,
@@ -57,141 +70,153 @@ const useStyles = makeStyles(theme => ({
 
 function Personal() {
     const classes = useStyles();
+    const dialogRef = useRef({})
     const [expanded, setExpanded] = React.useState(false);
+    const [userInfo, setUserInfo] = React.useState({
+        "username": undefined,
+        "age": undefined,
+        "height": undefined,
+        "weight": undefined,
+        "mainGoal": undefined,
+        "targetWeight": undefined,
+        "targetBMI": undefined,
+        "caloriesTarget": undefined,
+        "minWorkoutsTarget": undefined
+    })
+    //const big = useMediaQuery(theme => theme.breakpoints.up('md'))
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
+    useEffect(() => {
+        userAxios.get("").then(res => {
+            setUserInfo({...res.data})
+        }).catch(reason => {
+            console.log(reason)
+        })
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
     return (
-      <Box justifyContent="center" p={1}>
-              <Grid container direction="column" alignItems="flex-start" spacing={2}>
-                  <Grid item xs={7} md={4} lg={3} className={classes.containerBox}>
-                      <Card className={classes.root}>
-                          <CardHeader
-                              avatar={
-                                  <Avatar aria-label="personalAvatar" className={classes.avatar}>
-                                      AC
-                                  </Avatar>
-                              }
-                              action={
-                                  <IconButton aria-label="settings">
-                                      <MoreVertIcon />
-                                  </IconButton>
-                              }
-                              title="Info"
-                              subheader="Le tue informazioni personali"
-                          />
-                          <CardMedia
-                              className={classes.mediaPersonal}
-                              image="personRunning.png"
-                          />
+        <Container maxWidth={"lg"}>
+            <EditPersonalDialog ref={dialogRef} userInfo={userInfo} setUserInfo={setUserInfo}/>
+            <Grid container direction={"row"} justify="space-around" alignItems="center" spacing={2} className={classes.rootGrid}>
+              <Grid item>
+                  <Card className={classes.card}>
+                      <CardHeader
+                          avatar={
+                              <Avatar aria-label="personalAvatar" className={classes.avatar}>
+                                  AC
+                              </Avatar>
+                          }
+                          action={
+                              <IconButton aria-label="settings">
+                                  <MoreVertIcon />
+                              </IconButton>
+                          }
+                          title="Info"
+                          subheader="Le tue informazioni personali"
+                      />
+                      <CardMedia
+                          className={classes.mediaPersonal}
+                          image="/personRunning.png"
+                      />
+                      <CardContent>
+                          <Typography variant="body2" color="textSecondary" component="p">
+                              Espandendo questa scheda troverai le tue informazioni personali, quali: username, età, altezza e peso.
+                          </Typography>
+                      </CardContent>
+                      <CardActions disableSpacing>
+                          <IconButton aria-label="add to favorites">
+                              <FavoriteIcon />
+                          </IconButton>
+                          <IconButton aria-label="share">
+                              <ShareIcon />
+                          </IconButton>
+                          <IconButton
+                              className={clsx(classes.expand, {
+                                  [classes.expandOpen]: expanded,
+                              })}
+                              onClick={handleExpandClick}
+                              aria-expanded={expanded}
+                              aria-label="show more"
+                          >
+                              <ExpandMoreIcon />
+                          </IconButton>
+                      </CardActions>
+                      <Collapse in={expanded} timeout="auto" unmountOnExit>
                           <CardContent>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                                  Espandendo questa scheda troverai tutte le tue informazioni personale, quali: username, età, altezza e peso.
-                              </Typography>
+                              <Typography paragraph>Username: {userInfo.username}</Typography>
+                              <Typography paragraph>Età: {userInfo.age}</Typography>
+                              <Typography paragraph>Altezza: {userInfo.height}</Typography>
+                              <Typography paragraph>Peso: {userInfo.weight}</Typography>
                           </CardContent>
-                          <CardActions disableSpacing>
-                              <IconButton aria-label="add to favorites">
-                                  <FavoriteIcon />
-                              </IconButton>
-                              <IconButton aria-label="share">
-                                  <ShareIcon />
-                              </IconButton>
-                              <IconButton
-                                  className={clsx(classes.expand, {
-                                      [classes.expandOpen]: expanded,
-                                  })}
-                                  onClick={handleExpandClick}
-                                  aria-expanded={expanded}
-                                  aria-label="show more"
-                              >
-                                  <ExpandMoreIcon />
-                              </IconButton>
-                          </CardActions>
-                          <Collapse in={expanded} timeout="auto" unmountOnExit>
-                              <CardContent>
-                                  <Typography paragraph>Username:</Typography>
-                                  <Typography paragraph>Username from DB</Typography>
-                                  <Typography paragraph>Age:</Typography>
-                                  <Typography paragraph>Age from DB</Typography>
-                                  <Typography paragraph>Height:</Typography>
-                                  <Typography paragraph>Height from DB</Typography>
-                                  <Typography paragraph>Weight:</Typography>
-                                  <Typography paragraph>Weight from DB</Typography>
-                              </CardContent>
-                          </Collapse>
-                      </Card>
-                  </Grid>
-
-                  <Grid item xs={7} md={4} lg={3} className={classes.containerBox}>
-                      <Card className={classes.root}>
-                          <CardHeader
-                              action={
-                                  <IconButton aria-label="settings">
-                                      <MoreVertIcon />
-                                  </IconButton>
-                              }
-                              title="Perdi peso"
-                              subheader="I tuoi obiettivi personali"
-                          />
-                          <CardMedia
-                              className={classes.mediaTarget}
-                              image="fire.png"
-                              title="Paella dish"
-                          />
-                          <CardContent>
-                              <Typography variant="body2" color="textSecondary" component="p">
-                                  Espandendo questa scheda troverai i tuoi obiettivi di fitness, quali: peso target, indice di massa grassa target,
-                                  calorie giornaliere e numero di allenamenti settianali previsti dalla tua scheda.
-                              </Typography>
-                          </CardContent>
-                          <CardActions disableSpacing>
-                              <IconButton aria-label="add to favorites">
-                                  <FavoriteIcon />
-                              </IconButton>
-                              <IconButton aria-label="share">
-                                  <ShareIcon />
-                              </IconButton>
-                              <IconButton
-                                  className={clsx(classes.expand, {
-                                      [classes.expandOpen]: expanded,
-                                  })}
-                                  onClick={handleExpandClick}
-                                  aria-expanded={expanded}
-                                  aria-label="show more"
-                              >
-                                  <ExpandMoreIcon />
-                              </IconButton>
-                          </CardActions>
-                          <Collapse in={expanded} timeout="auto" unmountOnExit>
-                              <CardContent>
-                                  <Typography paragraph>Peso target:</Typography>
-                                  <Typography paragraph>Peso target from DB</Typography>
-                                  <Typography paragraph>Indice di massa grassa target:</Typography>
-                                  <Typography paragraph>Indice di massa grassa target from DB</Typography>
-                                  <Typography paragraph>Calorie giornaliere da assumere:</Typography>
-                                  <Typography paragraph>Calorie giornaliere da assumere from DB</Typography>
-                                  <Typography paragraph>Allenamenti settimanali:</Typography>
-                                  <Typography paragraph>Allenamenti settimanali from DB</Typography>
-                              </CardContent>
-                          </Collapse>
-                      </Card>
-                  </Grid>
-
-                  <Grid container item direction="row" justify="flex-end" className={classes.customFab}>
-                      <Fab color={"primary"}
-                           disabled={false}
-                           href={""}
-                           iconTheme={"Filled"}
-                           size={"large"}
-                           variant={"round"}>
-                          <CreateIcon />
-                      </Fab>
-                  </Grid>
+                      </Collapse>
+                  </Card>
               </Grid>
-      </Box>
 
+              <Grid item>
+                  <Card className={classes.card}>
+                      <CardHeader
+                          action={
+                              <IconButton aria-label="settings">
+                                  <MoreVertIcon />
+                              </IconButton>
+                          }
+                          title={"Perdi peso"}  // {userInfo.mainGoal} --> from DB
+                          subheader="I tuoi obiettivi personali"
+                      />
+                      <CardMedia
+                          className={classes.mediaTarget}
+                          image="/fire.png"
+                          title="Paella dish"
+                      />
+                      <CardContent>
+                          <Typography variant="body2" color="textSecondary" component="p">
+                              Espandendo questa scheda troverai i tuoi obiettivi di fitness, quali: peso target, indice di massa corporea target,
+                              calorie giornaliere e numero di allenamenti settimanali previsti dalla tua scheda.
+                          </Typography>
+                      </CardContent>
+                      <CardActions disableSpacing>
+                          <IconButton aria-label="add to favorites">
+                              <FavoriteIcon />
+                          </IconButton>
+                          <IconButton aria-label="share">
+                              <ShareIcon />
+                          </IconButton>
+                          <IconButton
+                              className={clsx(classes.expand, {
+                                  [classes.expandOpen]: expanded,
+                              })}
+                              onClick={handleExpandClick}
+                              aria-expanded={expanded}
+                              aria-label="show more"
+                          >
+                              <ExpandMoreIcon />
+                          </IconButton>
+                      </CardActions>
+                      <Collapse in={expanded} timeout="auto" unmountOnExit>
+                          <CardContent>
+                              <Typography paragraph>Peso target: {userInfo.targetWeight}</Typography>
+                              <Typography paragraph>Indice di massa grassa target: {userInfo.targetBMI}</Typography>
+                              <Typography paragraph>Calorie giornaliere da assumere: {userInfo.caloriesTarget}</Typography>
+                              <Typography paragraph>Allenamenti settimanali: {userInfo.minWorkoutsTarget}</Typography>
+                          </CardContent>
+                      </Collapse>
+                  </Card>
+              </Grid>
+                  <Fab color={"primary"}
+                       disabled={false}
+                       href={""}
+                       icontheme={"Filled"}
+                       size={"large"}
+                       variant={"round"}
+                       onClick={() => dialogRef.current.handleClickOpen()}
+                       className={classes.customFab}>
+                      <CreateIcon />
+                  </Fab>
+            </Grid>
+        </Container>
     );
 }
 

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
+import {Route, Switch, Redirect} from "react-router-dom";
 import Dashboard from "./dashboard/Dashboard";
 import Personal from "./personal/Personal";
 import Statistics from "./statistics/Statistics";
@@ -7,11 +7,11 @@ import Training from "./training/Training";
 import BottomBar from "./BottomBar";
 import Header from "./Header";
 
-import {CssBaseline} from "@material-ui/core";
 import {darkMode, theme} from "../../theme";
 import {ThemeProvider} from "@material-ui/core/styles";
 import Drawer from "./Drawer";
 import routes from "../Routes";
+import {CssBaseline} from "@material-ui/core";
 
 function User() {
     const [drawerIsOpen, setDrawerIsOpen] = useState(false)
@@ -24,9 +24,7 @@ function User() {
 
     return (
         <ThemeProvider theme={localDarkMode ? darkMode : theme}>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline/>
-            <Router>
+                <CssBaseline/>
                 <Header toggleDrawer={toggleDrawer}/>
                 <Drawer localDarkMode={localDarkMode} setLocalDarkMode={setLocalDarkMode}
                         drawerIsOpen={drawerIsOpen} setDrawerIsOpen={setDrawerIsOpen}
@@ -39,7 +37,6 @@ function User() {
                     <Redirect from='*' to={`/${routes.dashboard.value}`} />
                 </Switch>
                 <BottomBar tabs={routes}/>
-            </Router>
         </ThemeProvider>
     );
 }

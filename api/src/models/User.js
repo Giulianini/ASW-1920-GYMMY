@@ -16,6 +16,18 @@ const UserSchema = new mongoose.Schema({
     role: {
         type: String,
         required: true
+    },
+    age: {
+        type: Number,
+        required: true
+    },
+    height: {
+        type: Number,
+        required: true
+    },
+    weight: {
+        type: Number,
+        required: true
     }
 })
 

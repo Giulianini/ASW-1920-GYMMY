@@ -9,6 +9,8 @@ import {
     ListSubheader, makeStyles,
     SwipeableDrawer, Switch as SwitchUI
 } from "@material-ui/core";
+import routes from "../Routes";
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles({
     list: {
@@ -18,6 +20,7 @@ const useStyles = makeStyles({
 
 function Drawer(props) {
     const classes = useStyles()
+    const history = useHistory()
 
     return (
         <SwipeableDrawer
@@ -40,13 +43,13 @@ function Drawer(props) {
                         />
                     </ListItemSecondaryAction>
                 </ListItem>
-                <ListItem button divider={true}>
+                <ListItem button divider={true} onClick={() => history.push(`/${routes.signup.value}`)}>
                     <ListItemIcon>
                         <PersonAdd />
                     </ListItemIcon>
-                    <ListItemText id="signup" primary="Signup" />
+                    <ListItemText id="signup" primary="Signup"/>
                 </ListItem>
-                <ListItem button divider={true}>
+                <ListItem button divider={true} onClick={() => history.push(`/${routes.login.value}`)}>
                     <ListItemIcon>
                         <LockOpen />
                     </ListItemIcon>
