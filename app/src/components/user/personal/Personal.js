@@ -85,7 +85,7 @@ function Personal() {
     };
 
     useEffect(() => {
-        userAxios.get().then(res => {
+        userAxios.get("").then(res => {
             setUserInfo({...res.data})
         }).catch(reason => {
             console.log(reason)
