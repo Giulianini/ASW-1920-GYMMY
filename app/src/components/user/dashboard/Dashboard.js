@@ -66,6 +66,7 @@ const useStyles = makeStyles(theme => ({
     },
     scrollablePane: {
         maxHeight: 300,
+        width: '100%',
         overflow: 'auto'
     }
 }));
@@ -74,10 +75,20 @@ function Dashboard() {
     const classes = useStyles();
     const dialogRef = useRef({})
     const [progress, setProgress] = React.useState(50);
+    const [course, setEnrolled] = React.useState(false);
+    const [challenge, acceptChallenge] = React.useState(false);
     const [userInfo, setUserInfo] = React.useState({
         "username": undefined,
         "score": undefined
     })
+
+    const handleEnrollClick = () => {
+        //setEnrolled(!course);
+    };
+
+    const handleChallengeAcceptedClock = () => {
+        //acceptChallenge(!challenge);
+    }
 
     useEffect(() => {
         let username = localStorage.getItem("username")
@@ -159,7 +170,7 @@ function Dashboard() {
                                     </CardContent>
                                 </CardActionArea>
                                 <CardActions>
-                                    <Button size="small" color="primary">
+                                    <Button size="small" color="primary" onClick={handleChallengeAcceptedClock}>
                                         Accetta
                                     </Button>
                                     <Button size="small" color="primary">
@@ -182,7 +193,7 @@ function Dashboard() {
                                             Bench press challenge
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            Completa quante più bench-presses puoi e scala la classifica!
+                                            Completa quante più bench-press puoi e scala la classifica!
                                             Accetta la sfida mediante l'apposito pulsante.
                                         </Typography>
                                     </CardContent>
@@ -191,7 +202,7 @@ function Dashboard() {
                                     <Button size="small" color="primary">
                                         Accetta
                                     </Button>
-                                    <Button size="small" color="primary">
+                                    <Button size="small" color="primary" onClick={handleChallengeAcceptedClock}>
                                         200 punti
                                     </Button>
                                 </CardActions>
@@ -217,11 +228,94 @@ function Dashboard() {
                                     </CardContent>
                                 </CardActionArea>
                                 <CardActions>
-                                    <Button size="small" color="primary">
+                                    <Button size="small" color="primary" onClick={handleEnrollClick}>
                                         Accetta
                                     </Button>
-                                    <Button size="small" color="primary">
+                                    <Button size="small" color="primary" onClick={handleChallengeAcceptedClock}>
                                         150 punti
+                                    </Button>
+                                </CardActions>
+                            </Card>
+                        </Grid>
+                    </Grid>
+
+                    <Grid item className={classes.vSpace}>
+                        <Typography className={classes.otherText}>
+                            Courses
+                        </Typography>
+                    </Grid>
+
+                    <Grid item container direction={"row"} className={classes.scrollablePane}>
+                        <Grid item className={classes.vSpace}>
+                            <Card>
+                                <CardActionArea>
+                                    <CardMedia
+                                        className={classes.mediaPersonal}
+                                        image="/functional.jpg"
+                                        title="Functional"
+                                    />
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            Functional
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                            Iscriviti al corso di allenamento funzionale mediante l'apposito pulsante. La sala è dotata di tutta l'attrezzatura necessaria.
+                                        </Typography>
+                                    </CardContent>
+                                </CardActionArea>
+                                <CardActions>
+                                    <Button size="small" color="primary" onClick={handleEnrollClick}>
+                                        Iscriviti
+                                    </Button>
+                                </CardActions>
+                            </Card>
+                        </Grid>
+
+                        <Grid item className={classes.vSpace}>
+                            <Card>
+                                <CardActionArea>
+                                    <CardMedia
+                                        className={classes.mediaPersonal}
+                                        image="/zumba.jpg"
+                                        title="Zumba"
+                                    />
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            Zumba
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                            Iscriviti al corso di zumba mediante l'apposito pulsante. La sala è dotata di tutta l'attrezzatura necessaria.
+                                        </Typography>
+                                    </CardContent>
+                                </CardActionArea>
+                                <CardActions>
+                                    <Button size="small" color="primary" onClick={handleEnrollClick}>
+                                        Disiscriviti
+                                    </Button>
+                                </CardActions>
+                            </Card>
+                        </Grid>
+
+                        <Grid item className={classes.vSpace}>
+                            <Card>
+                                <CardActionArea>
+                                    <CardMedia
+                                        className={classes.mediaPersonal}
+                                        image="/pilates.jpg"
+                                        title="Pilates"
+                                    />
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            Pilates
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                            Iscriviti al corso di pilates mediante l'apposito pulsante. La sala è dotata di tutta l'attrezzatura necessaria.
+                                        </Typography>
+                                    </CardContent>
+                                </CardActionArea>
+                                <CardActions>
+                                    <Button size="small" color="primary">
+                                        Iscriviti
                                     </Button>
                                 </CardActions>
                             </Card>
