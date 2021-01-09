@@ -1,7 +1,18 @@
 import React, {useEffect, useRef} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {authAxios} from "../../../Api";
-import {Container, Divider, Grid, List, ListItem, LinearProgress, Typography, Chip} from "@material-ui/core";
+import {
+    Container,
+    Divider,
+    Grid,
+    List,
+    ListItem,
+    LinearProgress,
+    Typography,
+    Chip,
+    Card,
+    CardActionArea, CardActions, Button
+} from "@material-ui/core";
 import EditPersonalDialog from "../personal/EditPersonalDialog";
 import SpeedIcon from '@material-ui/icons/Speed';
 import BarChartIcon from '@material-ui/icons/BarChart';
@@ -10,6 +21,8 @@ import GpsFixedIcon from '@material-ui/icons/GpsFixed';
 import BeenhereIcon from '@material-ui/icons/Beenhere';
 import GradeIcon from '@material-ui/icons/Grade';
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
@@ -44,7 +57,8 @@ const useStyles = makeStyles(theme => ({
     otherText: {
         fontSize: 23,
         fontWeight: "lighter",
-    }
+    },
+
 }));
 
 function Dashboard() {
@@ -114,6 +128,95 @@ function Dashboard() {
                         <Typography className={classes.otherText}>
                             Challenges
                         </Typography>
+                    </Grid>
+
+                    <Grid item container style={{maxHeight: 300, overflow: 'auto'}}>
+                        <Grid item className={classes.vSpace}>
+                            <Card>
+                                <CardActionArea>
+                                    <CardMedia
+                                        className={classes.media}
+                                        image="/static/images/cards/contemplative-reptile.jpg"
+                                        title="Contemplative Reptile"
+                                    />
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            Push-up challenge
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
+                                            across all continents except Antarctica
+                                        </Typography>
+                                    </CardContent>
+                                </CardActionArea>
+                                <CardActions>
+                                    <Button size="small" color="primary">
+                                        Join
+                                    </Button>
+                                    <Button size="small" color="primary">
+                                        Learn More
+                                    </Button>
+                                </CardActions>
+                            </Card>
+                        </Grid>
+
+                        <Grid item className={classes.vSpace}>
+                            <Card>
+                                <CardActionArea>
+                                    <CardMedia
+                                        className={classes.media}
+                                        image="/static/images/cards/contemplative-reptile.jpg"
+                                        title="Contemplative Reptile"
+                                    />
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            Bench press challenge
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
+                                            across all continents except Antarctica
+                                        </Typography>
+                                    </CardContent>
+                                </CardActionArea>
+                                <CardActions>
+                                    <Button size="small" color="primary">
+                                        Join
+                                    </Button>
+                                    <Button size="small" color="primary">
+                                        Learn More
+                                    </Button>
+                                </CardActions>
+                            </Card>
+                        </Grid>
+
+                        <Grid item className={classes.vSpace}>
+                            <Card>
+                                <CardActionArea>
+                                    <CardMedia
+                                        className={classes.media}
+                                        image="/static/images/cards/contemplative-reptile.jpg"
+                                        title="Contemplative Reptile"
+                                    />
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            Pull-up challenge
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
+                                            across all continents except Antarctica
+                                        </Typography>
+                                    </CardContent>
+                                </CardActionArea>
+                                <CardActions>
+                                    <Button size="small" color="primary">
+                                        Join
+                                    </Button>
+                                    <Button size="small" color="primary">
+                                        Learn More
+                                    </Button>
+                                </CardActions>
+                            </Card>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>
