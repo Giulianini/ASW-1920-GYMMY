@@ -1,7 +1,11 @@
-const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 // "bcrypt": "^5.0.0",
 const responses = require('./util/responses')
+
+const User = require('../models/User')
+const TrainingCard = require('../models/TrainingCard')
+const Exercise = require('../models/Exercise')
+const Location = require('../models/Location')
 
 exports.getAllUsers = async function(req, res) {
     try {
@@ -94,6 +98,38 @@ exports.removeUser = async function(req, res) {
             .then(() => {
                 responses.noContent(res)
             })
+    } else {
+        responses.notFound(res)
+    }
+}
+
+exports.getUserCards = async function(req, res) {
+    const username = req.params.username
+
+    const usernameExists = await User.exists({ username: username })
+    if (usernameExists) {
+        const userId = await User.findOne({ username: username }).map(doc => doc._id).exec();
+        const userCards = await TrainingCard.find({ user: userId })
+            .populate({
+                path: 'user',
+                model: User,
+                select: '-password'
+            })
+            .populate({
+                path: 'trainer',
+                model: User,
+                select: '-password'
+            })
+            .populate({
+                path: 'exercises.exercise',
+                model: Exercise,
+                populate: {
+                    path: 'locations',
+                    model: Location
+                }
+            })
+            .exec()
+        responses.json(res)(userCards)
     } else {
         responses.notFound(res)
     }

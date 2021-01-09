@@ -15,4 +15,7 @@ router.patch(`/:${params.USERNAME_PARAM}/measures`, usersController.updateMeasur
 
 router.delete(`/:${params.USERNAME_PARAM}`, usersController.removeUser)
 
+
+router.get(`/:${params.USERNAME_PARAM}/:${params.USER_CARDS_PARAM}`, usersController.getUserCards)
+
 module.exports = router
