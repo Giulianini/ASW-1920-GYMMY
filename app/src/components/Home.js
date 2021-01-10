@@ -1,10 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import {Box, Button, Card, CardActionArea, CardActions, Grid, Slide, Snackbar} from "@material-ui/core";
+import {Box, Button, Card, CardActionArea, Grid, Slide, Snackbar} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
+import {useHistory} from "react-router-dom";
 import checkApiEndpoint from "../Api";
+import {theme} from "../theme";
+import Carousel from "react-material-ui-carousel";
+
 
 const backgroundImage = "landingPageImage.jpeg";
 
@@ -31,31 +35,36 @@ const useStyles = makeStyles({
     },
     landing: {
         color: "white",
-        fontSize: 49,
-        fontWeight: 400,
-        fontFamily: [
-            'Roboto', 'sans-serif'
-        ].join(',')
+        fontSize: 70,
+        fontWeight: 100,
     },
     gridSpacing: {
         marginTop: "70px"
     },
-    containerBox: {
-        margin: "auto"
-    },
     card: {
-        maxWidth: 400,
+        width: "auto",
     },
-    bottomCard: {
-        marginBottom: 60
+    cardText: {
+        color: "white",
+        fontWeight: 300,
+        fontSize: 35,
     },
     media: {
-        height: 100,
+        [theme.breakpoints.up('sm')]: {
+            width: "fitContent",
+            height: "100vh",
+        },
+        [theme.breakpoints.down('sm')]: {
+            width: "fitContent",
+            height: 400,
+        },
     }
 });
 
 function Home() {
-    const classes = useStyles();
+    const classes = useStyles()
+    const history = useHistory()
+    const scrollRef = useRef(null)
     const [snackState, setSnackState] = useState({
         open: false,
         snackMessage: "",
@@ -63,16 +72,30 @@ function Home() {
     })
 
     useEffect(() => {
+        window.HTMLElement.prototype.scrollIntoView = function () {
+        };
+        let id = setTimeout(() => {
+            executeScroll()
+        }, 3000)
         checkApiEndpoint((message, apiUrl) => {
             setSnackState({...snackState, open: true, snackMessage: `Endpoint ${message} @ ${apiUrl}`})
         }, (err) => {
             setSnackState({...snackState, open: true, snackMessage: `${err}`})
         })
+        return function cleanup() {
+            clearTimeout(id)
+        }
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     function TransitionRight(props) {
         return <Slide {...props} direction="left"/>
     }
+
+    const onButtonClick = (path) => {
+        history.push(path)
+    }
+
+    const executeScroll = () => window.scrollTo({behavior: 'smooth', top: scrollRef.current.offsetTop})
 
     const mySnackBar = (
         <Snackbar
@@ -90,138 +113,73 @@ function Home() {
             message={snackState.snackMessage}
         />
     )
+
+    function Item(props) {
+        return (
+            <Card className={classes.card}>
+                <CardActionArea>
+                    <CardMedia
+                        className={classes.media}
+                        image={props.item.img}
+                        title={props.item.title}
+                    >
+                        <CardContent>
+                            <Typography variant="h5" component="h2" className={classes.cardText}>
+                                Main room
+                            </Typography>
+                        </CardContent>
+                    </CardMedia>
+                </CardActionArea>
+                {/*<CardActions>*/}
+                {/*    <Button size="small" color="primary">*/}
+                {/*        Learn More*/}
+                {/*    </Button>*/}
+                {/*</CardActions>*/}
+            </Card>
+        )
+    }
+
+    var items = [
+        {
+            title: "Random Name #1",
+            img: "mainRoom.jpg"
+        },
+        {
+            title: "Random Name #2",
+            img: "zumba.jpg"
+        }
+    ]
+
     return (
-        <Box>
+        <div>
             {mySnackBar}
             <Box height="50vh" display="flex" py={6} className={classes.root}>
-                <Grid container direction="column" alignItems="center" py={6}>
+                <Grid container justify={"center"} direction="column" alignItems="center">
                     <Grid item>
                         <Typography className={classes.landing}>
                             GYMMY
                         </Typography>
                     </Grid>
                     <Grid item className={classes.gridSpacing}>
-                        <Button variant="contained" className={classes.signUpButton}>
+                        <Button variant="contained" className={classes.signUpButton}
+                                onClick={() => onButtonClick("/signup")}>
                             Signup
                         </Button>
-                        <Button variant="contained" className={classes.logInButton}>
+                        <Button variant="contained" className={classes.logInButton}
+                                onClick={() => onButtonClick("/login")}>
                             Login
                         </Button>
                     </Grid>
                 </Grid>
             </Box>
-            <Grid container item direction="column" xs={7} md={4} lg={3} spacing={3} className={classes.containerBox}>
-                <Grid xs={12} md={12} lg={12} item>
-                    <Card className={classes.card}>
-                        <CardActionArea>
-                            <CardMedia
-                                className={classes.media}
-                                image="mainRoom.jpg"
-                                title="Contemplative Reptile"
-                            />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">
-                                    Main room
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                        <CardActions>
-                            <Button size="small" color="primary">
-                                Learn More
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Grid>
-
-                <Grid xs={12} md={12} lg={12} item>
-                    <Card className={classes.card}>
-                        <CardActionArea>
-                            <CardMedia
-                                className={classes.media}
-                                image="weightRoom.jpg"
-                                title="weight room"
-                            />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">
-                                    Weight room
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                        <CardActions>
-                            <Button size="small" color="primary">
-                                Learn More
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Grid>
-
-                <Grid xs={12} md={12} lg={12} item>
-                    <Card className={classes.card}>
-                        <CardActionArea>
-                            <CardMedia
-                                className={classes.media}
-                                image="functional.jpg"
-                                title="functional"
-                            />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">
-                                    Functional
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                        <CardActions>
-                            <Button size="small" color="primary">
-                                Learn More
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Grid>
-
-                <Grid xs={12} md={12} lg={12} item>
-                    <Card className={classes.card}>
-                        <CardActionArea>
-                            <CardMedia
-                                className={classes.media}
-                                image="zumba.jpg"
-                                title="zumba"
-                            />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">
-                                    Zumba
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                        <CardActions>
-                            <Button size="small" color="primary">
-                                Learn More
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Grid>
-
-                <Grid xs={12} md={12} lg={12} item className={classes.bottomCard}>
-                    <Card className={classes.card}>
-                        <CardActionArea>
-                            <CardMedia
-                                className={classes.media}
-                                image="PT.jpg"
-                                title="our pt"
-                            />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">
-                                    Meet our P.T.
-                                </Typography>
-                            </CardContent>
-                        </CardActionArea>
-                        <CardActions>
-                            <Button size="small" color="primary">
-                                Learn More
-                            </Button>
-                        </CardActions>
-                    </Card>
-                </Grid>
-            </Grid>
-        </Box>
+            <div ref={scrollRef}>
+                <Carousel>
+                    {
+                        items.map((item, i) => <Item key={i} item={item}/>)
+                    }
+                </Carousel>
+            </div>
+        </div>
     );
 }
 
