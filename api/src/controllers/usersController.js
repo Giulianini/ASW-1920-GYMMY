@@ -3,9 +3,6 @@ const bcrypt = require('bcryptjs')
 const responses = require('./util/responses')
 
 const User = require('../models/User')
-const TrainingCard = require('../models/TrainingCard')
-const Exercise = require('../models/Exercise')
-const Location = require('../models/Location')
 
 async function getUserId(username) {
     return User.findOne({ username: username }).map(doc => doc._id).exec()
