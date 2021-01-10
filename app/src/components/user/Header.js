@@ -2,6 +2,7 @@ import React from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {AppBar, IconButton, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -17,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Header(props) {
     const classes = useStyles()
+    const appbarTitle = useSelector(state => state.appbarTitle)
     return (
         <AppBar
             position={"sticky"}
@@ -27,7 +29,7 @@ function Header(props) {
                     <Menu/>
                 </IconButton>
                 <Typography variant="h6" className={classes.title}>
-                    Dashboard
+
                 </Typography>
             </Toolbar>
         </AppBar>

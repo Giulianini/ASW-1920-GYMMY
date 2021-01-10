@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {BottomNavigation, BottomNavigationAction} from "@material-ui/core";
-import {Dashboard, BarChart, Receipt, Person} from '@material-ui/icons'
+import {BarChart, Dashboard, Person, Receipt} from '@material-ui/icons'
 import {useHistory, useLocation} from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 
 function BottomBar(props) {
     const [value, setValue] = useState("user/dashboard")
@@ -11,7 +11,7 @@ function BottomBar(props) {
     const classes = useStyles()
 
     useEffect(() => {
-        setValue(location.pathname.toString().split("/").slice(1,3).join("/"))
+        setValue(location.pathname.toString().split("/").slice(1, 3).join("/"))
     }, [location])
 
     return (
@@ -24,10 +24,14 @@ function BottomBar(props) {
             }}
             showLabels
         >
-            <BottomNavigationAction label={props.tabs.dashboard.name} value={props.tabs.dashboard.value} icon={<Dashboard/>}/>
-            <BottomNavigationAction label={props.tabs.personal.name} value={props.tabs.personal.value} icon={<Person/>}/>
-            <BottomNavigationAction label={props.tabs.statistics.name} value={props.tabs.statistics.value} icon={<BarChart/>}/>
-            <BottomNavigationAction label={props.tabs.training.name} value={props.tabs.training.value} icon={<Receipt/>}/>
+            <BottomNavigationAction label={props.tabs.dashboard.name} value={props.tabs.dashboard.value}
+                                    icon={<Dashboard/>}/>
+            <BottomNavigationAction label={props.tabs.personal.name} value={props.tabs.personal.value}
+                                    icon={<Person/>}/>
+            <BottomNavigationAction label={props.tabs.statistics.name} value={props.tabs.statistics.value}
+                                    icon={<BarChart/>}/>
+            <BottomNavigationAction label={props.tabs.training.name} value={props.tabs.training.value}
+                                    icon={<Receipt/>}/>
         </BottomNavigation>
     );
 }
