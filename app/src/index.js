@@ -4,14 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'typeface-roboto';
-import checkApiEndpoint from "./Api";
+import {setup} from "./Setup";
 
-checkApiEndpoint((message, apiUrl) => console.log(`Connected to ${apiUrl}: ${message}`), (error) => `${error}`)
+setup()
 ReactDOM.render(
-  //<React.StrictMode>
+    //<React.StrictMode>
     <App/>,
-  //</React.StrictMode>,
-  document.getElementById('root')
+    //</React.StrictMode>,
+    document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

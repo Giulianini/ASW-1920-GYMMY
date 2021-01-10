@@ -1,5 +1,5 @@
 import {combineReducers, createStore} from "redux";
-import appUI from './ducks/appUI'
+import appUI from './ducks/user/user'
 
 const reducer = combineReducers({
     appUIReducer: appUI

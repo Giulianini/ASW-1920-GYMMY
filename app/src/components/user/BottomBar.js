@@ -3,9 +3,12 @@ import {BottomNavigation, BottomNavigationAction} from "@material-ui/core";
 import {BarChart, Dashboard, Person, Receipt} from '@material-ui/icons'
 import {useHistory, useLocation} from 'react-router-dom'
 import {makeStyles} from '@material-ui/core/styles';
+import {useDispatch} from "react-redux";
+import {setAppbarTitle} from "../../redux/ducks/user/user";
 
 function BottomBar(props) {
     const [value, setValue] = useState("user/dashboard")
+    const dispatch = useDispatch()
     const location = useLocation()
     const history = useHistory()
     const classes = useStyles()
@@ -20,6 +23,7 @@ function BottomBar(props) {
             value={value}
             onChange={(e, newValue) => {
                 setValue(newValue)
+                dispatch(setAppbarTitle(newValue.toString().split("/")[1].capitalize()))
                 history.push(`/${newValue}`)
             }}
             showLabels

@@ -8,8 +8,8 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case setAppbarTitle:
-            return {...state, appBarTitle: action.newTitle}
+        case SET_APPBAR_TITLE:
+            return {...state, appbarTitle: action.newTitle}
         default:
             return state
     }
