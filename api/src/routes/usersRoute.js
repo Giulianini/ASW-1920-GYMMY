@@ -20,10 +20,10 @@ router.delete(`/:${params.USERNAME_PARAM}`, usersController.removeUser)
 
 /* Objective */
 
-router.get(`/:${params.USERNAME_PARAM}/${params.OBJECTIVE_PARAM}`, usersController.getUserObjective)
+router.get(`/:${params.USERNAME_PARAM}/${params.OBJECTIVE_ROUTE}`, usersController.getUserObjective)
 
-router.post(`/:${params.USERNAME_PARAM}/${params.OBJECTIVE_PARAM}`, usersController.createUserObjective)
+router.post(`/:${params.USERNAME_PARAM}/${params.OBJECTIVE_ROUTE}`, usersController.createUserObjective)
 
-router.patch(`/:${params.USERNAME_PARAM}/${params.OBJECTIVE_PARAM}`, usersController.updateUserObjective)
+router.patch(`/:${params.USERNAME_PARAM}/${params.OBJECTIVE_ROUTE}`, usersController.updateUserObjective)
 
 module.exports = router

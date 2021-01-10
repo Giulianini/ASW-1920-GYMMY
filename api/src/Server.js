@@ -44,7 +44,7 @@ app.use('/locations', locationsRoute)
 
 app.use('/exercises', exercisesRoute)
 
-app.use(`/users/:${params.USERNAME_PARAM}/${params.USER_CARDS_PARAM}`, trainingCardsRoute)
+app.use(`/users/:${params.USERNAME_PARAM}/${params.USER_CARDS_ROUTE}`, trainingCardsRoute)
 
 app.get("/", (req, res) => {
     res.send("Gymmy API")
