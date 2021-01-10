@@ -11,7 +11,7 @@ import {
     Typography,
     Chip,
     Card,
-    CardActionArea, CardActions, Button
+    CardActionArea, CardActions, Button, GridList, GridListTile, GridListTileBar
 } from "@material-ui/core";
 import EditPersonalDialog from "../personal/EditPersonalDialog";
 import SpeedIcon from '@material-ui/icons/Speed';
@@ -19,10 +19,12 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import GpsFixedIcon from '@material-ui/icons/GpsFixed';
 import BeenhereIcon from '@material-ui/icons/Beenhere';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 import GradeIcon from '@material-ui/icons/Grade';
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
+import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
@@ -77,8 +79,44 @@ const useStyles = makeStyles(theme => ({
     icons: {
         marginLeft: 20,
         marginRight: 20
-    }
+    },
+    rootB: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        overflow: 'hidden',
+        backgroundColor: theme.palette.background.paper,
+    },
+    gridList: {
+        flexWrap: 'nowrap',
+        // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+        transform: 'translateZ(0)',
+    },
+    titleB: {
+        color: theme.palette.primary.light,
+    },
+    titleBar: {
+        background:
+            'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+    },
 }));
+
+const tileData = [
+    {
+        img: "/pushUp.jpg",
+        title: 'Pushup',
+        author: 'author',
+    },
+    {
+        img: "/pullUp.jpg",
+        title: 'Pullup',
+        author: 'author',
+    },
+    {
+        img: "/benchPress.jpg",
+        title: 'Bench press',
+        author: 'author',
+    }
+]
 
 function Dashboard() {
     const classes = useStyles();
@@ -136,24 +174,24 @@ function Dashboard() {
                         <LinearProgress variant="determinate" value={progress} color="primary"/>
                     </Grid>
                     <Grid item className={classes.vSpace}>
-                            <Chip
-                                className={classes.chips}
-                                icon={<GradeIcon />}
-                                label="Beginner"
-                                color="primary"
-                            />
-                            <Chip
-                                className={classes.chips}
-                                icon={<GradeIcon />}
-                                label="Intermediate"
-                                color="primary"
-                            />
-                            <Chip
-                                className={classes.chips}
-                                icon={<GradeIcon />}
-                                label="Advanced"
-                                color="primary"
-                            />
+                        <Chip
+                            className={classes.chips}
+                            icon={<GradeIcon />}
+                            label="Beginner"
+                            color="primary"
+                        />
+                        <Chip
+                            className={classes.chips}
+                            icon={<GradeIcon />}
+                            label="Intermediate"
+                            color="primary"
+                        />
+                        <Chip
+                            className={classes.chips}
+                            icon={<GradeIcon />}
+                            label="Advanced"
+                            color="primary"
+                        />
                     </Grid>
                     <Grid item className={classes.vSpace}>
                         <Typography className={classes.otherText}>
@@ -161,94 +199,27 @@ function Dashboard() {
                         </Typography>
                     </Grid>
 
-                    <Grid item container direction={"row"} className={classes.scrollablePane}>
-                        <Grid item className={classes.vSpace}>
-                            <Card>
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.mediaPersonal}
-                                        image="/pushUp.jpg"
-                                        title="Push up"
+                    <div className={classes.rootB}>
+                        <GridList className={classes.gridList} cols={2.5}>
+                            {tileData.map((tile) => (
+                                <GridListTile key={tile.img}>
+                                    <img src={tile.img} alt={tile.title} />
+                                    <GridListTileBar
+                                        title={tile.title}
+                                        classes={{
+                                            root: classes.titleBar,
+                                            title: classes.title,
+                                        }}
+                                        actionIcon={
+                                            <IconButton aria-label={`star ${tile.title}`}>
+                                                <StarBorderIcon className={classes.title} />
+                                            </IconButton>
+                                        }
                                     />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Push-up challenge
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            Completa quanti più push-ups puoi e scala la classifica!
-                                            Accetta la sfida mediante l'apposito pulsante.
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                                <CardActions>
-                                    <Button size="small" color="primary" onClick={handleChallengeAcceptedClock}>
-                                        Accetta
-                                    </Button>
-                                    <Button size="small" color="primary">
-                                        100 punti
-                                    </Button>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-
-                        <Grid item className={classes.vSpace}>
-                            <Card>
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.mediaPersonal}
-                                        image="/benchPress.jpg"
-                                        title="Bench press"
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Bench press challenge
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            Completa quante più bench-press puoi e scala la classifica!
-                                            Accetta la sfida mediante l'apposito pulsante.
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                                <CardActions>
-                                    <Button size="small" color="primary">
-                                        Accetta
-                                    </Button>
-                                    <Button size="small" color="primary" onClick={handleChallengeAcceptedClock}>
-                                        200 punti
-                                    </Button>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-
-                        <Grid item className={classes.vSpace}>
-                            <Card>
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.mediaPersonal}
-                                        image="/pullUp.jpg"
-                                        title="Pull up"
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Pull-up challenge
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            Completa quanti più pull-ups puoi e scala la classifica!
-                                            Accetta la sfida mediante l'apposito pulsante.
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                                <CardActions>
-                                    <Button size="small" color="primary" onClick={handleEnrollClick}>
-                                        Accetta
-                                    </Button>
-                                    <Button size="small" color="primary" onClick={handleChallengeAcceptedClock}>
-                                        150 punti
-                                    </Button>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                    </Grid>
+                                </GridListTile>
+                            ))}
+                        </GridList>
+                    </div>
 
                     <Grid item className={classes.vSpace}>
                         <Typography className={classes.otherText}>
