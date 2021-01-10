@@ -162,3 +162,66 @@ exports.getUserCards = async function(req, res) {
         responses.notFound(res)
     }
 }
+
+exports.getUserObjective = async function(req, res) {
+    const username = req.params.username
+
+    const userExists = await User.exists({ username: username })
+    if (!userExists) {
+        return responses.notFound(res)
+    }
+
+    const foundUser = await User.findOne({ username: username, objective: { $exists: true, $ne: null }}).exec()
+    if (!foundUser) {
+        return responses.notFound(res)
+    }
+
+    const objective = foundUser.objective
+
+    responses.json(res)(objective)
+}
+
+exports.createUserObjective = async function(req, res) {
+    const username = req.params.username
+    const objective = req.body.objective
+
+    const userExists = await User.exists({ username: username })
+    if (!userExists) {
+        return responses.notFound(res)
+    }
+
+    const userObjectiveExists = await User.exists({ username: username, objective: { $exists: true, $ne: null }})
+    console.log(userObjectiveExists)
+    if (userObjectiveExists) {
+        return responses.conflict(res)
+    }
+
+    try {
+        await User.updateOne({ username: username }, { objective: objective }).exec()
+        responses.created(res)(objective)
+    } catch (err) {
+        responses.error(res)(err)
+    }
+}
+
+exports.updateUserObjective = async function(req, res) {
+    const username = req.params.username
+    const objective = req.body.objective
+
+    const userExists = await User.exists({ username: username })
+    if (!userExists) {
+        return responses.notFound(res)
+    }
+
+    const userObjectiveExists = await User.exists({ username: username, objective: { $exists: true, $ne: null }})
+    if (!userObjectiveExists) {
+        return responses.notFound(res)
+    }
+
+    try {
+        await User.updateOne({ username: username }, { objective: objective }).exec()
+        responses.noContent(res)
+    } catch (err) {
+        responses.error(res)(err)
+    }
+}
