@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import {Box, Button, Card, CardActionArea, Grid, Slide, Snackbar} from "@material-ui/core";
+import {Box, Button, Card, CardActionArea, Divider, Grid, Slide, Snackbar} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
@@ -37,6 +37,7 @@ const useStyles = makeStyles({
         color: "white",
         fontSize: 70,
         fontWeight: 100,
+        textShadow: "0 0 50px blue",
     },
     gridSpacing: {
         marginTop: "70px"
@@ -46,6 +47,7 @@ const useStyles = makeStyles({
     },
     cardText: {
         color: "white",
+        textShadow: "0 0 5px black",
         fontWeight: 300,
         fontSize: 35,
     },
@@ -58,6 +60,9 @@ const useStyles = makeStyles({
             width: "fitContent",
             height: 400,
         },
+    },
+    carouselSpacing: {
+        paddingTop: 1
     }
 });
 
@@ -125,7 +130,7 @@ function Home() {
                     >
                         <CardContent>
                             <Typography variant="h5" component="h2" className={classes.cardText}>
-                                Main room
+                                I nostri corsi
                             </Typography>
                         </CardContent>
                     </CardMedia>
@@ -139,16 +144,24 @@ function Home() {
         )
     }
 
-    var items = [
+    const items = [
         {
-            title: "Random Name #1",
+            title: "Sala principale",
             img: "mainRoom.jpg"
         },
         {
-            title: "Random Name #2",
+            title: "Sala pesi",
+            img: "weightRoom.jpg"
+        },
+        {
+            title: "Zumba",
             img: "zumba.jpg"
+        },
+        {
+            title: "Pilates",
+            img: "pilates.jpg"
         }
-    ]
+    ];
 
     return (
         <div>
@@ -173,7 +186,7 @@ function Home() {
                 </Grid>
             </Box>
             <div ref={scrollRef}>
-                <Carousel>
+                <Carousel className={classes.carouselSpacing}>
                     {
                         items.map((item, i) => <Item key={i} item={item}/>)
                     }
