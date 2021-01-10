@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const TrainingCardSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
     user: {
         type: mongoose.Schema.ObjectId,
         ref: 'User',

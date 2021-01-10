@@ -14,6 +14,7 @@ async function getExerciseIds(exercises, res) {
 }
 
 exports.createTrainingCard = async function(req, res) {
+    const title = req.body.title
     const user = req.body.user
     const trainer = req.body.trainer
     const exercises = req.body.exercises
@@ -43,6 +44,7 @@ exports.createTrainingCard = async function(req, res) {
     }))
 
     const trainingCard = new TrainingCard({
+        title: title,
         user: userId,
         trainer: trainerId,
         exercises: exercisesWithIds
