@@ -2,16 +2,18 @@ import React, {useEffect, useRef} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {authAxios} from "../../../Api";
 import {
+    Button,
+    Card,
+    CardActionArea,
+    CardActions,
+    Chip,
     Container,
     Divider,
     Grid,
+    LinearProgress,
     List,
     ListItem,
-    LinearProgress,
-    Typography,
-    Chip,
-    Card,
-    CardActionArea, CardActions, Button
+    Typography
 } from "@material-ui/core";
 import EditPersonalDialog from "../personal/EditPersonalDialog";
 import SpeedIcon from '@material-ui/icons/Speed';
@@ -111,9 +113,11 @@ function Dashboard() {
     return (
         <Container maxWidth={"lg"}>
             <EditPersonalDialog ref={dialogRef} userInfo={userInfo} setUserInfo={setUserInfo}/>
-            <Grid container direction={"column"} alignItems="center" justify={"center"} spacing={5} className={classes.rootGrid}>
+            <Grid container direction={"column"} alignItems="center" justify={"center"}
+                  spacing={2} // spacing largo spacca tutto Cardio
+                  className={classes.rootGrid}>
                 <Grid item className={classes.vSpace}>
-                    <List component="nav" aria-label="icons-list" >
+                    <List component="nav" aria-label="icons-list">
                         <ListItem className={classes.hSpace}>
                             <div className={classes.centered}>
                                 <SpeedIcon className={classes.icons}/>
@@ -136,24 +140,24 @@ function Dashboard() {
                         <LinearProgress variant="determinate" value={progress} color="primary"/>
                     </Grid>
                     <Grid item className={classes.vSpace}>
-                            <Chip
-                                className={classes.chips}
-                                icon={<GradeIcon />}
-                                label="Beginner"
-                                color="primary"
-                            />
-                            <Chip
-                                className={classes.chips}
-                                icon={<GradeIcon />}
-                                label="Intermediate"
-                                color="primary"
-                            />
-                            <Chip
-                                className={classes.chips}
-                                icon={<GradeIcon />}
-                                label="Advanced"
-                                color="primary"
-                            />
+                        <Chip
+                            className={classes.chips}
+                            icon={<GradeIcon/>}
+                            label="Beginner"
+                            color="primary"
+                        />
+                        <Chip
+                            className={classes.chips}
+                            icon={<GradeIcon/>}
+                            label="Intermediate"
+                            color="primary"
+                        />
+                        <Chip
+                            className={classes.chips}
+                            icon={<GradeIcon/>}
+                            label="Advanced"
+                            color="primary"
+                        />
                     </Grid>
                     <Grid item className={classes.vSpace}>
                         <Typography className={classes.otherText}>
@@ -270,7 +274,8 @@ function Dashboard() {
                                             Functional
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            Iscriviti al corso di allenamento funzionale mediante l'apposito pulsante. La sala è dotata di tutta l'attrezzatura necessaria.
+                                            Iscriviti al corso di allenamento funzionale mediante l'apposito pulsante.
+                                            La sala è dotata di tutta l'attrezzatura necessaria.
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
@@ -295,7 +300,8 @@ function Dashboard() {
                                             Zumba
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            Iscriviti al corso di zumba mediante l'apposito pulsante. La sala è dotata di tutta l'attrezzatura necessaria.
+                                            Iscriviti al corso di zumba mediante l'apposito pulsante. La sala è dotata
+                                            di tutta l'attrezzatura necessaria.
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
@@ -320,7 +326,8 @@ function Dashboard() {
                                             Pilates
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            Iscriviti al corso di pilates mediante l'apposito pulsante. La sala è dotata di tutta l'attrezzatura necessaria.
+                                            Iscriviti al corso di pilates mediante l'apposito pulsante. La sala è dotata
+                                            di tutta l'attrezzatura necessaria.
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
