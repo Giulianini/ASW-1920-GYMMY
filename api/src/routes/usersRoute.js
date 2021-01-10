@@ -4,6 +4,7 @@ const authenticate = require('../middleware/auth')
 const params = require('./params')
 
 const usersController = require('../controllers/usersController')
+const trainingCardsController = require('../controllers/trainingCardsController')
 
 /* User */
 
@@ -16,12 +17,6 @@ router.post('/', usersController.createUser)
 router.patch(`/:${params.USERNAME_PARAM}/measures`, usersController.updateMeasures)
 
 router.delete(`/:${params.USERNAME_PARAM}`, usersController.removeUser)
-
-/* Card */
-
-router.get(`/:${params.USERNAME_PARAM}/${params.USER_CARDS_PARAM}`, usersController.getUserCards)
-
-router.get(`/:${params.USERNAME_PARAM}/${params.USER_CARDS_PARAM}/:${params.CARD_INDEX_PARAM}`, usersController.getUserCard)
 
 /* Objective */
 

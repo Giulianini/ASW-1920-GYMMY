@@ -107,62 +107,6 @@ exports.removeUser = async function(req, res) {
     }
 }
 
-exports.getUserCard = async function (req, res){
-    const username = req.params.username
-    const cardIndex = req.params.cardIndex
-
-    const usernameExists = await User.exists({ username: username })
-    if (!usernameExists) {
-        return responses.notFound(res)
-    }
-
-    if (cardIndex < 0) {
-        return responses.badRequest(res)("Invalid card index")
-    }
-
-    const userId = await getUserId(username)
-    const userCards = await TrainingCard.find({ user: userId }).exec()
-
-    const userCardsAmount = userCards.length
-    if (cardIndex >= userCardsAmount) {
-        return responses.notFound(res)
-    }
-
-    responses.json(res)(userCards[cardIndex])
-}
-
-exports.getUserCards = async function(req, res) {
-    const username = req.params.username
-
-    const usernameExists = await User.exists({ username: username })
-    if (usernameExists) {
-        const userId = await getUserId(username)
-        const userCards = await TrainingCard.find({ user: userId })
-            .populate({
-                path: 'user',
-                model: User,
-                select: '-password'
-            })
-            .populate({
-                path: 'trainer',
-                model: User,
-                select: '-password'
-            })
-            .populate({
-                path: 'exercises.exercise',
-                model: Exercise,
-                populate: {
-                    path: 'locations',
-                    model: Location
-                }
-            })
-            .exec()
-        responses.json(res)(userCards)
-    } else {
-        responses.notFound(res)
-    }
-}
-
 exports.getUserObjective = async function(req, res) {
     const username = req.params.username
 

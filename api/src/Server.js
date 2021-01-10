@@ -34,6 +34,8 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(log)
 
+const params = require('./routes/params')
+
 app.use('/users', usersRoute)
 
 app.use('/session', sessionRoute)
@@ -42,7 +44,7 @@ app.use('/locations', locationsRoute)
 
 app.use('/exercises', exercisesRoute)
 
-app.use('/cards', trainingCardsRoute)
+app.use(`/users/:${params.USERNAME_PARAM}/${params.USER_CARDS_PARAM}`, trainingCardsRoute)
 
 app.get("/", (req, res) => {
     res.send("Gymmy API")

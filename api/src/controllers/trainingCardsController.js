@@ -3,6 +3,7 @@ const responses = require('./util/responses')
 const User = require('../models/User')
 const Exercise = require('../models/Exercise')
 const TrainingCard = require('../models/TrainingCard')
+const Location = require('../models/Location')
 
 async function getExerciseIds(exercises, res) {
     const exerciseDocs = await Exercise.find()
@@ -13,15 +14,20 @@ async function getExerciseIds(exercises, res) {
     return exerciseDocs.map(doc => doc._id)
 }
 
+async function getUserId(username) {
+    return User.findOne({ username: username }).map(doc => doc._id).exec()
+}
+
 exports.createTrainingCard = async function(req, res) {
+    const user = req.params.username
+
     const title = req.body.title
-    const user = req.body.user
     const trainer = req.body.trainer
     const exercises = req.body.exercises
 
     const userExists = await User.exists({ username: user })
     if (!userExists) {
-        return responses.badRequest(res)('User does not exist')
+        return responses.notFound(res)
     }
 
     const trainerExists = await User.exists({ username: trainer })
@@ -55,5 +61,61 @@ exports.createTrainingCard = async function(req, res) {
         responses.created(res)(savedTrainingCard)
     } catch(err) {
         responses.error(res)(err)
+    }
+}
+
+exports.getUserCard = async function (req, res){
+    const username = req.params.username
+    const cardIndex = req.params.cardIndex
+
+    const usernameExists = await User.exists({ username: username })
+    if (!usernameExists) {
+        return responses.notFound(res)
+    }
+
+    if (cardIndex < 0) {
+        return responses.badRequest(res)("Invalid card index")
+    }
+
+    const userId = await getUserId(username)
+    const userCards = await TrainingCard.find({ user: userId }).exec()
+
+    const userCardsAmount = userCards.length
+    if (cardIndex >= userCardsAmount) {
+        return responses.notFound(res)
+    }
+
+    responses.json(res)(userCards[cardIndex])
+}
+
+exports.getUserCards = async function(req, res) {
+    const username = req.params.username
+
+    const usernameExists = await User.exists({ username: username })
+    if (usernameExists) {
+        const userId = await getUserId(username)
+        const userCards = await TrainingCard.find({ user: userId })
+            .populate({
+                path: 'user',
+                model: User,
+                select: '-password'
+            })
+            .populate({
+                path: 'trainer',
+                model: User,
+                select: '-password'
+            })
+            .populate({
+                path: 'exercises.exercise',
+                model: Exercise,
+                populate: {
+                    path: 'locations',
+                    model: Location
+                }
+            })
+            .exec()
+        responses.json(res)(userCards)
+    } else {
+        responses.notFound(res)
     }
 }
