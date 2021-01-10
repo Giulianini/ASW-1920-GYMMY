@@ -1,7 +1,15 @@
-const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 // "bcrypt": "^5.0.0",
 const responses = require('./util/responses')
+
+const User = require('../models/User')
+const TrainingCard = require('../models/TrainingCard')
+const Exercise = require('../models/Exercise')
+const Location = require('../models/Location')
+
+async function getUserId(username) {
+    return User.findOne({ username: username }).map(doc => doc._id).exec()
+}
 
 exports.getAllUsers = async function(req, res) {
     try {
@@ -96,5 +104,124 @@ exports.removeUser = async function(req, res) {
             })
     } else {
         responses.notFound(res)
+    }
+}
+
+exports.getUserCard = async function (req, res){
+    const username = req.params.username
+    const cardIndex = req.params.cardIndex
+
+    const usernameExists = await User.exists({ username: username })
+    if (!usernameExists) {
+        return responses.notFound(res)
+    }
+
+    if (cardIndex < 0) {
+        return responses.badRequest(res)("Invalid card index")
+    }
+
+    const userId = await getUserId(username)
+    const userCards = await TrainingCard.find({ user: userId }).exec()
+
+    const userCardsAmount = userCards.length
+    if (cardIndex >= userCardsAmount) {
+        return responses.notFound(res)
+    }
+
+    responses.json(res)(userCards[cardIndex])
+}
+
+exports.getUserCards = async function(req, res) {
+    const username = req.params.username
+
+    const usernameExists = await User.exists({ username: username })
+    if (usernameExists) {
+        const userId = await getUserId(username)
+        const userCards = await TrainingCard.find({ user: userId })
+            .populate({
+                path: 'user',
+                model: User,
+                select: '-password'
+            })
+            .populate({
+                path: 'trainer',
+                model: User,
+                select: '-password'
+            })
+            .populate({
+                path: 'exercises.exercise',
+                model: Exercise,
+                populate: {
+                    path: 'locations',
+                    model: Location
+                }
+            })
+            .exec()
+        responses.json(res)(userCards)
+    } else {
+        responses.notFound(res)
+    }
+}
+
+exports.getUserObjective = async function(req, res) {
+    const username = req.params.username
+
+    const userExists = await User.exists({ username: username })
+    if (!userExists) {
+        return responses.notFound(res)
+    }
+
+    const foundUser = await User.findOne({ username: username, objective: { $exists: true, $ne: null }}).exec()
+    if (!foundUser) {
+        return responses.notFound(res)
+    }
+
+    const objective = foundUser.objective
+
+    responses.json(res)(objective)
+}
+
+exports.createUserObjective = async function(req, res) {
+    const username = req.params.username
+    const objective = req.body.objective
+
+    const userExists = await User.exists({ username: username })
+    if (!userExists) {
+        return responses.notFound(res)
+    }
+
+    const userObjectiveExists = await User.exists({ username: username, objective: { $exists: true, $ne: null }})
+    console.log(userObjectiveExists)
+    if (userObjectiveExists) {
+        return responses.conflict(res)
+    }
+
+    try {
+        await User.updateOne({ username: username }, { objective: objective }).exec()
+        responses.created(res)(objective)
+    } catch (err) {
+        responses.error(res)(err)
+    }
+}
+
+exports.updateUserObjective = async function(req, res) {
+    const username = req.params.username
+    const objective = req.body.objective
+
+    const userExists = await User.exists({ username: username })
+    if (!userExists) {
+        return responses.notFound(res)
+    }
+
+    const userObjectiveExists = await User.exists({ username: username, objective: { $exists: true, $ne: null }})
+    if (!userObjectiveExists) {
+        return responses.notFound(res)
+    }
+
+    try {
+        await User.updateOne({ username: username }, { objective: objective }).exec()
+        responses.noContent(res)
+    } catch (err) {
+        responses.error(res)(err)
     }
 }
