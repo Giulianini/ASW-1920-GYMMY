@@ -45,11 +45,15 @@ const useStyles = makeStyles(theme => ({
     },
     vSpace: {
         paddingTop: 5,
-        paddingBottom: 5
+        paddingBottom: 5,
     },
     hSpace: {
         marginLeft: 5,
-        marginRight: 5
+        marginRight: 5,
+    },
+    chips: {
+        marginLeft: 30,
+        marginRight: 30,
     },
     mediaPersonal: {
         paddingTop: '40%', // 16:9
@@ -58,7 +62,8 @@ const useStyles = makeStyles(theme => ({
         fontSize: 30,
         fontWeight: "normal",
         letterSpacing: 1.5,
-        color: "#e13333"
+        color: "#e13333",
+        margin: "auto",
     },
     otherText: {
         fontSize: 23,
@@ -68,6 +73,10 @@ const useStyles = makeStyles(theme => ({
         maxHeight: 300,
         width: '100%',
         overflow: 'auto'
+    },
+    icons: {
+        marginLeft: 20,
+        marginRight: 20
     }
 }));
 
@@ -102,16 +111,18 @@ function Dashboard() {
     return (
         <Container maxWidth={"lg"}>
             <EditPersonalDialog ref={dialogRef} userInfo={userInfo} setUserInfo={setUserInfo}/>
-            <Grid container direction={"column"} alignItems="center" spacing={5} className={classes.rootGrid}>
+            <Grid container direction={"column"} alignItems="center" justify={"center"} spacing={5} className={classes.rootGrid}>
                 <Grid item className={classes.vSpace}>
                     <List component="nav" aria-label="icons-list" >
                         <ListItem className={classes.hSpace}>
-                            <SpeedIcon />
-                            <BarChartIcon />
-                            <AccountBalanceIcon />
-                            <GpsFixedIcon />
-                            <BeenhereIcon />
-                            <EmojiEventsIcon />
+                            <div className={classes.centered}>
+                                <SpeedIcon className={classes.icons}/>
+                                <BarChartIcon className={classes.icons}/>
+                                <AccountBalanceIcon className={classes.icons}/>
+                                <GpsFixedIcon className={classes.icons}/>
+                                <BeenhereIcon className={classes.icons}/>
+                                <EmojiEventsIcon className={classes.icons}/>
+                            </div>
                         </ListItem>
                         <Divider className={classes.divider}/>
                         <ListItem>
@@ -125,24 +136,24 @@ function Dashboard() {
                         <LinearProgress variant="determinate" value={progress} color="primary"/>
                     </Grid>
                     <Grid item className={classes.vSpace}>
-                        <Chip
-                            className={classes.hSpace}
-                            icon={<GradeIcon />}
-                            label="Beginner"
-                            color="primary"
-                        />
-                        <Chip
-                            className={classes.hSpace}
-                            icon={<GradeIcon />}
-                            label="Intermediate"
-                            color="primary"
-                        />
-                        <Chip
-                            className={classes.hSpace}
-                            icon={<GradeIcon />}
-                            label="Advanced"
-                            color="primary"
-                        />
+                            <Chip
+                                className={classes.chips}
+                                icon={<GradeIcon />}
+                                label="Beginner"
+                                color="primary"
+                            />
+                            <Chip
+                                className={classes.chips}
+                                icon={<GradeIcon />}
+                                label="Intermediate"
+                                color="primary"
+                            />
+                            <Chip
+                                className={classes.chips}
+                                icon={<GradeIcon />}
+                                label="Advanced"
+                                color="primary"
+                            />
                     </Grid>
                     <Grid item className={classes.vSpace}>
                         <Typography className={classes.otherText}>
