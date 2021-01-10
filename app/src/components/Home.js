@@ -61,7 +61,6 @@ function Home() {
         snackMessage: "",
         transition: TransitionRight,
     })
-    const {open, snackMessage, transition} = snackState //Remove and hooks do not work!!!
 
     useEffect(() => {
         checkApiEndpoint((message, apiUrl) => {
@@ -72,21 +71,23 @@ function Home() {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     function TransitionRight(props) {
-        return <Slide {...props} direction="left" />
+        return <Slide {...props} direction="left"/>
     }
+
     const mySnackBar = (
         <Snackbar
-            key={snackMessage ? snackMessage.key : undefined}
+            key={snackState.snackMessage}
             anchorOrigin={{
                 vertical: 'top',
                 horizontal: 'center',
             }}
-            open={open}
-            TransitionComponent={transition}
+            open={snackState.open}
+            TransitionComponent={snackState.transition}
             autoHideDuration={3000}
             onClose={() => setSnackState({...snackState, open: false})}
-            onExited={() => {}}
-            message={snackMessage ? snackMessage : undefined}
+            onExited={() => {
+            }}
+            message={snackState.snackMessage}
         />
     )
     return (

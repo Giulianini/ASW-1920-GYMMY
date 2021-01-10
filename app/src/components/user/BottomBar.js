@@ -5,25 +5,23 @@ import {useHistory, useLocation} from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 
 function BottomBar(props) {
-    const [value, setValue] = useState("dashboard")
+    const [value, setValue] = useState("user/dashboard")
     const location = useLocation()
     const history = useHistory()
     const classes = useStyles()
 
     useEffect(() => {
-        setValue(location.pathname.toString().split("/")[1])
+        setValue(location.pathname.toString().split("/").slice(1,3).join("/"))
     }, [location])
-
-    function handleChange(newValue) {
-        setValue(newValue)
-        history.push(`/${newValue}`)
-    }
 
     return (
         <BottomNavigation
             className={classes.root}
             value={value}
-            onChange={(e, newValue) => handleChange(newValue)}
+            onChange={(e, newValue) => {
+                setValue(newValue)
+                history.push(`/${newValue}`)
+            }}
             showLabels
         >
             <BottomNavigationAction label={props.tabs.dashboard.name} value={props.tabs.dashboard.value} icon={<Dashboard/>}/>
