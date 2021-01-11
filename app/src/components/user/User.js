@@ -26,7 +26,7 @@ function User() {
             <Drawer localDarkMode={localDarkMode} setLocalDarkMode={setLocalDarkMode}
                     drawerIsOpen={drawerIsOpen} setDrawerIsOpen={setDrawerIsOpen}/>
             <TransitionGroup>
-                <CSSTransition key={location.key} classNames="fade" timeout={300}>
+                <CSSTransition key={location.key} classNames={"fade"} timeout={300}>
                     <Switch>
                         <Route path={`/${routes.dashboard.value}`} children={<Dashboard/>}/>
                         <Route path={`/${routes.personal.value}`} children={<Personal/>}/>

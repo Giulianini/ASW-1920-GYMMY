@@ -137,7 +137,7 @@ function Dashboard() {
                         <Divider className={classes.divider}/>
                     </List>
                     <Grid item className={classes.vSpace}>
-                        <LinearProgress variant="determinate" value={progress} color="primary"/>
+                        <LinearProgress variant="buffer" value={10} valueBuffer={30} color="primary"/>
                     </Grid>
                     <Grid item className={classes.vSpace}>
                         <Chip

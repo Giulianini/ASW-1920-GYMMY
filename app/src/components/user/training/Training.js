@@ -1,9 +1,13 @@
 import React from 'react';
+import TrainingBar from "./TrainingBar";
 
 function Training(props) {
-    
+    const badges = ["Leg", "Upper", "Arm"]
+    const trainingTime = "45'"
+    const trainingCardTitle = "Bodyweight"
+
     return (
-        <div></div>
+        <TrainingBar title={trainingCardTitle} badges={badges} trainingTime={trainingTime}/>
     );
 }
 
