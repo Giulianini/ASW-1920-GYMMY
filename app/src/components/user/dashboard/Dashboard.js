@@ -55,8 +55,9 @@ const useStyles = makeStyles(theme => ({
         marginRight: 5,
     },
     chips: {
-        marginLeft: 10,
-        marginRight: 10,
+        marginLeft: 7,
+        marginRight: 7,
+        fontSize: '120%'
     },
     mediaPersonal: {
         paddingTop: '40%', // 16:9
@@ -115,13 +116,13 @@ function Dashboard() {
     return (
         <Container maxWidth={"lg"}>
             <EditPersonalDialog ref={dialogRef} userInfo={userInfo} setUserInfo={setUserInfo}/>
-            <Grid container direction={"column"} alignItems="center" justify={"center"}
+            <Grid container direction={"column"}
                   spacing={2} // spacing largo spacca tutto Cardio
                   className={classes.rootGrid}>
-                <Grid item container direction={"column"} className={classes.vSpace}>
-                    <Grid item className={classes.vSpace}>
+                <Grid item container direction={"column"}>
+                    <Grid item>
                         <List component="nav" aria-label="icons-list">
-                            <ListItem className={classes.hSpace}>
+                            <ListItem>
                                 <div className={classes.centered}>
                                     <SpeedIcon className={classes.icons}/>
                                     <BarChartIcon className={classes.icons}/>
