@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
         //padding: '27%', // 16:9
         paddingTop: '56.25%', // 16:9,
     },
-    cardContent: {
+    pushCardSize: {
         minWidth: theme.breakpoints.values.lg / 2
     }
 }))
@@ -51,7 +51,7 @@ function ExerciseCard(props) {
                         100 punti
                     </Button>
                 </CardActions>
-                <div className={classes.cardContent}/>
+                <div className={classes.pushCardSize}/>
             </Card>
         </Grid>
     );
