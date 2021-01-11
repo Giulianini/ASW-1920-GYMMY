@@ -20,7 +20,22 @@ exports.getTag = async function(req, res) {
 }
 
 exports.createTag = async function(req, res) {
+    const tagName = req.body.name
 
+    const tagExists = await Tag.exists({ name: tagName })
+    if (tagExists) {
+        responses.conflict(res)
+    } else {
+        const tag = new Tag({
+            name: tagName
+        })
+        try {
+            await tag.save()
+            responses.created(res)(tag)
+        } catch (err) {
+            responses.error(res)(err)
+        }
+    }
 }
 
 exports.removeTag = async function(req, res) {
