@@ -44,10 +44,10 @@ function ExerciseCard(props) {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Button size="small" color="primary">
+                    <Button size="small">
                         Accetta
                     </Button>
-                    <Button size="small" color="primary">
+                    <Button size="small">
                         100 punti
                     </Button>
                 </CardActions>
