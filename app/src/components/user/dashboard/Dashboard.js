@@ -48,14 +48,15 @@ const useStyles = makeStyles(theme => ({
     vSpace: {
         paddingTop: 5,
         paddingBottom: 5,
+        margin: 'auto'
     },
     hSpace: {
         marginLeft: 5,
         marginRight: 5,
     },
     chips: {
-        marginLeft: 30,
-        marginRight: 30,
+        marginLeft: 10,
+        marginRight: 10,
     },
     mediaPersonal: {
         paddingTop: '40%', // 16:9
@@ -77,8 +78,9 @@ const useStyles = makeStyles(theme => ({
         overflow: 'auto'
     },
     icons: {
-        marginLeft: 20,
-        marginRight: 20
+        marginLeft: 10,
+        marginRight: 10,
+        fontSize: '300%'
     }
 }));
 
@@ -116,48 +118,52 @@ function Dashboard() {
             <Grid container direction={"column"} alignItems="center" justify={"center"}
                   spacing={2} // spacing largo spacca tutto Cardio
                   className={classes.rootGrid}>
-                <Grid item className={classes.vSpace}>
-                    <List component="nav" aria-label="icons-list">
-                        <ListItem className={classes.hSpace}>
-                            <div className={classes.centered}>
-                                <SpeedIcon className={classes.icons}/>
-                                <BarChartIcon className={classes.icons}/>
-                                <AccountBalanceIcon className={classes.icons}/>
-                                <GpsFixedIcon className={classes.icons}/>
-                                <BeenhereIcon className={classes.icons}/>
-                                <EmojiEventsIcon className={classes.icons}/>
-                            </div>
-                        </ListItem>
-                        <Divider className={classes.divider}/>
-                        <ListItem>
-                            <Typography className={classes.score}>
-                                {userInfo.score}/3000
-                            </Typography>
-                        </ListItem>
-                        <Divider className={classes.divider}/>
-                    </List>
+                <Grid item container direction={"column"} className={classes.vSpace}>
+                    <Grid item className={classes.vSpace}>
+                        <List component="nav" aria-label="icons-list">
+                            <ListItem className={classes.hSpace}>
+                                <div className={classes.centered}>
+                                    <SpeedIcon className={classes.icons}/>
+                                    <BarChartIcon className={classes.icons}/>
+                                    <AccountBalanceIcon className={classes.icons}/>
+                                    <GpsFixedIcon className={classes.icons}/>
+                                    <BeenhereIcon className={classes.icons}/>
+                                    <EmojiEventsIcon className={classes.icons}/>
+                                </div>
+                            </ListItem>
+                            <Divider className={classes.divider}/>
+                            <ListItem>
+                                <Typography className={classes.score}>
+                                    {userInfo.score}/3000
+                                </Typography>
+                            </ListItem>
+                            <Divider className={classes.divider}/>
+                        </List>
+                    </Grid>
                     <Grid item className={classes.vSpace}>
                         <LinearProgress variant="buffer" value={10} valueBuffer={30} color="primary"/>
                     </Grid>
                     <Grid item className={classes.vSpace}>
-                        <Chip
-                            className={classes.chips}
-                            icon={<GradeIcon/>}
-                            label="Beginner"
-                            color="primary"
-                        />
-                        <Chip
-                            className={classes.chips}
-                            icon={<GradeIcon/>}
-                            label="Intermediate"
-                            color="primary"
-                        />
-                        <Chip
-                            className={classes.chips}
-                            icon={<GradeIcon/>}
-                            label="Advanced"
-                            color="primary"
-                        />
+                        <div className={classes.centered}>
+                            <Chip
+                                className={classes.chips}
+                                icon={<GradeIcon/>}
+                                label="Beginner"
+                                color="primary"
+                            />
+                            <Chip
+                                className={classes.chips}
+                                icon={<GradeIcon/>}
+                                label="Intermediate"
+                                color="primary"
+                            />
+                            <Chip
+                                className={classes.chips}
+                                icon={<GradeIcon/>}
+                                label="Advanced"
+                                color="primary"
+                            />
+                        </div>
                     </Grid>
                     <Grid item className={classes.vSpace}>
                         <Typography className={classes.otherText}>
@@ -274,7 +280,7 @@ function Dashboard() {
                                             Functional
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            Iscriviti al corso di allenamento funzionale mediante l'apposito pulsante.
+                                            Iscriviti al corso di funzionale mediante l'apposito pulsante.
                                             La sala è dotata di tutta l'attrezzatura necessaria.
                                         </Typography>
                                     </CardContent>
