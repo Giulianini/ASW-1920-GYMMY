@@ -29,11 +29,11 @@ import CardContent from "@material-ui/core/CardContent";
 const useStyles = makeStyles(theme => ({
     rootGrid: {
         [theme.breakpoints.up('md')]: {
-            height: "95vh",
+            height: "95vh"
         },
         [theme.breakpoints.down('md')]: {
             paddingTop: 20,
-            marginBottom: 100,
+            marginBottom: 100
         },
     },
     divider: {
@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
     },
     hSpace: {
         marginLeft: 5,
-        marginRight: 5,
+        marginRight: 5
     },
     chips: {
         marginLeft: 7,
@@ -60,18 +60,18 @@ const useStyles = makeStyles(theme => ({
         fontSize: '120%'
     },
     mediaPersonal: {
-        paddingTop: '40%', // 16:9
+        paddingTop: '40%' // 16:9
     },
     score: {
         fontSize: 30,
         fontWeight: "normal",
         letterSpacing: 1.5,
         color: "#e13333",
-        margin: "auto",
+        margin: "auto"
     },
     otherText: {
         fontSize: 23,
-        fontWeight: "lighter",
+        fontWeight: "lighter"
     },
     scrollablePane: {
         maxHeight: 300,
@@ -172,9 +172,9 @@ function Dashboard() {
                         </Typography>
                     </Grid>
 
-                    <Grid item container direction={"row"} className={classes.scrollablePane}>
+                    <Grid item container direction={"row"} alignItems={"stretch"} className={classes.scrollablePane}>
                         <Grid item className={classes.vSpace}>
-                            <Card>
+                            <Card className={classes.cardWidth}>
                                 <CardActionArea>
                                     <CardMedia
                                         className={classes.mediaPersonal}
@@ -186,17 +186,16 @@ function Dashboard() {
                                             Push-up challenge
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            Completa quanti più push-ups puoi e scala la classifica!
-                                            Accetta la sfida mediante l'apposito pulsante.
+                                            Complete as many push-ups as you can and climb the leaderboard!
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
                                 <CardActions>
                                     <Button size="small" color="primary" onClick={handleChallengeAcceptedClock}>
-                                        Accetta
+                                        Accept challenge
                                     </Button>
                                     <Button size="small" color="primary">
-                                        100 punti
+                                        100 points
                                     </Button>
                                 </CardActions>
                             </Card>
@@ -215,17 +214,16 @@ function Dashboard() {
                                             Bench press challenge
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            Completa quante più bench-press puoi e scala la classifica!
-                                            Accetta la sfida mediante l'apposito pulsante.
+                                            Complete as many bench press reps as you can and climb the leaderboard!
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
                                 <CardActions>
                                     <Button size="small" color="primary">
-                                        Accetta
+                                        Accept challenge
                                     </Button>
                                     <Button size="small" color="primary" onClick={handleChallengeAcceptedClock}>
-                                        200 punti
+                                        200 points
                                     </Button>
                                 </CardActions>
                             </Card>
@@ -244,17 +242,16 @@ function Dashboard() {
                                             Pull-up challenge
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            Completa quanti più pull-ups puoi e scala la classifica!
-                                            Accetta la sfida mediante l'apposito pulsante.
+                                            Complete as many pull-ups as you can and climb the leaderboard!
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
                                 <CardActions>
                                     <Button size="small" color="primary" onClick={handleEnrollClick}>
-                                        Accetta
+                                        Accept challenge
                                     </Button>
                                     <Button size="small" color="primary" onClick={handleChallengeAcceptedClock}>
-                                        150 punti
+                                        150 points
                                     </Button>
                                 </CardActions>
                             </Card>
@@ -281,14 +278,14 @@ function Dashboard() {
                                             Functional
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            Iscriviti al corso di funzionale mediante l'apposito pulsante.
-                                            La sala è dotata di tutta l'attrezzatura necessaria.
+                                            Enroll in the functional training class. All needed equipment is provided
+                                            upon subscription.
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
                                 <CardActions>
                                     <Button size="small" color="primary" onClick={handleEnrollClick}>
-                                        Iscriviti
+                                        Enroll
                                     </Button>
                                 </CardActions>
                             </Card>
@@ -307,14 +304,14 @@ function Dashboard() {
                                             Zumba
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            Iscriviti al corso di zumba mediante l'apposito pulsante. La sala è dotata
-                                            di tutta l'attrezzatura necessaria.
+                                            Enroll in the zumba class. All needed equipment is provided
+                                            upon subscription.
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
                                 <CardActions>
                                     <Button size="small" color="primary" onClick={handleEnrollClick}>
-                                        Disiscriviti
+                                        Enroll
                                     </Button>
                                 </CardActions>
                             </Card>
@@ -333,14 +330,14 @@ function Dashboard() {
                                             Pilates
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            Iscriviti al corso di pilates mediante l'apposito pulsante. La sala è dotata
-                                            di tutta l'attrezzatura necessaria.
+                                            Enroll in the pilates class. All needed equipment is provided
+                                            upon subscription.
                                         </Typography>
                                     </CardContent>
                                 </CardActionArea>
                                 <CardActions>
                                     <Button size="small" color="primary">
-                                        Iscriviti
+                                        Enroll
                                     </Button>
                                 </CardActions>
                             </Card>
