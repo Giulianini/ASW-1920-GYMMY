@@ -11,6 +11,6 @@ router.get(`/:${params.TAG_NAME_PARAM}`, tagsController.getTag)
 
 router.post('/', tagsController.createTag)
 
-router.delete('/', tagsController.removeTag)
+router.delete(`/:${params.TAG_NAME_PARAM}`, tagsController.removeTag)
 
 module.exports = router

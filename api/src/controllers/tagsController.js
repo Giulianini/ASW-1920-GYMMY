@@ -39,5 +39,18 @@ exports.createTag = async function(req, res) {
 }
 
 exports.removeTag = async function(req, res) {
+    const tagName = req.params[params.TAG_NAME_PARAM]
 
+    const tagExists = await Tag.exists({ name: tagName })
+    if (!tagExists) {
+        responses.notFound(res)
+    } else {
+        try {
+            await Tag.deleteOne({ name: tagName }).exec()
+            responses.noContent(res)
+        }
+        catch (err) {
+            responses.error(res)(err)
+        }
+    }
 }
