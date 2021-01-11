@@ -38,6 +38,7 @@ const useStyles = makeStyles({
 
 function TrainingBar(props) {
     const classes = useStyles()
+    const percentage = (props.passedTime / props.trainingTime).toFixed(1) * 100
     return (
         <AppBar
             color={"white"}
@@ -65,7 +66,7 @@ function TrainingBar(props) {
                           alignItems={"center"}>
                         <Grid item>
                             <Typography className={classes.timerText}>
-                                Time: {props.trainingTime}
+                                Time: {props.passedTime}'
                             </Typography>
                         </Grid>
                         <Grid item>
@@ -75,7 +76,7 @@ function TrainingBar(props) {
                 </Grid>
                 <Grid container item>
                     <Grid item xs={12}>
-                        <LinearProgress variant="buffer" value={10} valueBuffer={30} color="secondary"/>
+                        <LinearProgress variant="buffer" value={percentage} valueBuffer={percentage} color="secondary"/>
                     </Grid>
                 </Grid>
             </Grid>
