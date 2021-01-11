@@ -4,7 +4,7 @@ import {BarChart, Dashboard, Person, Receipt} from '@material-ui/icons'
 import {useHistory, useLocation} from 'react-router-dom'
 import {makeStyles} from '@material-ui/core/styles';
 import {useDispatch} from "react-redux";
-import {setAppbarTitle} from "../../redux/ducks/user/user";
+import {setAppbarHidden, setAppbarTitle} from "../../redux/ducks/user/user";
 
 function BottomBar(props) {
     const [value, setValue] = useState("user/dashboard")
@@ -17,14 +17,19 @@ function BottomBar(props) {
         setValue(location.pathname.toString().split("/").slice(1, 3).join("/"))
     }, [location])
 
+    const hideTrainingAppbar = (route) => {
+        route === props.tabs.training.value ? dispatch(setAppbarHidden(true)) : dispatch(setAppbarHidden(false))
+    }
+
     return (
         <BottomNavigation
             className={classes.root}
             value={value}
-            onChange={(e, newValue) => {
-                setValue(newValue)
-                dispatch(setAppbarTitle(newValue.toString().split("/")[1].capitalize()))
-                history.push(`/${newValue}`)
+            onChange={(e, newRoot) => {
+                hideTrainingAppbar(newRoot)
+                setValue(newRoot)
+                dispatch(setAppbarTitle(newRoot.toString().split("/")[1].capitalize()))
+                history.push(`/${newRoot}`)
             }}
             showLabels
         >

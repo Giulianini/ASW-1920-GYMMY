@@ -17,6 +17,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Header(props) {
+    const isAppbarHidden = useSelector(state => state.appUIReducer.isAppbarHidden)
+    const appbar = Appbar(props)
+    return (
+        isAppbarHidden ? null : appbar
+    );
+}
+
+export default Header;
+
+function Appbar(props) {
     const classes = useStyles()
     const appbarTitle = useSelector(state => state.appUIReducer.appbarTitle)
     return (
@@ -35,5 +45,3 @@ function Header(props) {
         </AppBar>
     );
 }
-
-export default Header;
