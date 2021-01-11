@@ -26,9 +26,9 @@ function BottomBar(props) {
             className={classes.root}
             value={value}
             onChange={(e, newRoot) => {
+                dispatch(setAppbarTitle(newRoot.toString().split("/")[1].capitalize()))
                 hideTrainingAppbar(newRoot)
                 setValue(newRoot)
-                dispatch(setAppbarTitle(newRoot.toString().split("/")[1].capitalize()))
                 history.push(`/${newRoot}`)
             }}
             showLabels
