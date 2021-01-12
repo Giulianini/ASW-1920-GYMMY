@@ -25,6 +25,9 @@ import GradeIcon from '@material-ui/icons/Grade';
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
+import ExerciseCard from "../training/ExerciseCard";
+import Course from "./Course";
+import Challenge from "./Challenge";
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
@@ -93,6 +96,34 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const courses = [{
+    "title": "Functional training",
+    "desc":  "Enroll in the functional training class. All needed equipment is provided upon subscription.",
+    "image": "/functional.jpg",
+}, {
+    "title": "Zumba",
+    "desc": "Enroll in the zumba class. All needed equipment is provided upon subscription.",
+    "image": "/zumba.jpg",
+}, {
+    "title": "Pilates",
+    "desc": "Enroll in the pilates class. All needed equipment is provided upon subscription.",
+    "image": "/pilates.jpg",
+},]
+
+const challenges = [{
+    "title": "Push-Up",
+    "desc": "Complete as many push-ups as you can and climb the leaderboard!",
+    "image": "/pushUp.jpg",
+}, {
+    "title": "Pull-Up",
+    "desc": "Complete as many pull-ups as you can and climb the leaderboard!",
+    "image": "/pullUp.jpg",
+}, {
+    "title": "Bench press",
+    "desc": "Complete as many bench press reps as you can and climb the leaderboard!",
+    "image": "/benchPress.jpg",
+}]
+
 function Dashboard() {
     const classes = useStyles();
     const dialogRef = useRef({})
@@ -100,14 +131,6 @@ function Dashboard() {
         "username": undefined,
         "score": undefined
     })
-
-    const handleEnrollClick = () => {
-        //setEnrolled(!course);
-    };
-
-    const handleChallengeAcceptedClock = () => {
-        //acceptChallenge(!challenge);
-    }
 
     useEffect(() => {
         let username = localStorage.getItem("username")
@@ -121,7 +144,7 @@ function Dashboard() {
     return (
         <Container maxWidth={"lg"}>
             <EditPersonalDialog ref={dialogRef} userInfo={userInfo} setUserInfo={setUserInfo}/>
-            <Grid container direction={"column"} justify="space-around" alignItems="center" className={classes.rootGrid}>
+            <Grid container direction={"column"} alignItems="center" className={classes.rootGrid}>
                 <Grid item container direction={"column"}>
                     <Grid item>
                         <List component="nav" aria-label="icons-list">
@@ -175,93 +198,8 @@ function Dashboard() {
                         </Typography>
                     </Grid>
 
-                    <Grid item container direction={"row"} className={classes.scrollablePane}>
-                        <Grid item className={classes.vSpace}>
-                            <Card className={classes.card}>
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.mediaPersonal}
-                                        image="/pushUp.jpg"
-                                        title="Push up"
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Push-up challenge
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            Complete as many push-ups as you can and climb the leaderboard!
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                                <CardActions>
-                                    <Button size="small" color="primary" onClick={handleChallengeAcceptedClock}>
-                                        Accept challenge
-                                    </Button>
-                                    <Button size="small" color="primary">
-                                        100 points
-                                    </Button>
-                                </CardActions>
-                                <div className={classes.pushCardSize}/>
-                            </Card>
-                        </Grid>
-
-                        <Grid item className={classes.vSpace}>
-                            <Card className={classes.card}>
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.mediaPersonal}
-                                        image="/benchPress.jpg"
-                                        title="Bench press"
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Bench press challenge
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            Complete as many bench press reps as you can and climb the leaderboard!
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                                <CardActions>
-                                    <Button size="small" color="primary">
-                                        Accept challenge
-                                    </Button>
-                                    <Button size="small" color="primary" onClick={handleChallengeAcceptedClock}>
-                                        200 points
-                                    </Button>
-                                </CardActions>
-                                <div className={classes.pushCardSize}/>
-                            </Card>
-                        </Grid>
-
-                        <Grid item className={classes.vSpace}>
-                            <Card className={classes.card}>
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.mediaPersonal}
-                                        image="/pullUp.jpg"
-                                        title="Pull up"
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Pull-up challenge
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            Complete as many pull-ups as you can and climb the leaderboard!
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                                <CardActions>
-                                    <Button size="small" color="primary" onClick={handleEnrollClick}>
-                                        Accept challenge
-                                    </Button>
-                                    <Button size="small" color="primary" onClick={handleChallengeAcceptedClock}>
-                                        150 points
-                                    </Button>
-                                </CardActions>
-                                <div className={classes.pushCardSize}/>
-                            </Card>
-                        </Grid>
+                    <Grid item container className={classes.scrollablePane}>
+                        {challenges.map((item, i) => <Challenge key={i} item={item}/>)}
                     </Grid>
 
                     <Grid item className={classes.vSpace}>
@@ -270,88 +208,10 @@ function Dashboard() {
                         </Typography>
                     </Grid>
 
-                    <Grid item container direction={"row"} className={classes.scrollablePane}>
-                        <Grid item className={classes.vSpace}>
-                            <Card className={classes.card}>
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.mediaPersonal}
-                                        image="/functional.jpg"
-                                        title="Functional"
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Functional
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            Enroll in the functional training class. All needed equipment is provided
-                                            upon subscription.
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                                <CardActions>
-                                    <Button size="small" color="primary" onClick={handleEnrollClick}>
-                                        Enroll
-                                    </Button>
-                                </CardActions>
-                                <div className={classes.pushCardSize}/>
-                            </Card>
-                        </Grid>
-
-                        <Grid item className={classes.vSpace}>
-                            <Card className={classes.card}>
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.mediaPersonal}
-                                        image="/zumba.jpg"
-                                        title="Zumba"
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Zumba
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            Enroll in the zumba class. All needed equipment is provided
-                                            upon subscription.
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                                <CardActions>
-                                    <Button size="small" color="primary" onClick={handleEnrollClick}>
-                                        Enroll
-                                    </Button>
-                                </CardActions>
-                                <div className={classes.pushCardSize}/>
-                            </Card>
-                        </Grid>
-
-                        <Grid item className={classes.vSpace}>
-                            <Card className={classes.card}>
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.mediaPersonal}
-                                        image="/pilates.jpg"
-                                        title="Pilates"
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Pilates
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            Enroll in the pilates class. All needed equipment is provided
-                                            upon subscription.
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                                <CardActions>
-                                    <Button size="small" color="primary">
-                                        Enroll
-                                    </Button>
-                                </CardActions>
-                                <div className={classes.pushCardSize}/>
-                            </Card>
-                        </Grid>
+                    <Grid item container className={classes.scrollablePane}>
+                        {courses.map((item, i) => <Course key={i} item={item}/>)}
                     </Grid>
+
                 </Grid>
             </Grid>
         </Container>
