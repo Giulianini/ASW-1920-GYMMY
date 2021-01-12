@@ -1,5 +1,7 @@
 const Location = require('../models/Location')
+const LocationCapacity = require('../models/LocationCapacity')
 const responses = require('./util/responses')
+const params = require('../routes/params')
 
 const WITHOUT_ID = '-_id -__v'
 
@@ -12,15 +14,13 @@ exports.getAllLocations = async function(req, res) {
 
 async function findLocation(location) {
     return Location.findOne({ description: location })
-        .select(WITHOUT_ID)
+        // .select(WITHOUT_ID)
         .exec()
 }
 
 exports.getLocation = async function(req, res) {
     const location = decodeURIComponent(req.params.location)
-    console.log(location)
     const foundLocation = await findLocation(location)
-    console.log(foundLocation)
     if (foundLocation) {
         responses.json(res)(foundLocation)
     } else {
@@ -30,6 +30,7 @@ exports.getLocation = async function(req, res) {
 
 exports.createLocation = async function(req, res) {
     const description = req.body.description
+    const defaultCapacity = req.body.defaultCapacity
 
     const foundLocation = await findLocation(description)
     if (foundLocation) {
@@ -37,9 +38,17 @@ exports.createLocation = async function(req, res) {
     } else {
         try {
             const location = new Location({
-                description: description
+                description: description,
+                defaultCapacity: defaultCapacity
             })
             const createdLocation = await location.save();
+
+            const locationCapacity = new LocationCapacity({
+                location: createdLocation._id,
+                capacity: defaultCapacity
+            })
+            await locationCapacity.save()
+
             responses.created(res)(createdLocation)
         } catch (err) {
             responses.error(res)(err)
