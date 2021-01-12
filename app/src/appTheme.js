@@ -1,7 +1,7 @@
 import {createMuiTheme} from '@material-ui/core/styles';
 import {blue, red} from "@material-ui/core/colors";
 
-const theme = createMuiTheme({
+const appTheme = createMuiTheme({
     palette: {
         type: "light",
         primary: {
@@ -13,7 +13,7 @@ const theme = createMuiTheme({
     },
 });
 
-const darkMode = createMuiTheme({
+const darkTheme = createMuiTheme({
     palette: {
         type: "dark",
         primary: {
@@ -25,4 +25,4 @@ const darkMode = createMuiTheme({
     }
 })
 
-export {theme, darkMode}
+export {appTheme, darkTheme}

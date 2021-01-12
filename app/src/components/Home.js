@@ -6,7 +6,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import {useHistory} from "react-router-dom";
 import checkApiEndpoint from "../Api";
-import {theme} from "../theme";
+import {appTheme} from "../appTheme";
 import Carousel from "react-material-ui-carousel";
 
 
@@ -52,11 +52,11 @@ const useStyles = makeStyles({
         fontSize: 35,
     },
     media: {
-        [theme.breakpoints.up('sm')]: {
+        [appTheme.breakpoints.up('sm')]: {
             width: "fitContent",
             height: "100vh",
         },
-        [theme.breakpoints.down('sm')]: {
+        [appTheme.breakpoints.down('sm')]: {
             width: "fitContent",
             height: 400,
         },
