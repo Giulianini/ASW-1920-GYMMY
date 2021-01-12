@@ -19,6 +19,10 @@ const TrainingCardSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    // minutes: {
+    //     type: Number,
+    //     required: true
+    // },
     exercises: {
         type: [new mongoose.Schema({
             exercise: {
