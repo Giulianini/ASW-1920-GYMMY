@@ -41,7 +41,7 @@ function TrainingBar(props) {
     const percentage = (props.passedTime / props.trainingTime).toFixed(1) * 100
     return (
         <AppBar
-            color={"white"}
+            color={"primary"}
             position={"sticky"}
         >
             <Grid container direction={"column"} className={classes.root}>
@@ -52,7 +52,7 @@ function TrainingBar(props) {
                     <Grid container item direction={"row"} justify={"flex-start"} alignItems={"center"} wrap={"wrap"}>
                         {props.badges.map(chip => {
                             return (
-                                <Grid item>
+                                <Grid key={chip} item>
                                     <Chip
                                         className={classes.chips}
                                         icon={<Grade/>}
