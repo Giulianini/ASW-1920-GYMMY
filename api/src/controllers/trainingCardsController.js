@@ -8,8 +8,7 @@ const Tag = require('../models/Tag')
 
 async function getExerciseIds(exercises, res) {
     const exerciseDocs = await Exercise.find()
-        .where('name')
-        .in(exercises)
+        .where('name').in(exercises)
         .select('_id')
         .exec()
     return exerciseDocs.map(doc => doc._id)
