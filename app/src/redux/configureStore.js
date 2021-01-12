@@ -1,8 +1,8 @@
 import {combineReducers, createStore} from "redux";
-import appUI from './ducks/user/user'
+import userRedux from "./ducks/user/user";
 
 const reducer = combineReducers({
-    appUIReducer: appUI
+    userRedux: userRedux
 })
 
 const store = createStore(reducer)

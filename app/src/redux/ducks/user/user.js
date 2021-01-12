@@ -9,7 +9,7 @@ const initialState = {
     isAppbarHidden: false,
 }
 
-export default (state = initialState, action) => {
+const userRedux = (state = initialState, action) => {
     switch (action.type) {
         case SET_APPBAR_TITLE:
             return {...state, appbarTitle: action.newTitle}
@@ -19,3 +19,4 @@ export default (state = initialState, action) => {
             return state
     }
 }
+export default userRedux

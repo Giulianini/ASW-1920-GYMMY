@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Header(props) {
-    const isAppbarHidden = useSelector(state => state.appUIReducer.isAppbarHidden)
+    const isAppbarHidden = useSelector(state => state.userRedux.isAppbarHidden)
     const appbar = Appbar(props)
     return (
         isAppbarHidden ? null : appbar
@@ -28,7 +28,7 @@ export default Header;
 
 function Appbar(props) {
     const classes = useStyles()
-    const appbarTitle = useSelector(state => state.appUIReducer.appbarTitle)
+    const appbarTitle = useSelector(state => state.userRedux.appbarTitle)
     return (
         <AppBar
             position={"sticky"}
