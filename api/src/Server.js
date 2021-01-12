@@ -29,10 +29,13 @@ const sessionRoute = require('./routes/sessionRoute')
 const locationsRoute = require('./routes/locationsRoute')
 const exercisesRoute = require('./routes/exercisesRoute')
 const trainingCardsRoute = require('./routes/trainingCardsRoute')
+const tagsRoute = require('./routes/tagsRoute')
 
 app.use(cors())
 app.use(bodyParser.json())
 app.use(log)
+
+const params = require('./routes/params')
 
 app.use('/users', usersRoute)
 
@@ -42,7 +45,9 @@ app.use('/locations', locationsRoute)
 
 app.use('/exercises', exercisesRoute)
 
-app.use('/cards', trainingCardsRoute)
+app.use(`/users/:${params.USERNAME_PARAM}/${params.USER_CARDS_ROUTE}`, trainingCardsRoute)
+
+app.use('/tags', tagsRoute)
 
 app.get("/", (req, res) => {
     res.send("Gymmy API")
