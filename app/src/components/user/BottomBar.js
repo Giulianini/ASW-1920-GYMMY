@@ -47,10 +47,8 @@ function BottomBar(props) {
 
 const useStyles = makeStyles({
     root: {
-        position: "fixed",
-        left: 0,
+        position: "sticky",
         bottom: 0,
-        width: "100%",
     }
 })
 

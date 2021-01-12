@@ -22,11 +22,11 @@ const useStyles = makeStyles(theme => ({
     rootGrid: {
         [theme.breakpoints.up('sm')]: {
             paddingTop: "10%",
+            minHeight: "100vh",
         },
         [theme.breakpoints.down('sm')]: {
             paddingTop: 20,
         },
-        paddingBottom: 100
     },
     card: {
         marginBottom: 10,
