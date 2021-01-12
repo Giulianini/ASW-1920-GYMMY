@@ -26,11 +26,11 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.down('sm')]: {
             paddingTop: 20,
         },
-        paddingBottom: 100,
+        paddingBottom: 100
     },
     card: {
         marginBottom: 10,
-        maxWidth: theme.breakpoints.values.md,
+        maxWidth: theme.breakpoints.values.md
     },
     mediaPersonal: {
         width: '30%',

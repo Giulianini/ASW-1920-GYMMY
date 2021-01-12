@@ -32,9 +32,9 @@ const useStyles = makeStyles(theme => ({
             height: "95vh"
         },
         [theme.breakpoints.down('md')]: {
-            paddingTop: 20,
-            marginBottom: 100
+            paddingTop: 10,
         },
+        paddingBottom: 100
     },
     divider: {
         width: '100%'
@@ -60,7 +60,15 @@ const useStyles = makeStyles(theme => ({
         fontSize: '120%'
     },
     mediaPersonal: {
-        paddingTop: '40%' // 16:9
+        paddingTop: '50%', // 16:9
+        margin: 'auto'
+    },
+    card: {
+        marginBottom: 10,
+        maxWidth: theme.breakpoints.values.md
+    },
+    pushCardSize: {
+        minWidth: theme.breakpoints.values.md / 2
     },
     score: {
         fontSize: 30,
@@ -88,9 +96,6 @@ const useStyles = makeStyles(theme => ({
 function Dashboard() {
     const classes = useStyles();
     const dialogRef = useRef({})
-    const [progress, setProgress] = React.useState(50);
-    const [course, setEnrolled] = React.useState(false);
-    const [challenge, acceptChallenge] = React.useState(false);
     const [userInfo, setUserInfo] = React.useState({
         "username": undefined,
         "score": undefined
@@ -116,9 +121,7 @@ function Dashboard() {
     return (
         <Container maxWidth={"lg"}>
             <EditPersonalDialog ref={dialogRef} userInfo={userInfo} setUserInfo={setUserInfo}/>
-            <Grid container direction={"column"}
-                  spacing={2} // spacing largo spacca tutto Cardio
-                  className={classes.rootGrid}>
+            <Grid container direction={"column"} justify="space-around" alignItems="center" className={classes.rootGrid}>
                 <Grid item container direction={"column"}>
                     <Grid item>
                         <List component="nav" aria-label="icons-list">
@@ -172,9 +175,9 @@ function Dashboard() {
                         </Typography>
                     </Grid>
 
-                    <Grid item container direction={"row"} alignItems={"stretch"} className={classes.scrollablePane}>
+                    <Grid item container direction={"row"} className={classes.scrollablePane}>
                         <Grid item className={classes.vSpace}>
-                            <Card className={classes.cardWidth}>
+                            <Card className={classes.card}>
                                 <CardActionArea>
                                     <CardMedia
                                         className={classes.mediaPersonal}
@@ -198,11 +201,12 @@ function Dashboard() {
                                         100 points
                                     </Button>
                                 </CardActions>
+                                <div className={classes.pushCardSize}/>
                             </Card>
                         </Grid>
 
                         <Grid item className={classes.vSpace}>
-                            <Card>
+                            <Card className={classes.card}>
                                 <CardActionArea>
                                     <CardMedia
                                         className={classes.mediaPersonal}
@@ -226,11 +230,12 @@ function Dashboard() {
                                         200 points
                                     </Button>
                                 </CardActions>
+                                <div className={classes.pushCardSize}/>
                             </Card>
                         </Grid>
 
                         <Grid item className={classes.vSpace}>
-                            <Card>
+                            <Card className={classes.card}>
                                 <CardActionArea>
                                     <CardMedia
                                         className={classes.mediaPersonal}
@@ -254,6 +259,7 @@ function Dashboard() {
                                         150 points
                                     </Button>
                                 </CardActions>
+                                <div className={classes.pushCardSize}/>
                             </Card>
                         </Grid>
                     </Grid>
@@ -266,7 +272,7 @@ function Dashboard() {
 
                     <Grid item container direction={"row"} className={classes.scrollablePane}>
                         <Grid item className={classes.vSpace}>
-                            <Card>
+                            <Card className={classes.card}>
                                 <CardActionArea>
                                     <CardMedia
                                         className={classes.mediaPersonal}
@@ -288,11 +294,12 @@ function Dashboard() {
                                         Enroll
                                     </Button>
                                 </CardActions>
+                                <div className={classes.pushCardSize}/>
                             </Card>
                         </Grid>
 
                         <Grid item className={classes.vSpace}>
-                            <Card>
+                            <Card className={classes.card}>
                                 <CardActionArea>
                                     <CardMedia
                                         className={classes.mediaPersonal}
@@ -314,11 +321,12 @@ function Dashboard() {
                                         Enroll
                                     </Button>
                                 </CardActions>
+                                <div className={classes.pushCardSize}/>
                             </Card>
                         </Grid>
 
                         <Grid item className={classes.vSpace}>
-                            <Card>
+                            <Card className={classes.card}>
                                 <CardActionArea>
                                     <CardMedia
                                         className={classes.mediaPersonal}
@@ -340,6 +348,7 @@ function Dashboard() {
                                         Enroll
                                     </Button>
                                 </CardActions>
+                                <div className={classes.pushCardSize}/>
                             </Card>
                         </Grid>
                     </Grid>
