@@ -4,6 +4,7 @@ const User = require('../models/User')
 const Exercise = require('../models/Exercise')
 const TrainingCard = require('../models/TrainingCard')
 const Location = require('../models/Location')
+const Tag = require('../models/Tag')
 
 async function getExerciseIds(exercises, res) {
     const exerciseDocs = await Exercise.find()
@@ -12,6 +13,16 @@ async function getExerciseIds(exercises, res) {
         .select('_id')
         .exec()
     return exerciseDocs.map(doc => doc._id)
+}
+
+async function getTagIds(tags, res) {
+    const tagDocs = await Tag.find()
+        .where('name')
+        .in(tags)
+        .select('_id')
+        .exec()
+    console.log("tagDocs " + tagDocs)
+    return tagDocs.map(doc => doc._id)
 }
 
 async function getUserId(username) {
@@ -24,6 +35,8 @@ exports.createTrainingCard = async function(req, res) {
     const title = req.body.title
     const trainer = req.body.trainer
     const exercises = req.body.exercises
+    const tags = req.body.tags ? req.body.tags : []
+    const tagSet = [...new Set(tags.map(tag => tag.name))]
 
     const userExists = await User.exists({ username: user })
     if (!userExists) {
@@ -38,6 +51,11 @@ exports.createTrainingCard = async function(req, res) {
     const exerciseIds = await getExerciseIds(exercises.map(obj => obj.exercise))
     if (exerciseIds.length !== exercises.length) {
         return responses.badRequest(res)('Some exercises do not exist')
+    }
+
+    const tagIds = await getTagIds(tagSet)
+    if (tagIds.length !== tagSet.length) {
+        return responses.badRequest(res)('Some tags do not exist')
     }
 
     const userId = await User.findOne({ username: user }).map(doc => doc._id).exec();
@@ -55,6 +73,14 @@ exports.createTrainingCard = async function(req, res) {
         trainer: trainerId,
         exercises: exercisesWithIds
     })
+
+    if (tagSet) {
+        trainingCard.tags = await Promise.all(tagSet.map(async tagName => {
+            return await Tag.findOne({name: tagName})
+                .map(doc => doc._id)
+                .exec()
+        }))
+    }
 
     try {
         const savedTrainingCard = await trainingCard.save()
@@ -95,6 +121,10 @@ exports.getUserCards = async function(req, res) {
     if (usernameExists) {
         const userId = await getUserId(username)
         const userCards = await TrainingCard.find({ user: userId })
+            .populate({
+                path: 'tags',
+                model: Tag
+            })
             .populate({
                 path: 'user',
                 model: User,

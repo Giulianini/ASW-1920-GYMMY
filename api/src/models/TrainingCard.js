@@ -5,6 +5,10 @@ const TrainingCardSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    tags: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Tag',
+    }],
     user: {
         type: mongoose.Schema.ObjectId,
         ref: 'User',
