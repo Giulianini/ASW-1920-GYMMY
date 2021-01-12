@@ -1,7 +1,21 @@
 import React from 'react';
-import {AppBar, Button, Chip, Grid, LinearProgress, Typography} from "@material-ui/core";
+import {
+    AppBar,
+    Button,
+    Chip,
+    Grid,
+    IconButton,
+    LinearProgress,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    ListSubheader,
+    Popover,
+    Typography
+} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import {Grade} from "@material-ui/icons";
+import {ExpandMore, Grade, Receipt} from "@material-ui/icons";
 
 const useStyles = makeStyles({
     headerBar: {
@@ -38,7 +52,18 @@ const useStyles = makeStyles({
 
 function TrainingBar(props) {
     const classes = useStyles()
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
     const percentage = (props.passedTime / props.trainingTime).toFixed(1) * 100
+
+    const handleExpandCardClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
     return (
         <AppBar
             color={"primary"}
@@ -46,8 +71,51 @@ function TrainingBar(props) {
         >
             <Grid container direction={"column"} className={classes.root}>
                 <Grid container item className={classes.headerBar}>
-                    <Grid item>
-                        <Typography className={classes.titleText}> {props.title}</Typography>
+                    <Grid item container direction={"row"} justify={"space-between"} alignItems={"center"}>
+                        <Grid item>
+                            <Typography className={classes.titleText}> {props.title}</Typography>
+                        </Grid>
+                        <Grid item>
+                            <IconButton onClick={handleExpandCardClick}>
+                                <ExpandMore/>
+                            </IconButton>
+                            <Popover
+                                id={id}
+                                open={open}
+                                anchorEl={anchorEl}
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                            >
+                                <List component={"nav"} subheader={<ListSubheader>Workout cards</ListSubheader>}
+                                      className={classes.list}>
+                                    <ListItem button divider={true}>
+                                        <ListItemIcon>
+                                            <Receipt/>
+                                        </ListItemIcon>
+                                        <ListItemText id="signup" primary="Workout heavy"/>
+                                    </ListItem>
+                                    <ListItem button divider={true}>
+                                        <ListItemIcon>
+                                            <Receipt/>
+                                        </ListItemIcon>
+                                        <ListItemText id="login" primary="Become bigger and bigger"/>
+                                    </ListItem>
+                                    <ListItem button divider={true}>
+                                        <ListItemIcon>
+                                            <Receipt/>
+                                        </ListItemIcon>
+                                        <ListItemText id="logout" primary="Diocan biggggg"/>
+                                    </ListItem>
+                                </List>
+                            </Popover>
+                        </Grid>
                     </Grid>
                     <Grid container item direction={"row"} justify={"flex-start"} alignItems={"center"} wrap={"wrap"}>
                         {props.badges.map(chip => {
