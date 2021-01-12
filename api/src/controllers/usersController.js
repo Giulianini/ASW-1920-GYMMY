@@ -124,7 +124,12 @@ exports.getUserObjective = async function(req, res) {
 
 exports.createUserObjective = async function(req, res) {
     const username = req.params.username
-    const objective = req.body.objective
+    const description = req.body.description
+    const mainGoal = req.body.mainGoal
+    const targetWeight = req.body.targetWeight
+    const targetBMI = req.body.targetBMI
+    const targetCalories = req.body.targetCalories
+    const targetMinWorkouts = req.body.targetMinWorkouts
 
     const userExists = await User.exists({ username: username })
     if (!userExists) {
@@ -138,7 +143,17 @@ exports.createUserObjective = async function(req, res) {
     }
 
     try {
-        await User.updateOne({ username: username }, { objective: objective }).exec()
+        const objective = {
+            description: description,
+            mainGoal: mainGoal,
+            targetWeight: targetWeight,
+            targetBMI: targetBMI,
+            targetCalories: targetCalories,
+            targetMinWorkouts: targetMinWorkouts,
+        }
+        const user = await User.findOne({ username: username }).exec()
+        user.objective = objective
+        await user.save()
         responses.created(res)(objective)
     } catch (err) {
         responses.error(res)(err)
@@ -147,7 +162,13 @@ exports.createUserObjective = async function(req, res) {
 
 exports.updateUserObjective = async function(req, res) {
     const username = req.params.username
-    const objective = req.body.objective
+    // const objective = req.body.objective
+    const description = req.body.description
+    const mainGoal = req.body.mainGoal
+    const targetWeight = req.body.targetWeight
+    const targetBMI = req.body.targetBMI
+    const targetCalories = req.body.targetCalories
+    const targetMinWorkouts = req.body.targetMinWorkouts
 
     const userExists = await User.exists({ username: username })
     if (!userExists) {
@@ -160,6 +181,14 @@ exports.updateUserObjective = async function(req, res) {
     }
 
     try {
+        const objective = {
+            description: description,
+            mainGoal: mainGoal,
+            targetWeight: targetWeight,
+            targetBMI: targetBMI,
+            targetCalories: targetCalories,
+            targetMinWorkouts: targetMinWorkouts,
+        }
         await User.updateOne({ username: username }, { objective: objective }).exec()
         responses.noContent(res)
     } catch (err) {
