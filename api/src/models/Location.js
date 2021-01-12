@@ -1,10 +1,6 @@
 const mongoose = require('mongoose')
 
 const LocationSchema = new mongoose.Schema({
-    location: {
-        type: Number,
-        required: true
-    },
     description: {
         type: String,
         required: true

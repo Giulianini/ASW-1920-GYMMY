@@ -10,15 +10,17 @@ exports.getAllLocations = async function(req, res) {
     responses.json(res)(locations)
 }
 
-async function findLocation(locationNumber) {
-    return Location.findOne({ location: locationNumber })
+async function findLocation(location) {
+    return Location.findOne({ description: location })
         .select(WITHOUT_ID)
         .exec()
 }
 
 exports.getLocation = async function(req, res) {
-    const locationNumber = req.params.location
-    const foundLocation = await findLocation(locationNumber)
+    const location = decodeURIComponent(req.params.location)
+    console.log(location)
+    const foundLocation = await findLocation(location)
+    console.log(foundLocation)
     if (foundLocation) {
         responses.json(res)(foundLocation)
     } else {
@@ -27,16 +29,14 @@ exports.getLocation = async function(req, res) {
 }
 
 exports.createLocation = async function(req, res) {
-    const id = req.body.location
     const description = req.body.description
 
-    const foundLocation = await findLocation(id)
+    const foundLocation = await findLocation(description)
     if (foundLocation) {
         responses.conflict(res)
     } else {
         try {
             const location = new Location({
-                location: id,
                 description: description
             })
             const createdLocation = await location.save();
@@ -55,7 +55,7 @@ exports.updateLocationDescription = async function(req, res) {
     const foundLocation = await findLocation(location)
     if (foundLocation) {
         try {
-            await Location.updateOne({ location: location }, { description: description}).exec()
+            await Location.updateOne({ description: location }, { description: description }).exec()
             responses.noContent(res)
         } catch (err) {
             responses.error(res)(err)
@@ -63,5 +63,4 @@ exports.updateLocationDescription = async function(req, res) {
     } else {
         responses.notFound(res)
     }
-
 }
