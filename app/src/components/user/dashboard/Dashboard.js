@@ -58,13 +58,6 @@ const useStyles = makeStyles(theme => ({
         paddingTop: '50%', // 16:9
         margin: 'auto'
     },
-    card: {
-        marginBottom: 10,
-        maxWidth: theme.breakpoints.values.md
-    },
-    pushCardSize: {
-        minWidth: theme.breakpoints.values.md / 2
-    },
     score: {
         fontSize: 30,
         fontWeight: "normal",
@@ -77,8 +70,7 @@ const useStyles = makeStyles(theme => ({
         fontWeight: "lighter"
     },
     scrollablePane: {
-        maxHeight: 300,
-        width: '100%',
+        maxHeight: 400,
         overflow: 'auto'
     },
     icons: {
@@ -173,7 +165,7 @@ function Dashboard() {
                         </Typography>
                     </Grid>
 
-                    <Grid item container className={classes.scrollablePane}>
+                    <Grid item container direction={"column"} alignItems={"center"} justify={"flex-start"} className={classes.scrollablePane}>
                         {challenges.map((item, i) => <Challenge key={i} item={item}/>)}
                     </Grid>
 
@@ -183,7 +175,7 @@ function Dashboard() {
                         </Typography>
                     </Grid>
 
-                    <Grid item container className={classes.scrollablePane}>
+                    <Grid item container direction={"column"} alignItems={"center"} justify={"flex-start"} className={classes.scrollablePane}>
                         {courses.map((item, i) => <Course key={i} item={item}/>)}
                     </Grid>
 

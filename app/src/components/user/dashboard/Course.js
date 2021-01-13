@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => ({
     },
     card: {
         marginBottom: 10,
+        marginRight: 20,
         maxWidth: theme.breakpoints.values.md
     },
     pushCardSize: {
@@ -31,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 function Course(props) {
     const classes = useStyles()
     return (
-        <Grid item className={classes.vSpace}>
+        <Grid item xs={12} lg={6}>
             <Card className={classes.card}>
                 <CardActionArea>
                     <CardMedia
