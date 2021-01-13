@@ -40,7 +40,7 @@ exports.createTrainingCard = async function(req, res) {
     const trainer = req.body.trainer
     const exercises = req.body.exercises
     const tags = req.body.tags ? req.body.tags : []
-    const tagSet = [...new Set(tags.map(tag => tag.name))]
+    const tagSet = [...new Set(tags)]
 
     const userExists = await User.exists({ username: user })
     if (!userExists) {
