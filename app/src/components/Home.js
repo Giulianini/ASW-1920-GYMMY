@@ -1,12 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import {Box, Button, Card, CardActionArea, Divider, Grid, Slide, Snackbar} from "@material-ui/core";
+import {Box, Button, Card, CardActionArea, Grid, Slide, Snackbar} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import {useHistory} from "react-router-dom";
 import checkApiEndpoint from "../Api";
-import {theme} from "../theme";
+import {appTheme} from "../appTheme";
 import Carousel from "react-material-ui-carousel";
 
 
@@ -52,11 +52,11 @@ const useStyles = makeStyles({
         fontSize: 35,
     },
     media: {
-        [theme.breakpoints.up('sm')]: {
+        [appTheme.breakpoints.up('sm')]: {
             width: "fitContent",
             height: "100vh",
         },
-        [theme.breakpoints.down('sm')]: {
+        [appTheme.breakpoints.down('sm')]: {
             width: "fitContent",
             height: 400,
         },
@@ -69,7 +69,7 @@ const useStyles = makeStyles({
 function Home() {
     const classes = useStyles()
     const history = useHistory()
-    const scrollRef = useRef(null)
+    const scrollRef = useRef({})
     const [snackState, setSnackState] = useState({
         open: false,
         snackMessage: "",
@@ -130,16 +130,11 @@ function Home() {
                     >
                         <CardContent>
                             <Typography variant="h5" component="h2" className={classes.cardText}>
-                                I nostri corsi
+                                {props.item.title}
                             </Typography>
                         </CardContent>
                     </CardMedia>
                 </CardActionArea>
-                {/*<CardActions>*/}
-                {/*    <Button size="small" color="primary">*/}
-                {/*        Learn More*/}
-                {/*    </Button>*/}
-                {/*</CardActions>*/}
             </Card>
         )
     }

@@ -2,16 +2,18 @@ import React, {useEffect, useRef} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {authAxios} from "../../../Api";
 import {
+    Button,
+    Card,
+    CardActionArea,
+    CardActions,
+    Chip,
     Container,
     Divider,
     Grid,
+    LinearProgress,
     List,
     ListItem,
-    LinearProgress,
-    Typography,
-    Chip,
-    Card,
-    CardActionArea, CardActions, Button, GridList, GridListTile, GridListTileBar
+    Typography
 } from "@material-ui/core";
 import EditPersonalDialog from "../personal/EditPersonalDialog";
 import SpeedIcon from '@material-ui/icons/Speed';
@@ -19,22 +21,23 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import GpsFixedIcon from '@material-ui/icons/GpsFixed';
 import BeenhereIcon from '@material-ui/icons/Beenhere';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
 import GradeIcon from '@material-ui/icons/Grade';
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
-import IconButton from "@material-ui/core/IconButton";
+import ExerciseCard from "../training/ExerciseCard";
+import Course from "./Course";
+import Challenge from "./Challenge";
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
         [theme.breakpoints.up('md')]: {
-            height: "95vh",
+            height: "95vh"
         },
         [theme.breakpoints.down('md')]: {
-            paddingTop: 20,
-            marginBottom: 100,
+            paddingTop: 10,
         },
+        paddingBottom: 100
     },
     divider: {
         width: '100%'
@@ -48,28 +51,38 @@ const useStyles = makeStyles(theme => ({
     vSpace: {
         paddingTop: 5,
         paddingBottom: 5,
+        margin: 'auto'
     },
     hSpace: {
         marginLeft: 5,
-        marginRight: 5,
+        marginRight: 5
     },
     chips: {
-        marginLeft: 30,
-        marginRight: 30,
+        marginLeft: 7,
+        marginRight: 7,
+        fontSize: '120%'
     },
     mediaPersonal: {
-        paddingTop: '40%', // 16:9
+        paddingTop: '50%', // 16:9
+        margin: 'auto'
+    },
+    card: {
+        marginBottom: 10,
+        maxWidth: theme.breakpoints.values.md
+    },
+    pushCardSize: {
+        minWidth: theme.breakpoints.values.md / 2
     },
     score: {
         fontSize: 30,
         fontWeight: "normal",
         letterSpacing: 1.5,
         color: "#e13333",
-        margin: "auto",
+        margin: "auto"
     },
     otherText: {
         fontSize: 23,
-        fontWeight: "lighter",
+        fontWeight: "lighter"
     },
     scrollablePane: {
         maxHeight: 300,
@@ -77,65 +90,47 @@ const useStyles = makeStyles(theme => ({
         overflow: 'auto'
     },
     icons: {
-        marginLeft: 20,
-        marginRight: 20
-    },
-    rootB: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        overflow: 'hidden',
-        backgroundColor: theme.palette.background.paper,
-    },
-    gridList: {
-        flexWrap: 'nowrap',
-        // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-        transform: 'translateZ(0)',
-    },
-    titleB: {
-        color: theme.palette.primary.light,
-    },
-    titleBar: {
-        background:
-            'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
-    },
+        marginLeft: 10,
+        marginRight: 10,
+        fontSize: '300%'
+    }
 }));
 
-const tileData = [
-    {
-        img: "/pushUp.jpg",
-        title: 'Pushup',
-        author: 'author',
-    },
-    {
-        img: "/pullUp.jpg",
-        title: 'Pullup',
-        author: 'author',
-    },
-    {
-        img: "/benchPress.jpg",
-        title: 'Bench press',
-        author: 'author',
-    }
-]
+const courses = [{
+    "title": "Functional training",
+    "desc":  "Enroll in the functional training class. All needed equipment is provided upon subscription.",
+    "image": "/functional.jpg",
+}, {
+    "title": "Zumba",
+    "desc": "Enroll in the zumba class. All needed equipment is provided upon subscription.",
+    "image": "/zumba.jpg",
+}, {
+    "title": "Pilates",
+    "desc": "Enroll in the pilates class. All needed equipment is provided upon subscription.",
+    "image": "/pilates.jpg",
+},]
+
+const challenges = [{
+    "title": "Push-Up",
+    "desc": "Complete as many push-ups as you can and climb the leaderboard!",
+    "image": "/pushUp.jpg",
+}, {
+    "title": "Pull-Up",
+    "desc": "Complete as many pull-ups as you can and climb the leaderboard!",
+    "image": "/pullUp.jpg",
+}, {
+    "title": "Bench press",
+    "desc": "Complete as many bench press reps as you can and climb the leaderboard!",
+    "image": "/benchPress.jpg",
+}]
 
 function Dashboard() {
     const classes = useStyles();
     const dialogRef = useRef({})
-    const [progress, setProgress] = React.useState(50);
-    const [course, setEnrolled] = React.useState(false);
-    const [challenge, acceptChallenge] = React.useState(false);
     const [userInfo, setUserInfo] = React.useState({
         "username": undefined,
         "score": undefined
     })
-
-    const handleEnrollClick = () => {
-        //setEnrolled(!course);
-    };
-
-    const handleChallengeAcceptedClock = () => {
-        //acceptChallenge(!challenge);
-    }
 
     useEffect(() => {
         let username = localStorage.getItem("username")
@@ -149,49 +144,53 @@ function Dashboard() {
     return (
         <Container maxWidth={"lg"}>
             <EditPersonalDialog ref={dialogRef} userInfo={userInfo} setUserInfo={setUserInfo}/>
-            <Grid container direction={"column"} alignItems="center" justify={"center"} spacing={5} className={classes.rootGrid}>
-                <Grid item className={classes.vSpace}>
-                    <List component="nav" aria-label="icons-list" >
-                        <ListItem className={classes.hSpace}>
-                            <div className={classes.centered}>
-                                <SpeedIcon className={classes.icons}/>
-                                <BarChartIcon className={classes.icons}/>
-                                <AccountBalanceIcon className={classes.icons}/>
-                                <GpsFixedIcon className={classes.icons}/>
-                                <BeenhereIcon className={classes.icons}/>
-                                <EmojiEventsIcon className={classes.icons}/>
-                            </div>
-                        </ListItem>
-                        <Divider className={classes.divider}/>
-                        <ListItem>
-                            <Typography className={classes.score}>
-                                {userInfo.score}/3000
-                            </Typography>
-                        </ListItem>
-                        <Divider className={classes.divider}/>
-                    </List>
-                    <Grid item className={classes.vSpace}>
-                        <LinearProgress variant="determinate" value={progress} color="primary"/>
+            <Grid container direction={"column"} alignItems="center" className={classes.rootGrid}>
+                <Grid item container direction={"column"}>
+                    <Grid item>
+                        <List component="nav" aria-label="icons-list">
+                            <ListItem>
+                                <div className={classes.centered}>
+                                    <SpeedIcon className={classes.icons}/>
+                                    <BarChartIcon className={classes.icons}/>
+                                    <AccountBalanceIcon className={classes.icons}/>
+                                    <GpsFixedIcon className={classes.icons}/>
+                                    <BeenhereIcon className={classes.icons}/>
+                                    <EmojiEventsIcon className={classes.icons}/>
+                                </div>
+                            </ListItem>
+                            <Divider className={classes.divider}/>
+                            <ListItem>
+                                <Typography className={classes.score}>
+                                    {userInfo.score}/3000
+                                </Typography>
+                            </ListItem>
+                            <Divider className={classes.divider}/>
+                        </List>
                     </Grid>
                     <Grid item className={classes.vSpace}>
-                        <Chip
-                            className={classes.chips}
-                            icon={<GradeIcon />}
-                            label="Beginner"
-                            color="primary"
-                        />
-                        <Chip
-                            className={classes.chips}
-                            icon={<GradeIcon />}
-                            label="Intermediate"
-                            color="primary"
-                        />
-                        <Chip
-                            className={classes.chips}
-                            icon={<GradeIcon />}
-                            label="Advanced"
-                            color="primary"
-                        />
+                        <LinearProgress variant="buffer" value={10} valueBuffer={30} color="primary"/>
+                    </Grid>
+                    <Grid item className={classes.vSpace}>
+                        <div className={classes.centered}>
+                            <Chip
+                                className={classes.chips}
+                                icon={<GradeIcon/>}
+                                label="Beginner"
+                                color="primary"
+                            />
+                            <Chip
+                                className={classes.chips}
+                                icon={<GradeIcon/>}
+                                label="Intermediate"
+                                color="primary"
+                            />
+                            <Chip
+                                className={classes.chips}
+                                icon={<GradeIcon/>}
+                                label="Advanced"
+                                color="primary"
+                            />
+                        </div>
                     </Grid>
                     <Grid item className={classes.vSpace}>
                         <Typography className={classes.otherText}>
@@ -199,27 +198,9 @@ function Dashboard() {
                         </Typography>
                     </Grid>
 
-                    <div className={classes.rootB}>
-                        <GridList className={classes.gridList} cols={2.5}>
-                            {tileData.map((tile) => (
-                                <GridListTile key={tile.img}>
-                                    <img src={tile.img} alt={tile.title} />
-                                    <GridListTileBar
-                                        title={tile.title}
-                                        classes={{
-                                            root: classes.titleBar,
-                                            title: classes.title,
-                                        }}
-                                        actionIcon={
-                                            <IconButton aria-label={`star ${tile.title}`}>
-                                                <StarBorderIcon className={classes.title} />
-                                            </IconButton>
-                                        }
-                                    />
-                                </GridListTile>
-                            ))}
-                        </GridList>
-                    </div>
+                    <Grid item container className={classes.scrollablePane}>
+                        {challenges.map((item, i) => <Challenge key={i} item={item}/>)}
+                    </Grid>
 
                     <Grid item className={classes.vSpace}>
                         <Typography className={classes.otherText}>
@@ -227,82 +208,10 @@ function Dashboard() {
                         </Typography>
                     </Grid>
 
-                    <Grid item container direction={"row"} className={classes.scrollablePane}>
-                        <Grid item className={classes.vSpace}>
-                            <Card>
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.mediaPersonal}
-                                        image="/functional.jpg"
-                                        title="Functional"
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Functional
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            Iscriviti al corso di allenamento funzionale mediante l'apposito pulsante. La sala è dotata di tutta l'attrezzatura necessaria.
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                                <CardActions>
-                                    <Button size="small" color="primary" onClick={handleEnrollClick}>
-                                        Iscriviti
-                                    </Button>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-
-                        <Grid item className={classes.vSpace}>
-                            <Card>
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.mediaPersonal}
-                                        image="/zumba.jpg"
-                                        title="Zumba"
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Zumba
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            Iscriviti al corso di zumba mediante l'apposito pulsante. La sala è dotata di tutta l'attrezzatura necessaria.
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                                <CardActions>
-                                    <Button size="small" color="primary" onClick={handleEnrollClick}>
-                                        Disiscriviti
-                                    </Button>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-
-                        <Grid item className={classes.vSpace}>
-                            <Card>
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.mediaPersonal}
-                                        image="/pilates.jpg"
-                                        title="Pilates"
-                                    />
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Pilates
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            Iscriviti al corso di pilates mediante l'apposito pulsante. La sala è dotata di tutta l'attrezzatura necessaria.
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                                <CardActions>
-                                    <Button size="small" color="primary">
-                                        Iscriviti
-                                    </Button>
-                                </CardActions>
-                            </Card>
-                        </Grid>
+                    <Grid item container className={classes.scrollablePane}>
+                        {courses.map((item, i) => <Course key={i} item={item}/>)}
                     </Grid>
+
                 </Grid>
             </Grid>
         </Container>

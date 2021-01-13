@@ -2,10 +2,10 @@ const Exercise = require('../models/Exercise')
 const Location = require('../models/Location')
 const responses = require('./util/responses')
 
-async function getLocationIds(locations, res) {
+async function getLocationIds(descriptions, res) {
     const locationDocs = await Location.find()
-        .where('location')
-        .in(locations)
+        .where('description')
+        .in(descriptions)
         .select('_id')
         .exec()
     return locationDocs.map(doc => doc._id)

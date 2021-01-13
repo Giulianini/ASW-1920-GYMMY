@@ -3,9 +3,6 @@ const bcrypt = require('bcryptjs')
 const responses = require('./util/responses')
 
 const User = require('../models/User')
-const TrainingCard = require('../models/TrainingCard')
-const Exercise = require('../models/Exercise')
-const Location = require('../models/Location')
 
 async function getUserId(username) {
     return User.findOne({ username: username }).map(doc => doc._id).exec()
@@ -107,62 +104,6 @@ exports.removeUser = async function(req, res) {
     }
 }
 
-exports.getUserCard = async function (req, res){
-    const username = req.params.username
-    const cardIndex = req.params.cardIndex
-
-    const usernameExists = await User.exists({ username: username })
-    if (!usernameExists) {
-        return responses.notFound(res)
-    }
-
-    if (cardIndex < 0) {
-        return responses.badRequest(res)("Invalid card index")
-    }
-
-    const userId = await getUserId(username)
-    const userCards = await TrainingCard.find({ user: userId }).exec()
-
-    const userCardsAmount = userCards.length
-    if (cardIndex >= userCardsAmount) {
-        return responses.notFound(res)
-    }
-
-    responses.json(res)(userCards[cardIndex])
-}
-
-exports.getUserCards = async function(req, res) {
-    const username = req.params.username
-
-    const usernameExists = await User.exists({ username: username })
-    if (usernameExists) {
-        const userId = await getUserId(username)
-        const userCards = await TrainingCard.find({ user: userId })
-            .populate({
-                path: 'user',
-                model: User,
-                select: '-password'
-            })
-            .populate({
-                path: 'trainer',
-                model: User,
-                select: '-password'
-            })
-            .populate({
-                path: 'exercises.exercise',
-                model: Exercise,
-                populate: {
-                    path: 'locations',
-                    model: Location
-                }
-            })
-            .exec()
-        responses.json(res)(userCards)
-    } else {
-        responses.notFound(res)
-    }
-}
-
 exports.getUserObjective = async function(req, res) {
     const username = req.params.username
 
@@ -183,7 +124,12 @@ exports.getUserObjective = async function(req, res) {
 
 exports.createUserObjective = async function(req, res) {
     const username = req.params.username
-    const objective = req.body.objective
+    const description = req.body.description
+    const mainGoal = req.body.mainGoal
+    const targetWeight = req.body.targetWeight
+    const targetBMI = req.body.targetBMI
+    const targetCalories = req.body.targetCalories
+    const targetMinWorkouts = req.body.targetMinWorkouts
 
     const userExists = await User.exists({ username: username })
     if (!userExists) {
@@ -197,7 +143,17 @@ exports.createUserObjective = async function(req, res) {
     }
 
     try {
-        await User.updateOne({ username: username }, { objective: objective }).exec()
+        const objective = {
+            description: description,
+            mainGoal: mainGoal,
+            targetWeight: targetWeight,
+            targetBMI: targetBMI,
+            targetCalories: targetCalories,
+            targetMinWorkouts: targetMinWorkouts,
+        }
+        const user = await User.findOne({ username: username }).exec()
+        user.objective = objective
+        await user.save()
         responses.created(res)(objective)
     } catch (err) {
         responses.error(res)(err)
@@ -206,7 +162,13 @@ exports.createUserObjective = async function(req, res) {
 
 exports.updateUserObjective = async function(req, res) {
     const username = req.params.username
-    const objective = req.body.objective
+    // const objective = req.body.objective
+    const description = req.body.description
+    const mainGoal = req.body.mainGoal
+    const targetWeight = req.body.targetWeight
+    const targetBMI = req.body.targetBMI
+    const targetCalories = req.body.targetCalories
+    const targetMinWorkouts = req.body.targetMinWorkouts
 
     const userExists = await User.exists({ username: username })
     if (!userExists) {
@@ -219,6 +181,14 @@ exports.updateUserObjective = async function(req, res) {
     }
 
     try {
+        const objective = {
+            description: description,
+            mainGoal: mainGoal,
+            targetWeight: targetWeight,
+            targetBMI: targetBMI,
+            targetCalories: targetCalories,
+            targetMinWorkouts: targetMinWorkouts,
+        }
         await User.updateOne({ username: username }, { objective: objective }).exec()
         responses.noContent(res)
     } catch (err) {
