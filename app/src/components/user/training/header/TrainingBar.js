@@ -44,11 +44,16 @@ function TrainingBar(props) {
 
     const handleExpandCardClick = (event) => {
         setAnchorEl(event.currentTarget);
-    };
+    }
+
+    const handleStartButton = () => {
+        
+    }
 
     const handleClose = () => {
         setAnchorEl(null);
-    };
+    }
+
     return (
         <AppBar
             color={"primary"}
