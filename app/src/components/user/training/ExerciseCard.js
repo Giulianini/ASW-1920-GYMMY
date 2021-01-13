@@ -31,15 +31,15 @@ function ExerciseCard(props) {
                 <CardActionArea>
                     <CardMedia
                         className={classes.cardMedia}
-                        image={props.item.image}
-                        title={props.item.title}
+                        image={"/pushUp.jpg"}
+                        title={props.exercise.name}
                     />
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
-                            {props.item.title}
+                            {props.exercise.name}
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
-                            {props.item.desc}
+                            {props.exercise.description}
                         </Typography>
                     </CardContent>
                 </CardActionArea>
