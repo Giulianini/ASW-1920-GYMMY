@@ -32,12 +32,12 @@ import Challenge from "./Challenge";
 const useStyles = makeStyles(theme => ({
     rootGrid: {
         [theme.breakpoints.up('md')]: {
-            height: "95vh"
+            paddingTop: "10%",
+            minHeight: "100vh",
         },
         [theme.breakpoints.down('md')]: {
             paddingTop: 10,
         },
-        paddingBottom: 100
     },
     divider: {
         width: '100%'
