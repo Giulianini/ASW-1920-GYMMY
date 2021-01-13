@@ -34,28 +34,12 @@ const useStyles = makeStyles(theme => ({
     divider: {
         width: '100%'
     },
-    control: {
-        padding: theme.spacing(3)
-    },
     centered: {
         margin: "auto"
     },
     vSpace: {
         paddingTop: 5,
         paddingBottom: 5,
-        margin: 'auto'
-    },
-    hSpace: {
-        marginLeft: 5,
-        marginRight: 5
-    },
-    chips: {
-        marginLeft: 7,
-        marginRight: 7,
-        fontSize: '120%'
-    },
-    mediaPersonal: {
-        paddingTop: '50%', // 16:9
         margin: 'auto'
     },
     score: {
@@ -70,7 +54,7 @@ const useStyles = makeStyles(theme => ({
         fontWeight: "lighter"
     },
     scrollablePane: {
-        maxHeight: 400,
+        maxHeight: 450,
         overflow: 'auto'
     },
     icons: {
