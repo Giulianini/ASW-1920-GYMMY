@@ -24,7 +24,7 @@ exports.getLocation = async function(req, res) {
     if (foundLocation) {
         responses.json(res)(foundLocation)
     } else {
-        responses.notFound(res)
+        responses.notFound(res)('Location not found')
     }
 }
 
@@ -70,6 +70,6 @@ exports.updateLocationDescription = async function(req, res) {
             responses.error(res)(err)
         }
     } else {
-        responses.notFound(res)
+        responses.notFound(res)('Location not found')
     }
 }
