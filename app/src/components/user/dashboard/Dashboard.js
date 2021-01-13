@@ -13,7 +13,10 @@ import {
     LinearProgress,
     List,
     ListItem,
-    Typography
+    Typography,
+    Stepper,
+    Step,
+    StepLabel
 } from "@material-ui/core";
 import EditPersonalDialog from "../personal/EditPersonalDialog";
 import SpeedIcon from '@material-ui/icons/Speed';
@@ -22,6 +25,9 @@ import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import GpsFixedIcon from '@material-ui/icons/GpsFixed';
 import BeenhereIcon from '@material-ui/icons/Beenhere';
 import GradeIcon from '@material-ui/icons/Grade';
+import SettingsIcon from '@material-ui/icons/Settings';
+import VideoLabelIcon from '@material-ui/icons/VideoLabel';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
@@ -124,6 +130,16 @@ const challenges = [{
     "image": "/benchPress.jpg",
 }]
 
+const levels = [
+    "Beginner", "Intermediate", "Advanced"
+]
+
+const icons = {
+    1: <SettingsIcon />,
+    2: <GroupAddIcon />,
+    3: <VideoLabelIcon />,
+};
+
 function Dashboard() {
     const classes = useStyles();
     const dialogRef = useRef({})
@@ -172,24 +188,13 @@ function Dashboard() {
                     </Grid>
                     <Grid item className={classes.vSpace}>
                         <div className={classes.centered}>
-                            <Chip
-                                className={classes.chips}
-                                icon={<GradeIcon/>}
-                                label="Beginner"
-                                color="primary"
-                            />
-                            <Chip
-                                className={classes.chips}
-                                icon={<GradeIcon/>}
-                                label="Intermediate"
-                                color="primary"
-                            />
-                            <Chip
-                                className={classes.chips}
-                                icon={<GradeIcon/>}
-                                label="Advanced"
-                                color="primary"
-                            />
+                            <Stepper>
+                                {levels.map((label) => (
+                                    <Step key={label}>
+                                        <StepLabel>{label}</StepLabel>
+                                    </Step>
+                                ))}
+                            </Stepper>
                         </div>
                     </Grid>
                     <Grid item className={classes.vSpace}>
