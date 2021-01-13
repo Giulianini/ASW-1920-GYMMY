@@ -167,21 +167,7 @@ StepIconFilling.propTypes = {
     icon: PropTypes.node,
 };
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
-    },
-    button: {
-        marginRight: theme.spacing(1),
-    },
-    instructions: {
-        marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(1),
-    },
-}));
-
 export default function CustomizedSteppers() {
-    const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);  // 0 = beginner, 1 = intermediate, 2 = advanced
 
     // Level increase
@@ -200,18 +186,16 @@ export default function CustomizedSteppers() {
     };
 
     return (
-        <div className={classes.root}>
-            <Stepper alternativeLabel activeStep={activeStep} connector={<SteppingConnector />}>
-                <Step key={"Beginner"}>
-                    <StepLabel StepIconComponent={StepIconFilling}>{"Beginner"}</StepLabel>
-                </Step>
-                <Step key={"Average"}>
-                    <StepLabel StepIconComponent={StepIconFilling}>{"Average"}</StepLabel>
-                </Step>
-                <Step key={"Advanced"}>
-                    <StepLabel StepIconComponent={StepIconFilling}>{"Advanced"}</StepLabel>
-                </Step>
-            </Stepper>
-        </div>
+        <Stepper alternativeLabel activeStep={activeStep} connector={<SteppingConnector />}>
+            <Step key={"Beginner"}>
+                <StepLabel StepIconComponent={StepIconFilling}>{"Beginner (0-100 points)"}</StepLabel>
+            </Step>
+            <Step key={"Average"}>
+                <StepLabel StepIconComponent={StepIconFilling}>{"Average (100-500 points)"}</StepLabel>
+            </Step>
+            <Step key={"Advanced"}>
+                <StepLabel StepIconComponent={StepIconFilling}>{"Advanced (500+ points)"}</StepLabel>
+            </Step>
+        </Stepper>
     );
 }

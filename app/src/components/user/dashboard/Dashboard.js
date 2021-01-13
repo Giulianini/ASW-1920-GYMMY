@@ -176,7 +176,7 @@ function Dashboard() {
                     </Grid>
                     <Grid item className={classes.vSpace}>
                         <div className={classes.centered}>
-                            <CustomStepper key={0} item={0}/>
+                            <CustomStepper/>
                         </div>
                     </Grid>
                     <Grid item className={classes.vSpace}>
