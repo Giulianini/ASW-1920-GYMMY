@@ -1,21 +1,8 @@
 import React from 'react';
-import {
-    AppBar,
-    Button,
-    Chip,
-    Grid,
-    IconButton,
-    LinearProgress,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    ListSubheader,
-    Popover,
-    Typography
-} from "@material-ui/core";
+import {AppBar, Button, Chip, Grid, IconButton, LinearProgress, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import {ExpandMore, Grade, Receipt} from "@material-ui/icons";
+import {ExpandMore, Grade} from "@material-ui/icons";
+import CardPopover from "./CardPopover";
 
 const useStyles = makeStyles({
     headerBar: {
@@ -52,15 +39,8 @@ const useStyles = makeStyles({
 
 function TrainingBar(props) {
     const classes = useStyles()
+    const percentage = props.cards ? (props.passedTime / props.cards[props.selectedCardIndex].minutes).toFixed(1) * 100 : 0
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
-    const percentage = (props.passedTime / 80).toFixed(1) * 100
-
-
-    const handleListItemClick = (event, index) => {
-        props.setSelectedCardIndex(index);
-    };
 
     const handleExpandCardClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -85,37 +65,7 @@ function TrainingBar(props) {
                             <IconButton onClick={handleExpandCardClick}>
                                 <ExpandMore/>
                             </IconButton>
-                            <Popover
-                                id={id}
-                                open={open}
-                                anchorEl={anchorEl}
-                                onClose={handleClose}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'center',
-                                }}
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'center',
-                                }}
-                            >
-                                <List component={"nav"} subheader={<ListSubheader>Workout cards</ListSubheader>}
-                                      className={classes.list}>
-                                    {props.cards && props.cards.map((card, i) => (
-                                        <ListItem button
-                                                  key={`cardListItem:${i}`}
-                                                  divider={true}
-                                                  selected={props.selectedCardIndex === i}
-                                                  onClick={(event) => handleListItemClick(event, i)}
-                                        >
-                                            <ListItemIcon>
-                                                <Receipt/>
-                                            </ListItemIcon>
-                                            <ListItemText id="signup" primary={card.title}/>
-                                        </ListItem>
-                                    ))}
-                                </List>
-                            </Popover>
+                            <CardPopover anchorEl={anchorEl} handleClose={handleClose} {...props}/>
                         </Grid>
                     </Grid>
                     <Grid container item direction={"row"} justify={"flex-start"} alignItems={"center"} wrap={"wrap"}>

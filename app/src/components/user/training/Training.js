@@ -18,7 +18,7 @@ function Training() {
     const darkMode = useSelector(state => state.userRedux.darkMode)
     const cards = useCards()
     const [selectedCardIndex, setSelectedCardIndex] = React.useState(0)
-    const passedTime = 30
+    const passedTime = 40
     return (
         <ThemeProvider theme={darkMode ? trainDarkTheme : trainLightTheme}>
             {<TrainingBar cards={cards} selectedCardIndex={selectedCardIndex}
