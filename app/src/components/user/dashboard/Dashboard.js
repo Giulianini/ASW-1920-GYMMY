@@ -2,18 +2,13 @@ import React, {useEffect, useRef} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {authAxios} from "../../../Api";
 import {
-    Button,
-    Card,
-    CardActionArea,
-    CardActions,
-    Chip,
     Container,
     Divider,
     Grid,
     LinearProgress,
     List,
     ListItem,
-    Typography
+    Typography,
 } from "@material-ui/core";
 import EditPersonalDialog from "../personal/EditPersonalDialog";
 import SpeedIcon from '@material-ui/icons/Speed';
@@ -21,23 +16,20 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import GpsFixedIcon from '@material-ui/icons/GpsFixed';
 import BeenhereIcon from '@material-ui/icons/Beenhere';
-import GradeIcon from '@material-ui/icons/Grade';
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import ExerciseCard from "../training/ExerciseCard";
 import Course from "./Course";
 import Challenge from "./Challenge";
+import CustomStepper from "./CustomStepper"
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
         [theme.breakpoints.up('md')]: {
-            height: "95vh"
+            paddingTop: "10%",
+            minHeight: "100vh",
         },
         [theme.breakpoints.down('md')]: {
             paddingTop: 10,
         },
-        paddingBottom: 100
     },
     divider: {
         width: '100%'
@@ -172,24 +164,7 @@ function Dashboard() {
                     </Grid>
                     <Grid item className={classes.vSpace}>
                         <div className={classes.centered}>
-                            <Chip
-                                className={classes.chips}
-                                icon={<GradeIcon/>}
-                                label="Beginner"
-                                color="primary"
-                            />
-                            <Chip
-                                className={classes.chips}
-                                icon={<GradeIcon/>}
-                                label="Intermediate"
-                                color="primary"
-                            />
-                            <Chip
-                                className={classes.chips}
-                                icon={<GradeIcon/>}
-                                label="Advanced"
-                                color="primary"
-                            />
+                            <CustomStepper/>
                         </div>
                     </Grid>
                     <Grid item className={classes.vSpace}>
