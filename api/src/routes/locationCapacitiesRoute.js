@@ -7,4 +7,6 @@ const authenticate = require('../middleware/auth')
 
 router.get('/', locationCapacitiesController.getLocationCapacity)
 
+router.patch('/', locationCapacitiesController.updateLocationCapacity)
+
 module.exports = router
