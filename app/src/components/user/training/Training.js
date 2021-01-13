@@ -27,7 +27,7 @@ function Training() {
                   className={classes.exercisesGrid}>
                 {cards && cards[selectedCardIndex].exercises.map((item, i) => <ExerciseCard
                     key={`card:${selectedCardIndex}ex:${i}`}
-                    exercise={item.exercise}/>)}}
+                    exercise={item.exercise}/>)}
             </Grid>
         </ThemeProvider>
     );
