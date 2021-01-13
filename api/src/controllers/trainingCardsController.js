@@ -7,10 +7,15 @@ const Location = require('../models/Location')
 const Tag = require('../models/Tag')
 
 async function getExerciseIds(exercises, res) {
-    const exerciseDocs = await Exercise.find()
-        .where('name').in(exercises)
-        .select('_id')
-        .exec()
+    // const exerciseDocs = await Exercise.find()
+    //     .where('name').in(exercises)
+    //     .select('_id')
+    //     .exec()
+    const exerciseDocs = await Promise.all(exercises.map(async (exercise) => {
+        const foundExercise = await Exercise.findOne({ name: exercise }).exec()
+        console.log(foundExercise)
+        return foundExercise._id
+    }))
     return exerciseDocs.map(doc => doc._id)
 }
 
@@ -47,7 +52,9 @@ exports.createTrainingCard = async function(req, res) {
         return responses.badRequest(res)('Trainer does not exist')
     }
 
-    const exerciseIds = await getExerciseIds(exercises.map(obj => obj.exercise))
+    const exerciseNames = exercises.map(obj => obj.exercise);
+    console.log(exerciseNames)
+    const exerciseIds = await getExerciseIds(exerciseNames)
     if (exerciseIds.length !== exercises.length) {
         return responses.badRequest(res)('Some exercises do not exist')
     }

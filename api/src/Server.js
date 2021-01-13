@@ -31,6 +31,7 @@ const exercisesRoute = require('./routes/exercisesRoute')
 const trainingCardsRoute = require('./routes/trainingCardsRoute')
 const tagsRoute = require('./routes/tagsRoute')
 const executionRoute = require('./routes/trainingExecutionsRoute')
+const locationCapacitiesRoute = require('./routes/locationCapacitiesRoute')
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -44,7 +45,7 @@ app.use('/session', sessionRoute)
 
 app.use('/locations', locationsRoute)
 
-app.use(`/locations/${params.LOCATION_PARAM}/capacity`, locationsRoute)
+app.use(`/locations/:${params.LOCATION_PARAM}/capacity`, locationCapacitiesRoute)
 
 app.use('/exercises', exercisesRoute)
 
