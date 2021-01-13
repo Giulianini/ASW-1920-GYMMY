@@ -12,12 +12,12 @@ exports.createExecution = async function(req, res) {
 
     const userExists = await User.exists({ username: username })
     if (!userExists) {
-        return responses.notFound(res)
+        return responses.notFound(res)('User not found')
     }
 
     const cardExists = TrainingCard.exists({ _id: cardId })
     if (!cardExists) {
-        return responses.notFound(res)
+        return responses.notFound(res)('Card not found')
     }
 
     const user = await User.findOne({ username: username }).exec()
