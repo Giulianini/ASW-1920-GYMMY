@@ -18,17 +18,11 @@ function Training() {
     const darkMode = useSelector(state => state.userRedux.darkMode)
     const cards = useCards()
     const [selectedCardIndex, setSelectedCardIndex] = useState(0)
-    const time = 0
-    const [passedTime, setPassedTime] = useState()
-    useEffect(() => {
-        let startTrainTime = localStorage.getItem("startTrainTime") || new Date().getMinutes()
-        let passed = startTrainTime - new Date().getMinutes()
-        setPassedTime(passed)
-    }, [])
+
     return (
         <ThemeProvider theme={darkMode ? trainDarkTheme : trainLightTheme}>
             {<TrainingBar cards={cards} selectedCardIndex={selectedCardIndex}
-                          setSelectedCardIndex={setSelectedCardIndex} passedTime={passedTime}/>}
+                          setSelectedCardIndex={setSelectedCardIndex}/>}
             <Grid container direction={"column"} alignItems={"center"} justify={"flex-start"}
                   className={classes.exercisesGrid}>
                 {cards && cards[selectedCardIndex].exercises.map((item, i) => <ExerciseCard

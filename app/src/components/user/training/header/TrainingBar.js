@@ -3,6 +3,8 @@ import {AppBar, Button, Chip, Grid, IconButton, LinearProgress, Typography} from
 import {makeStyles} from "@material-ui/core/styles";
 import {ExpandMore, Grade} from "@material-ui/icons";
 import CardPopover from "./CardPopover";
+import {useDispatch, useSelector} from "react-redux";
+import {setStarted} from "../../../../redux/ducks/training/training";
 
 const useStyles = makeStyles({
     headerBar: {
@@ -39,20 +41,19 @@ const useStyles = makeStyles({
 
 function TrainingBar(props) {
     const classes = useStyles()
-    const percentage = props.cards ? (props.passedTime / props.cards[props.selectedCardIndex].minutes).toFixed(1) * 100 : 0
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = React.useState(null)
+    const dispatcher = useDispatch()
+    const started = useSelector(state => state.trainingRedux.started)
+    const elapsed = 10
+    const percentage = props.cards ? (elapsed / props.cards[props.selectedCardIndex].minutes).toFixed(1) * 100 : 0
 
-    const handleExpandCardClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    }
+    const handleExpandCardClick = (event) => setAnchorEl(event.currentTarget)
 
     const handleStartButton = () => {
-        
+        started ? dispatcher(setStarted(false)) : dispatcher(setStarted(true))
     }
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    }
+    const handleClose = () => setAnchorEl(null)
 
     return (
         <AppBar
@@ -90,11 +91,14 @@ function TrainingBar(props) {
                           alignItems={"center"}>
                         <Grid item>
                             <Typography className={classes.timerText}>
-                                Time: {props.passedTime}'
+                                Time: {elapsed}'
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Button variant={"outlined"} className={classes.playButton}>Start</Button>
+                            <Button variant={"outlined"} className={classes.playButton}
+                                    onClick={handleStartButton}>
+                                {started ? "Pause" : "Start"}
+                            </Button>
                         </Grid>
                     </Grid>
                 </Grid>
