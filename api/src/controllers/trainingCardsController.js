@@ -41,10 +41,11 @@ exports.createTrainingCard = async function(req, res) {
     const exercises = req.body.exercises
     const tags = req.body.tags ? req.body.tags : []
     const tagSet = [...new Set(tags)]
+    const minutes = req.body.minutes
 
     const userExists = await User.exists({ username: user })
     if (!userExists) {
-        return responses.notFound(res)
+        return responses.notFound(res)('User not found')
     }
 
     const trainerExists = await User.exists({ username: trainer })
@@ -77,7 +78,8 @@ exports.createTrainingCard = async function(req, res) {
         title: title,
         user: userId,
         trainer: trainerId,
-        exercises: exercisesWithIds
+        exercises: exercisesWithIds,
+        minutes: minutes
     })
 
     if (tagSet) {
@@ -102,7 +104,7 @@ exports.getUserCard = async function (req, res){
 
     const usernameExists = await User.exists({ username: username })
     if (!usernameExists) {
-        return responses.notFound(res)
+        return responses.notFound(res)('User not found')
     }
 
     if (cardIndex < 0) {
@@ -114,7 +116,7 @@ exports.getUserCard = async function (req, res){
 
     const userCardsAmount = userCards.length
     if (cardIndex >= userCardsAmount) {
-        return responses.notFound(res)
+        return responses.notFound(res)('Card not found at index ' + cardIndex)
     }
 
     responses.json(res)(userCards[cardIndex])
@@ -152,6 +154,6 @@ exports.getUserCards = async function(req, res) {
             .exec()
         responses.json(res)(userCards)
     } else {
-        responses.notFound(res)
+        responses.notFound(res)('User not found')
     }
 }

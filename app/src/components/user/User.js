@@ -11,7 +11,7 @@ import {appTheme, darkTheme} from "../../appTheme";
 import {ThemeProvider} from "@material-ui/core/styles";
 import Drawer from "./Drawer";
 import routes from "../Routes";
-import {CssBaseline} from "@material-ui/core";
+import {Box, CssBaseline} from "@material-ui/core";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 import {useSelector} from "react-redux";
 
@@ -25,17 +25,19 @@ function User() {
             <CssBaseline/>
             <Header setDrawerIsOpen={setDrawerIsOpen}/>
             <Drawer drawerIsOpen={drawerIsOpen} setDrawerIsOpen={setDrawerIsOpen}/>
-            <TransitionGroup>
-                <CSSTransition key={location.key} classNames={"fade"} timeout={300}>
-                    <Switch>
-                        <Route path={`/${routes.dashboard.value}`} children={<Dashboard/>}/>
-                        <Route path={`/${routes.personal.value}`} children={<Personal/>}/>
-                        <Route path={`/${routes.statistics.value}`} children={<Statistics/>}/>
-                        <Route path={`/${routes.training.value}`} children={<Training/>}/>
-                        <Redirect from='*' to={`/${routes.dashboard.value}`}/>
-                    </Switch>
-                </CSSTransition>
-            </TransitionGroup>
+            <Box style={{"minHeight": "100vh"}}>
+                <TransitionGroup>
+                    <CSSTransition key={location.key} classNames={"fade"} timeout={300}>
+                        <Switch>
+                            <Route path={`/${routes.dashboard.value}`} children={<Dashboard/>}/>
+                            <Route path={`/${routes.personal.value}`} children={<Personal/>}/>
+                            <Route path={`/${routes.statistics.value}`} children={<Statistics/>}/>
+                            <Route path={`/${routes.training.value}`} children={<Training/>}/>
+                            <Redirect from='*' to={`/${routes.dashboard.value}`}/>
+                        </Switch>
+                    </CSSTransition>
+                </TransitionGroup>
+            </Box>
             <BottomBar tabs={routes}/>
         </ThemeProvider>
     );

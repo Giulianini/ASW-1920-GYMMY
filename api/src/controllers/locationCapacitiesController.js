@@ -21,7 +21,7 @@ exports.getLocationCapacity = async function(req, res) {
             responses.error(res)(err)
         }
     } else {
-        responses.notFound(res)
+        responses.notFound(res)('Location not found')
     }
 }
 
@@ -32,7 +32,7 @@ exports.updateLocationCapacity = async function(req, res) {
 
     const locationExists = await Location.exists({ description: location })
     if (!locationExists) {
-        return responses.notFound(res)
+        return responses.notFound(res)('Location not found')
     }
 
     if (command !== INCREMENT_CMD && command !== DECREMENT_CMD) {

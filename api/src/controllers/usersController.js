@@ -62,7 +62,7 @@ exports.getUser = async function(req, res) {
     if (foundUser) {
         responses.json(res)(foundUser)
     } else {
-        responses.notFound(res)
+        responses.notFound(res)('User not found')
     }
 }
 
@@ -74,7 +74,7 @@ exports.updateMeasures = async function(req, res) {
 
     const usernameExists = await User.exists({ username: username })
     if (!usernameExists) {
-        responses.notFound(res)
+        responses.notFound(res)('User not found')
     } else {
         await User.updateOne({ username: username}, { age: age, height: height, weight: weight}).exec()
         responses.noContent(res)
@@ -91,7 +91,7 @@ exports.removeUser = async function(req, res) {
                 responses.noContent(res)
             })
     } else {
-        responses.notFound(res)
+        responses.notFound(res)('User not found')
     }
 }
 
@@ -100,12 +100,12 @@ exports.getUserObjective = async function(req, res) {
 
     const userExists = await User.exists({ username: username })
     if (!userExists) {
-        return responses.notFound(res)
+        return responses.notFound(res)('User not found')
     }
 
     const foundUser = await User.findOne({ username: username, objective: { $exists: true, $ne: null }}).exec()
     if (!foundUser) {
-        return responses.notFound(res)
+        return responses.notFound(res)('User not found')
     }
 
     const objective = foundUser.objective
@@ -124,7 +124,7 @@ exports.createUserObjective = async function(req, res) {
 
     const userExists = await User.exists({ username: username })
     if (!userExists) {
-        return responses.notFound(res)
+        return responses.notFound(res)('User not found')
     }
 
     const userObjectiveExists = await User.exists({ username: username, objective: { $exists: true, $ne: null }})
@@ -163,12 +163,12 @@ exports.updateUserObjective = async function(req, res) {
 
     const userExists = await User.exists({ username: username })
     if (!userExists) {
-        return responses.notFound(res)
+        return responses.notFound(res)('User not found')
     }
 
     const userObjectiveExists = await User.exists({ username: username, objective: { $exists: true, $ne: null }})
     if (!userObjectiveExists) {
-        return responses.notFound(res)
+        return responses.notFound(res)('User objective not found')
     }
 
     try {
