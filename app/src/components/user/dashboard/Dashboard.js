@@ -64,9 +64,23 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const challenges = [{
+    "title": "Push-Up",
+    "desc": "Complete as many push-ups reps as you can and climb the leaderboard!",
+    "image": "/pushUp.jpg",
+}, {
+    "title": "Pull-Up",
+    "desc": "Complete as many pull-ups reps as you can and climb the leaderboard!",
+    "image": "/pullUp.jpg",
+}, {
+    "title": "Bench press",
+    "desc": "Complete as many benchpresses as you can and climb the leaderboard!",
+    "image": "/benchPress.jpg",
+}]
+
 const courses = [{
     "title": "Functional training",
-    "desc":  "Enroll in the functional training class. All needed equipment is provided upon subscription.",
+    "desc":  "Enroll in the functional training class. All needed equipment is provided to you.",
     "image": "/functional.jpg",
 }, {
     "title": "Zumba",
@@ -77,20 +91,6 @@ const courses = [{
     "desc": "Enroll in the pilates class. All needed equipment is provided upon subscription.",
     "image": "/pilates.jpg",
 },]
-
-const challenges = [{
-    "title": "Push-Up",
-    "desc": "Complete as many push-ups as you can and climb the leaderboard!",
-    "image": "/pushUp.jpg",
-}, {
-    "title": "Pull-Up",
-    "desc": "Complete as many pull-ups as you can and climb the leaderboard!",
-    "image": "/pullUp.jpg",
-}, {
-    "title": "Bench press",
-    "desc": "Complete as many bench press reps as you can and climb the leaderboard!",
-    "image": "/benchPress.jpg",
-}]
 
 function Dashboard() {
     const classes = useStyles();

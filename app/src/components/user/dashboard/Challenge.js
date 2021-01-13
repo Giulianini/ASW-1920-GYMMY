@@ -7,7 +7,8 @@ import CardContent from "@material-ui/core/CardContent";
 const useStyles = makeStyles(theme => ({
     mediaPersonal: {
         paddingTop: '50%', // 16:9
-        margin: 'auto'
+        margin: 'auto',
+        maxWidth: '100%'
     },
     card: {
         marginBottom: 10,
