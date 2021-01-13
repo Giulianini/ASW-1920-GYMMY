@@ -26,8 +26,8 @@ exports.unauthorized = (res) => {
     res.sendStatus(401)
 }
 
-exports.notFound = (res) => {
-    res.sendStatus(404)
+exports.notFound = (res) => (message) => {
+    res.status(404).send(message)
 }
 
 exports.conflict = (res) => {

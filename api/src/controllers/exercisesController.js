@@ -22,7 +22,7 @@ exports.getExercise = async function(req, res) {
     if (foundExercise) {
         responses.json(res)(foundExercise)
     } else {
-        responses.notFound(res)
+        responses.notFound(res)('Exercise not found')
     }
 }
 
@@ -79,7 +79,7 @@ exports.removeExercise = async function(req, res) {
                 responses.noContent(res)
             })
     } else {
-        responses.notFound(res)
+        responses.notFound(res)('Exercise not found')
     }
 }
 
@@ -97,6 +97,6 @@ exports.updateExerciseLocations = async function(req, res) {
             responses.noContent(res)
         }
      } else {
-        responses.notFound(res)
+        responses.notFound(res)('Exercise not found')
     }
 }
