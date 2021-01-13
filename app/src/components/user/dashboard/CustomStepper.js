@@ -36,7 +36,6 @@ withStyles({
 
 const useStepIconStyle = makeStyles({
     root: {
-        color: '#eaeaf0',
         display: 'flex',
         height: 22,
         alignItems: 'center',

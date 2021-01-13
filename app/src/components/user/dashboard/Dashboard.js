@@ -2,11 +2,6 @@ import React, {useEffect, useRef} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {authAxios} from "../../../Api";
 import {
-    Button,
-    Card,
-    CardActionArea,
-    CardActions,
-    Chip,
     Container,
     Divider,
     Grid,
@@ -14,9 +9,6 @@ import {
     List,
     ListItem,
     Typography,
-    Stepper,
-    Step,
-    StepLabel
 } from "@material-ui/core";
 import EditPersonalDialog from "../personal/EditPersonalDialog";
 import SpeedIcon from '@material-ui/icons/Speed';
@@ -24,11 +16,7 @@ import BarChartIcon from '@material-ui/icons/BarChart';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import GpsFixedIcon from '@material-ui/icons/GpsFixed';
 import BeenhereIcon from '@material-ui/icons/Beenhere';
-import GradeIcon from '@material-ui/icons/Grade';
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import ExerciseCard from "../training/ExerciseCard";
 import Course from "./Course";
 import Challenge from "./Challenge";
 import CustomStepper from "./CustomStepper"
