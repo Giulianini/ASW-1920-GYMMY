@@ -38,6 +38,12 @@ exports.getAllExercises = async function(req, res) {
 exports.createExercise = async function(req, res) {
     const name = req.body.name
     const description = req.body.description
+
+    const exerciseExists = await Exercise.exists({ name: name })
+    if (exerciseExists) {
+        return responses.conflict(res)
+    }
+
     try {
         const locations = req.body.locations
         const locationIds = await getLocationIds(locations)
