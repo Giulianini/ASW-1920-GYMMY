@@ -34,9 +34,6 @@ const useStyles = makeStyles(theme => ({
     divider: {
         width: '100%'
     },
-    control: {
-        padding: theme.spacing(3)
-    },
     centered: {
         margin: "auto"
     },
@@ -44,26 +41,6 @@ const useStyles = makeStyles(theme => ({
         paddingTop: 5,
         paddingBottom: 5,
         margin: 'auto'
-    },
-    hSpace: {
-        marginLeft: 5,
-        marginRight: 5
-    },
-    chips: {
-        marginLeft: 7,
-        marginRight: 7,
-        fontSize: '120%'
-    },
-    mediaPersonal: {
-        paddingTop: '50%', // 16:9
-        margin: 'auto'
-    },
-    card: {
-        marginBottom: 10,
-        maxWidth: theme.breakpoints.values.md
-    },
-    pushCardSize: {
-        minWidth: theme.breakpoints.values.md / 2
     },
     score: {
         fontSize: 30,
@@ -77,8 +54,7 @@ const useStyles = makeStyles(theme => ({
         fontWeight: "lighter"
     },
     scrollablePane: {
-        maxHeight: 300,
-        width: '100%',
+        maxHeight: 450,
         overflow: 'auto'
     },
     icons: {
@@ -88,9 +64,23 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const challenges = [{
+    "title": "Push-Up",
+    "desc": "Complete as many push-ups reps as you can and climb the leaderboard!",
+    "image": "/pushUp.jpg",
+}, {
+    "title": "Pull-Up",
+    "desc": "Complete as many pull-ups reps as you can and climb the leaderboard!",
+    "image": "/pullUp.jpg",
+}, {
+    "title": "Bench press",
+    "desc": "Complete as many benchpresses as you can and climb the leaderboard!",
+    "image": "/benchPress.jpg",
+}]
+
 const courses = [{
     "title": "Functional training",
-    "desc":  "Enroll in the functional training class. All needed equipment is provided upon subscription.",
+    "desc":  "Enroll in the functional training class. All needed equipment is provided to you.",
     "image": "/functional.jpg",
 }, {
     "title": "Zumba",
@@ -101,20 +91,6 @@ const courses = [{
     "desc": "Enroll in the pilates class. All needed equipment is provided upon subscription.",
     "image": "/pilates.jpg",
 },]
-
-const challenges = [{
-    "title": "Push-Up",
-    "desc": "Complete as many push-ups as you can and climb the leaderboard!",
-    "image": "/pushUp.jpg",
-}, {
-    "title": "Pull-Up",
-    "desc": "Complete as many pull-ups as you can and climb the leaderboard!",
-    "image": "/pullUp.jpg",
-}, {
-    "title": "Bench press",
-    "desc": "Complete as many bench press reps as you can and climb the leaderboard!",
-    "image": "/benchPress.jpg",
-}]
 
 function Dashboard() {
     const classes = useStyles();
@@ -173,7 +149,7 @@ function Dashboard() {
                         </Typography>
                     </Grid>
 
-                    <Grid item container className={classes.scrollablePane}>
+                    <Grid item container direction={"column"} alignItems={"center"} justify={"flex-start"} className={classes.scrollablePane}>
                         {challenges.map((item, i) => <Challenge key={i} item={item}/>)}
                     </Grid>
 
@@ -183,7 +159,7 @@ function Dashboard() {
                         </Typography>
                     </Grid>
 
-                    <Grid item container className={classes.scrollablePane}>
+                    <Grid item container direction={"column"} alignItems={"center"} justify={"flex-start"} className={classes.scrollablePane}>
                         {courses.map((item, i) => <Course key={i} item={item}/>)}
                     </Grid>
 

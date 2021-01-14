@@ -167,7 +167,7 @@ StepIconFilling.propTypes = {
 };
 
 export default function CustomizedSteppers() {
-    const [activeStep, setActiveStep] = React.useState(0);  // 0 = beginner, 1 = intermediate, 2 = advanced
+    const [activeStep, setActiveStep] = React.useState(1);  // 0 = beginner, 1 = intermediate, 2 = advanced
 
     // Level increase
     const handleNext = () => {
