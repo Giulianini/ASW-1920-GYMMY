@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Grid} from "@material-ui/core";
 import {makeStyles, ThemeProvider} from "@material-ui/core/styles";
 import {useSelector} from "react-redux";
@@ -6,6 +6,7 @@ import {trainDarkTheme, trainLightTheme} from "./trainTheme"
 import {userAxios} from "../../../Api";
 import ExerciseCard from "./ExerciseCard";
 import TrainingBar from "./header/TrainingBar";
+import SnackBar from "../utils/Snackbar";
 
 const useStyles = makeStyles({
     exercisesGrid: {
@@ -15,35 +16,52 @@ const useStyles = makeStyles({
 
 function Training() {
     const classes = useStyles()
+    const [loading, setLoading] = useState(true)
+    const snackRef = useRef({})
     const darkMode = useSelector(state => state.userRedux.darkMode)
     const cards = useCards()
     const [selectedCardIndex, setSelectedCardIndex] = useState(0)
 
-    return (
-        <ThemeProvider theme={darkMode ? trainDarkTheme : trainLightTheme}>
-            {<TrainingBar cards={cards} selectedCardIndex={selectedCardIndex}
-                          setSelectedCardIndex={setSelectedCardIndex}/>}
-            <Grid container direction={"column"} alignItems={"center"} justify={"flex-start"}
-                  className={classes.exercisesGrid}>
-                {cards && cards[selectedCardIndex].exercises.map((item, i) => <ExerciseCard
-                    key={`card:${selectedCardIndex}ex:${i}`}
-                    exercise={item.exercise}/>)}
-            </Grid>
-        </ThemeProvider>
-    );
 
+    if (loading) {
+        return (<div>Loading...</div>)
+    } else {
+        return (
+            <ThemeProvider theme={darkMode ? trainDarkTheme : trainLightTheme}>
+                <SnackBar ref={snackRef}/>
+                <TrainingBar cards={cards} selectedCardIndex={selectedCardIndex}
+                             setSelectedCardIndex={setSelectedCardIndex}/>
+                <Grid container direction={"column"} alignItems={"center"} justify={"flex-start"}
+                      className={classes.exercisesGrid}>
+                    {cards && cards[selectedCardIndex].exercises.map((item, i) => <ExerciseCard
+                        key={`card:${selectedCardIndex}ex:${i}`}
+                        exercise={item.exercise}/>)}
+                </Grid>
+            </ThemeProvider>
+        )
+    }
+
+    function showSnack(msg, severity) {
+        snackRef.current.handleMessage(msg, severity)
+    }
+
+    function useCards() {
+        const [cards, setCards] = useState(null)
+        useEffect(() => {
+            userAxios.get("cards").then(res => {
+                setCards(res.data)
+                setLoading(false)
+                console.log("diocane")
+                showSnack("Workout cards loaded", "success")
+            }).catch(reason => {
+                console.log(reason)
+                setLoading(false)
+                showSnack("Cannot load workout cards!", "error")
+            })
+        }, []) // eslint-disable-line react-hooks/exhaustive-deps
+        return cards
+    }
 }
 
-function useCards() {
-    const [cards, setCards] = useState(null)
-    useEffect(() => {
-        userAxios.get("cards").then(res => {
-            setCards(res.data)
-        }).catch(reason => {
-            console.log(reason)
-        })
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
-    return cards
-}
 
 export default Training;
