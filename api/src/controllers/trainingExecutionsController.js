@@ -8,7 +8,6 @@ const TrainingExecution = require('../models/TrainingExecution')
 exports.createExecution = async function(req, res) {
     const username = req.params[params.USERNAME_PARAM]
     const cardId = req.body.card
-    const startTime = req.body.startTime
 
     const userExists = await User.exists({ username: username })
     if (!userExists) {
@@ -35,7 +34,7 @@ exports.createExecution = async function(req, res) {
     const execution = new TrainingExecution({
         user: userId,
         card: cardId,
-        startTime: startTime,
+        startTime: Date.now(),
         completion: exerciseCompletions
     })
 
