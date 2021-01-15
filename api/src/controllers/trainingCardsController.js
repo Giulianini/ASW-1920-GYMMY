@@ -112,7 +112,31 @@ exports.getUserCard = async function (req, res){
     }
 
     const userId = await getUserId(username)
-    const userCards = await TrainingCard.find({ user: userId }).exec()
+    const userCards = await TrainingCard.find({ user: userId })
+        .populate({
+            path: 'tags',
+            model: Tag
+        })
+        .populate({
+            path: 'user',
+            model: User,
+            select: '-password'
+        })
+        .populate({
+            path: 'trainer',
+            model: User,
+            select: '-password'
+        })
+        .populate({
+            path: 'exercises.exercise',
+            model: Exercise,
+            populate: {
+                path: 'locations',
+                model: Location
+            }
+        })
+        .exec()
+
 
     const userCardsAmount = userCards.length
     if (cardIndex >= userCardsAmount) {
