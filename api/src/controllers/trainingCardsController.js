@@ -13,7 +13,6 @@ async function getExerciseIds(exercises, res) {
     //     .exec()
     const exerciseDocs = await Promise.all(exercises.map(async (exercise) => {
         const foundExercise = await Exercise.findOne({ name: exercise }).exec()
-        console.log(foundExercise)
         return foundExercise._id
     }))
     return exerciseDocs.map(doc => doc._id)
@@ -25,7 +24,6 @@ async function getTagIds(tags, res) {
         .in(tags)
         .select('_id')
         .exec()
-    console.log("tagDocs " + tagDocs)
     return tagDocs.map(doc => doc._id)
 }
 
@@ -54,7 +52,6 @@ exports.createTrainingCard = async function(req, res) {
     }
 
     const exerciseNames = exercises.map(obj => obj.exercise);
-    console.log(exerciseNames)
     const exerciseIds = await getExerciseIds(exerciseNames)
     if (exerciseIds.length !== exercises.length) {
         return responses.badRequest(res)('Some exercises do not exist')
@@ -112,7 +109,31 @@ exports.getUserCard = async function (req, res){
     }
 
     const userId = await getUserId(username)
-    const userCards = await TrainingCard.find({ user: userId }).exec()
+    const userCards = await TrainingCard.find({ user: userId })
+        .populate({
+            path: 'tags',
+            model: Tag
+        })
+        .populate({
+            path: 'user',
+            model: User,
+            select: '-password'
+        })
+        .populate({
+            path: 'trainer',
+            model: User,
+            select: '-password'
+        })
+        .populate({
+            path: 'exercises.exercise',
+            model: Exercise,
+            populate: {
+                path: 'location',
+                model: Location
+            }
+        })
+        .exec()
+
 
     const userCardsAmount = userCards.length
     if (cardIndex >= userCardsAmount) {
@@ -147,7 +168,7 @@ exports.getUserCards = async function(req, res) {
                 path: 'exercises.exercise',
                 model: Exercise,
                 populate: {
-                    path: 'locations',
+                    path: 'location',
                     model: Location
                 }
             })

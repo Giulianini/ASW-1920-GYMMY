@@ -5,6 +5,6 @@ const express = require('express')
 const router = express.Router({ mergeParams: true })
 const authenticate = require('../middleware/auth')
 
-router.post('/', trainingExecutionsController.createExecution)
+router.put('/', trainingExecutionsController.createExecution)
 
 module.exports = router

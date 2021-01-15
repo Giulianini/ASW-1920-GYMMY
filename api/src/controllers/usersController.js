@@ -128,7 +128,6 @@ exports.createUserObjective = async function(req, res) {
     }
 
     const userObjectiveExists = await User.exists({ username: username, objective: { $exists: true, $ne: null }})
-    console.log(userObjectiveExists)
     if (userObjectiveExists) {
         return responses.conflict(res)
     }

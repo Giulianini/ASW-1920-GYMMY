@@ -8,14 +8,13 @@ const TrainingExecution = require('../models/TrainingExecution')
 exports.createExecution = async function(req, res) {
     const username = req.params[params.USERNAME_PARAM]
     const cardId = req.body.card
-    const startTime = req.body.startTime
 
     const userExists = await User.exists({ username: username })
     if (!userExists) {
         return responses.notFound(res)('User not found')
     }
 
-    const cardExists = TrainingCard.exists({ _id: cardId })
+    const cardExists = await TrainingCard.exists({ _id: cardId })
     if (!cardExists) {
         return responses.notFound(res)('Card not found')
     }
@@ -23,23 +22,24 @@ exports.createExecution = async function(req, res) {
     const user = await User.findOne({ username: username }).exec()
     const userId = user._id
 
+    const executionExists = await TrainingExecution.findOne({ user: userId }).exec()
+    if (executionExists) {
+        return responses.conflict(res)
+    }
+
     const exercises = await TrainingCard.findOne({ _id: cardId })
         .map(card => card.exercises)
         .exec();
     const exerciseIds = exercises.map(exercise => exercise.exercise)
 
-    console.log(exerciseIds)
-
     const exerciseCompletions = exerciseIds.map(exerciseId => {
         return { exercise: exerciseId, done: false }
     })
 
-    console.log(exerciseCompletions)
-
     const execution = new TrainingExecution({
         user: userId,
         card: cardId,
-        startTime: startTime,
+        startTime: Date.now(),
         completion: exerciseCompletions
     })
 
