@@ -3,6 +3,7 @@ import {Grid, LinearProgress, makeStyles} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import {Pause, PlayArrow, Stop} from "@material-ui/icons";
 import Typography from "@material-ui/core/Typography";
+import useSound from "use-sound";
 
 const useStyles = makeStyles({
     bottomBar: {
@@ -21,6 +22,7 @@ const useStyles = makeStyles({
 
 function BottomTimer(props) {
     const classes = useStyles()
+    const [play] = useSound("/timeout.mp3");
     const [secs, setSecs] = React.useState(0)
     const [started, setStarted] = React.useState(false)
     const [timerId, setTimerID] = React.useState(0)
@@ -38,6 +40,9 @@ function BottomTimer(props) {
     }
 
     useEffect(() => {
+        if (remainSeconds === 0) {
+            play()
+        }
         if (started) {
             const id = setTimeout(() => {
                 setSecs(secs + 1)
@@ -55,7 +60,7 @@ function BottomTimer(props) {
                 <Grid item container direction={"row"} justify={"space-between"} alignItems={"center"}>
                     <Grid item>
                         <Typography variant={"h5"} className={classes.timerText}>
-                            {`${(remainSeconds / 60).toFixed(0)}' ${remainSeconds % 60}''`}
+                            {`${(remainSeconds / 60) | 0}' ${remainSeconds % 60}''`}
                         </Typography>
                     </Grid>
                     <Grid item>
