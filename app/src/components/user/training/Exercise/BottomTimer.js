@@ -40,15 +40,16 @@ function BottomTimer(props) {
     }
 
     useEffect(() => {
-        if (remainSeconds === 0) {
-            play()
-        }
         if (started) {
-            const id = setTimeout(() => {
-                setSecs(secs + 1)
-            }, 1000)
-            setTimerID(id)
-        } else {
+            if (remainSeconds === 0) {
+                toggleStop()
+                play()
+            } else {
+                const id = setTimeout(() => {
+                    setSecs(secs + 1)
+                }, 1000)
+                setTimerID(id)
+            }
         }
     }, [secs, started])
     return (
