@@ -24,10 +24,10 @@ const ExerciseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    locations: [{
+    location: {
         type: mongoose.Schema.ObjectId,
         ref: 'Location'
-    }]
+    }
 })
 
 module.exports = mongoose.model("Exercises", ExerciseSchema)

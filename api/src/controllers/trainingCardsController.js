@@ -128,7 +128,7 @@ exports.getUserCard = async function (req, res){
             path: 'exercises.exercise',
             model: Exercise,
             populate: {
-                path: 'locations',
+                path: 'location',
                 model: Location
             }
         })
@@ -168,7 +168,7 @@ exports.getUserCards = async function(req, res) {
                 path: 'exercises.exercise',
                 model: Exercise,
                 populate: {
-                    path: 'locations',
+                    path: 'location',
                     model: Location
                 }
             })

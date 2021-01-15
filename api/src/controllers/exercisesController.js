@@ -17,7 +17,7 @@ exports.getExercise = async function(req, res) {
     const exerciseName = req.params.exerciseName
     const foundExercise = await Exercise.findOne({ name: exerciseName })
         .populate({
-            path: 'locations',
+            path: 'location',
             model: Location
         })
         .exec()
@@ -31,7 +31,7 @@ exports.getExercise = async function(req, res) {
 exports.getAllExercises = async function(req, res) {
     const foundExercises = await Exercise.find()
         .populate({
-            path: 'locations',
+            path: 'location',
             model: Location
         }).exec()
     responses.json(res)(foundExercises)
@@ -47,20 +47,20 @@ exports.createExercise = async function(req, res) {
     }
 
     try {
-        const locations = req.body.locations
-        const locationIds = await getLocationIds(locations)
-        if (locations.length !== locationIds.length) {
-            responses.badRequest(res)('Some locations do not exist')
+        const location = req.body.location
+        const foundLocation = await Location.findOne({ description: location}).exec()
+        if (!foundLocation) {
+            responses.badRequest(res)('Location does not exist')
         } else {
             const exercise = new Exercise({
                 name: name,
                 description: description,
-                locations: locationIds
+                location: foundLocation._id
             })
             const savedExercise = await exercise.save()
             const populatedExercise = await Exercise.findOne({_id: savedExercise._id})
                 .populate({
-                    path: 'locations',
+                    path: 'location',
                     model: Location
                 })
                 .exec()
@@ -149,11 +149,10 @@ exports.updateExerciseLocations = async function(req, res) {
     const exerciseName = req.params.exerciseName
     const foundExercise = await Exercise.findOne({ name: exerciseName }).exec()
     if (foundExercise) {
-        const locations = req.body.locations
-        const locationIds = await getLocationIds(locations, res)
-
-        if (locations.length !== locationIds.length) {
-            responses.badRequest(res)('Some locations do not exist')
+        const location = req.body.location
+        const foundLocation = await Location.findOne({ description: location})
+        if (!foundLocation) {
+            responses.badRequest(res)('Location does not exist')
         } else {
             await Exercise.updateOne({name: exerciseName}, { locations: locationIds }).exec()
             responses.noContent(res)
