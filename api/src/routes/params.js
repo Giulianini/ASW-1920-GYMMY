@@ -1,5 +1,6 @@
 exports.USERNAME_PARAM = 'username'
 exports.EXERCISE_NAME_PARAM = 'exerciseName'
+exports.EXERCISE_IMAGE_ROUTE = 'image'
 exports.LOCATION_PARAM = 'location'
 exports.USER_CARDS_ROUTE = 'cards'
 exports.CARD_INDEX_PARAM = 'cardIndex'

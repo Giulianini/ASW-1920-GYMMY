@@ -1,6 +1,8 @@
 const Exercise = require('../models/Exercise')
 const Location = require('../models/Location')
 const responses = require('./util/responses')
+const params = require('../routes/params')
+const fs = require("fs");
 
 async function getLocationIds(descriptions, res) {
     const locationDocs = await Location.find()
@@ -64,6 +66,66 @@ exports.createExercise = async function(req, res) {
                 .exec()
             responses.created(res)(populatedExercise)
         }
+    } catch (err) {
+        responses.error(res)(err)
+    }
+}
+
+exports.getExerciseImage = async function(req, res) {
+    const exercise = req.params[params.EXERCISE_NAME_PARAM]
+
+    const foundExercise = await Exercise.findOne({ name: exercise }).exec()
+    if (!foundExercise) {
+        return responses.notFound(res)('Exercise not found')
+    }
+
+    const foundImage = foundExercise.image
+    if (!foundImage) {
+        return responses.notFound(res)('Exercise image not found')
+    }
+
+    res.contentType(foundImage.contentType).send(foundImage.data)
+}
+
+exports.createExerciseImage = async function(req, res) {
+    const exercise = req.params[params.EXERCISE_NAME_PARAM]
+
+    const foundExercise = await Exercise.findOne({ name: exercise }).exec()
+    if (!foundExercise) {
+        return responses.notFound(res)('Exercise not found')
+    }
+
+    try {
+        const img = req.file.buffer
+        const contentType = req.file.mimetype
+        foundExercise.image = {
+            data: img,
+            contentType: contentType
+        }
+        await foundExercise.save()
+        responses.noContent(res)
+    } catch (err) {
+        responses.error(res)(err)
+    }
+}
+
+exports.removeExerciseImage = async function(req, res) {
+    const exercise = req.params[params.EXERCISE_NAME_PARAM]
+
+    const foundExercise = await Exercise.findOne({ name: exercise }).exec()
+    if (!foundExercise) {
+        return responses.notFound(res)('Exercise not found')
+    }
+
+    const foundImage = foundExercise.image
+    if (!foundImage) {
+        return responses.notFound(res)('Exercise image not found')
+    }
+
+    try {
+        foundExercise.image = undefined
+        await foundExercise.save()
+        responses.noContent(res)
     } catch (err) {
         responses.error(res)(err)
     }
