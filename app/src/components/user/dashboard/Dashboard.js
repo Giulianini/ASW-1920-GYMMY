@@ -24,12 +24,8 @@ import CustomStepper from "./CustomStepper"
 const useStyles = makeStyles(theme => ({
     rootGrid: {
         [theme.breakpoints.up('md')]: {
-            paddingTop: "10%",
             minHeight: "100vh",
-        },
-        [theme.breakpoints.down('md')]: {
-            paddingTop: 10,
-        },
+        }
     },
     divider: {
         width: '100%'
