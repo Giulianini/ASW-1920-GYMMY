@@ -14,13 +14,18 @@ exports.createExecution = async function(req, res) {
         return responses.notFound(res)('User not found')
     }
 
-    const cardExists = TrainingCard.exists({ _id: cardId })
+    const cardExists = await TrainingCard.exists({ _id: cardId })
     if (!cardExists) {
         return responses.notFound(res)('Card not found')
     }
 
     const user = await User.findOne({ username: username }).exec()
     const userId = user._id
+
+    const executionExists = await TrainingExecution.findOne({ user: userId }).exec()
+    if (executionExists) {
+        return responses.conflict(res)
+    }
 
     const exercises = await TrainingCard.findOne({ _id: cardId })
         .map(card => card.exercises)
