@@ -44,8 +44,8 @@ function TrainingBar(props) {
     const [anchorEl, setAnchorEl] = React.useState(null)
     const dispatcher = useDispatch()
     const started = useSelector(state => state.trainingRedux.started)
-    const elapsed = 10
-    const percentage = props.cards ? (elapsed / props.cards[props.selectedCardIndex].minutes).toFixed(1) * 100 : 0
+    const completed = 10
+    const percentage = props.cards ? (completed / props.cards[props.selectedCardIndex].minutes).toFixed(1) * 100 : 0
 
     const handleExpandCardClick = (event) => setAnchorEl(event.currentTarget)
 
@@ -91,7 +91,7 @@ function TrainingBar(props) {
                           alignItems={"center"}>
                         <Grid item>
                             <Typography className={classes.timerText}>
-                                Time: {elapsed}'
+                                Time: {completed}'
                             </Typography>
                         </Grid>
                         <Grid item>

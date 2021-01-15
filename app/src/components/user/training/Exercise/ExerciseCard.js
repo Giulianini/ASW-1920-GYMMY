@@ -20,6 +20,10 @@ const useStyles = makeStyles(theme => ({
     },
     pushCardSize: {
         minWidth: theme.breakpoints.values.lg / 2
+    },
+    cardActionButton: {
+        padding: 0,
+        margin: 0,
     }
 }))
 
@@ -28,27 +32,24 @@ function ExerciseCard(props) {
     return (
         <Grid item xs={11} lg={6}>
             <Card className={classes.card}>
-                <CardActionArea>
+                <CardActionArea onClick={() => props.handleExerciseOpen(props.exercise)}>
                     <CardMedia
                         className={classes.cardMedia}
                         image={"/pushUp.jpg"}
-                        title={props.exercise.name}
+                        title={props.exercise.exercise.name}
                     />
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
-                            {props.exercise.name}
+                            {props.exercise.exercise.name}
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
-                            {props.exercise.description}
+                            {props.exercise.exercise.description}
                         </Typography>
                     </CardContent>
                 </CardActionArea>
-                <CardActions>
-                    <Button size="small">
-                        Accetta
-                    </Button>
-                    <Button size="small">
-                        100 punti
+                <CardActions className={classes.cardActionButton}>
+                    <Button fullWidth={true}>
+                        Start
                     </Button>
                 </CardActions>
                 <div className={classes.pushCardSize}/>
