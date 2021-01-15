@@ -13,7 +13,6 @@ async function getExerciseIds(exercises, res) {
     //     .exec()
     const exerciseDocs = await Promise.all(exercises.map(async (exercise) => {
         const foundExercise = await Exercise.findOne({ name: exercise }).exec()
-        console.log(foundExercise)
         return foundExercise._id
     }))
     return exerciseDocs.map(doc => doc._id)
@@ -25,7 +24,6 @@ async function getTagIds(tags, res) {
         .in(tags)
         .select('_id')
         .exec()
-    console.log("tagDocs " + tagDocs)
     return tagDocs.map(doc => doc._id)
 }
 
@@ -54,7 +52,6 @@ exports.createTrainingCard = async function(req, res) {
     }
 
     const exerciseNames = exercises.map(obj => obj.exercise);
-    console.log(exerciseNames)
     const exerciseIds = await getExerciseIds(exerciseNames)
     if (exerciseIds.length !== exercises.length) {
         return responses.badRequest(res)('Some exercises do not exist')

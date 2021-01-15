@@ -28,13 +28,9 @@ exports.createExecution = async function(req, res) {
         .exec();
     const exerciseIds = exercises.map(exercise => exercise.exercise)
 
-    console.log(exerciseIds)
-
     const exerciseCompletions = exerciseIds.map(exerciseId => {
         return { exercise: exerciseId, done: false }
     })
-
-    console.log(exerciseCompletions)
 
     const execution = new TrainingExecution({
         user: userId,
