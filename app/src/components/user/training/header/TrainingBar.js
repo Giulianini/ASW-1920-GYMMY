@@ -1,11 +1,8 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import {AppBar, Button, Chip, Grid, IconButton, LinearProgress, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {ExpandMore, Grade} from "@material-ui/icons";
 import CardPopover from "./CardPopover";
-import {useDispatch, useSelector} from "react-redux";
-import {setStarted} from "../../../../redux/ducks/training/training";
-import {userAxios} from "../../../../Api";
 
 const useStyles = makeStyles({
     headerBar: {
@@ -42,36 +39,9 @@ const useStyles = makeStyles({
 
 function TrainingBar(props) {
     const classes = useStyles()
-    const [anchorEl, setAnchorEl] = React.useState(null)
-    const dispatcher = useDispatch()
-    const started = useSelector(state => state.trainingRedux.started)
-    const completed = 10
-    const percentage = props.cards ? (completed / props.selectedCard.minutes).toFixed(1) * 100 : 0
-
+    const [anchorEl, setAnchorEl] = useState(null)
+    const percentage = props.completion ? (props.completion.filter(c => c.completed).length * 1.0 / props.completion.length).toFixed(1) * 100 : 0
     const handleExpandCardClick = (event) => setAnchorEl(event.currentTarget)
-
-    useEffect(() => {
-        userAxios.get("execution").then(res => {
-
-        }).catch(reason => {
-            if (reason.response.status === 404) {
-                dispatcher(setStarted(false))
-            }
-        })
-    }, [])
-
-    const handleStartButton = () => {
-        if (started) {
-            dispatcher(setStarted(false))
-        } else {
-            userAxios.put("execution", {"card": props.selectedCard._id}).then(res => {
-                console.log(res.status)
-                dispatcher(setStarted(true))
-            }).catch(reason => {
-                console.log(reason.response.data) //TODO notification
-            })
-        }
-    }
 
     const handleClose = () => setAnchorEl(null)
 
@@ -88,7 +58,7 @@ function TrainingBar(props) {
                                 className={classes.titleText}> {props.selectedCard && props.selectedCard.title}</Typography>
                         </Grid>
                         <Grid item>
-                            <IconButton onClick={started ? () => {
+                            <IconButton onClick={props.started ? () => {
                             } : handleExpandCardClick}>
                                 <ExpandMore/>
                             </IconButton>
@@ -112,13 +82,13 @@ function TrainingBar(props) {
                           alignItems={"center"}>
                         <Grid item>
                             <Typography className={classes.timerText}>
-                                Time: {completed}'
+                                Started: {`${new Date(props.startTime).getHours()}:${new Date(props.startTime).getMinutes()}`}
                             </Typography>
                         </Grid>
                         <Grid item>
                             <Button variant={"outlined"} className={classes.playButton}
-                                    onClick={handleStartButton}>
-                                {started ? "Cancel" : "Start"}
+                                    onClick={props.handleStartCard}>
+                                {props.started ? "Cancel" : "Start"}
                             </Button>
                         </Grid>
                     </Grid>

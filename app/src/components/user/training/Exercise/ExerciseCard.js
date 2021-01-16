@@ -11,7 +11,6 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.up('lg')]: {
             maxWidth: theme.breakpoints.values.lg / 2
         },
-
     },
     cardMedia: {
         height: 0,
@@ -57,7 +56,7 @@ function ExerciseCard(props) {
                 </CardActionArea>
                 <CardActions className={classes.cardActionButton}>
                     {
-                        props.complete.completed ? <Done/> :
+                        (props.complete && props.complete.completed) ? <Done/> :
                             <Button fullWidth={true} onClick={handleStartClick}>
                                 {props.isCurrent ? "Complete" : "Start"}
                             </Button>

@@ -17,12 +17,14 @@ const useStyles = makeStyles({
 function Training() {
     const classes = useStyles()
     const [loading, setLoading] = useState(true)
+    const [started, setStarted] = useState(false)
     const darkMode = useSelector(state => state.userRedux.darkMode)
     const cards = useCards()
     const [selectedCardIndex, setSelectedCardIndex] = useState(0)
     const selectedCard = cards && cards[selectedCardIndex]
     const [currentExercise, setCurrentExercise] = useState(null)
     const [completion, setCompletion] = useState(null)
+    const [startTime, setStartTime] = useState(null)
 
     const exerciseDialogRef = useRef({})
 
@@ -30,25 +32,56 @@ function Training() {
         exerciseDialogRef.current.handleClickDialogOpen(exercise)
     }
 
+    const handleStartCard = () => {
+        if (started) {
+            userAxios.delete("execution").then(() => {
+                setStarted(false)
+            }).catch(reason => {
+                console.log(reason.response.data) //TODO notification
+            })
+        } else {
+            userAxios.put("execution", {"card": selectedCard._id}).then(() => {
+                setStarted(true)
+            }).catch(reason => {
+                console.log(reason.response.data) //TODO notification
+            })
+        }
+    }
+
     const handleCompleteExercise = (index) => {
-        const newCompletion = completion
-        newCompletion[index].completed = true
-        setCompletion(newCompletion)
+        console.log(index)
+        userAxios.patch("execution", {
+            exerciseIndex: index,
+            command: "completeExercise"
+        }).then(() => {
+            const newCompletion = completion.slice()
+            newCompletion[index].completed = true
+            setCompletion(newCompletion)
+        }).catch(() => {
+            console.log("Error cannot complete exercise") //TODO notification
+        })
     }
 
     const handleStartExercise = (index) => {
-        userAxios.patch("execution", {"exerciseIndex": index}).then(res => {
-
-        }).catch(reason => {
-
+        userAxios.patch("execution", {
+            exerciseIndex: index,
+            command: "startExercise"
+        }).then(() => {
+            setCurrentExercise(index)
+        }).catch(() => {
+            console.log("Not started") //TODO notification
         })
     }
 
     useEffect(() => {
         userAxios.get("execution").then(res => {
-            console.log(res.data)
             setCurrentExercise(res.data.currentExercise)
             setCompletion(res.data.completion)
+            setStartTime(res.data.startTime)
+            setStarted(true)
+        }).catch(reason => {
+            setStarted(false)
+            console.log("No execution found") //TODO notification
         })
     }, [currentExercise])
 
@@ -58,7 +91,10 @@ function Training() {
         return (
             <ThemeProvider theme={darkMode ? trainDarkTheme : trainLightTheme}>
                 <ExerciseDialog ref={exerciseDialogRef}/>
-                <TrainingBar cards={cards} selectedCard={selectedCard} selectedCardIndex={selectedCardIndex}
+                <TrainingBar cards={cards} selectedCard={selectedCard} completion={completion}
+                             startTime={startTime} handleStartCard={handleStartCard}
+                             started={started}
+                             selectedCardIndex={selectedCardIndex}
                              setSelectedCardIndex={setSelectedCardIndex}/>
                 <Grid container direction={"column"} alignItems={"center"} justify={"flex-start"}
                       className={classes.exercisesGrid}>
