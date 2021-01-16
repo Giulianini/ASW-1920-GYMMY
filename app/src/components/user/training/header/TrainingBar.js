@@ -44,7 +44,6 @@ function TrainingBar(props) {
     const handleExpandCardClick = (event) => setAnchorEl(event.currentTarget)
 
     const handleClose = () => setAnchorEl(null)
-
     return (
         <AppBar
             color={"primary"}
@@ -82,7 +81,7 @@ function TrainingBar(props) {
                           alignItems={"center"}>
                         <Grid item>
                             <Typography className={classes.timerText}>
-                                Started: {`${new Date(props.startTime).getHours()}:${new Date(props.startTime).getMinutes()}`}
+                                Started: {props.startTime ? `${new Date(props.startTime).getHours()}:${new Date(props.startTime).getMinutes()}` : ""}
                             </Typography>
                         </Grid>
                         <Grid item>

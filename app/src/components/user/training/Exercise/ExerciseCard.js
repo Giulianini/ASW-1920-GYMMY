@@ -1,6 +1,6 @@
 import React from 'react';
 import CardMedia from "@material-ui/core/CardMedia";
-import {Button, Card, CardActionArea, CardActions, Grid, Typography} from "@material-ui/core";
+import {Box, Button, Card, CardActionArea, CardActions, Grid, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import CardContent from "@material-ui/core/CardContent";
 import {Done} from "@material-ui/icons";
@@ -24,6 +24,10 @@ const useStyles = makeStyles(theme => ({
     cardActionButton: {
         padding: 0,
         margin: 0,
+    },
+    doneIcon: {
+        width: "100%",
+        textAlign: "center",
     }
 }))
 
@@ -56,8 +60,10 @@ function ExerciseCard(props) {
                 </CardActionArea>
                 <CardActions className={classes.cardActionButton}>
                     {
-                        (props.complete && props.complete.completed) ? <Done/> :
-                            <Button fullWidth={true} onClick={handleStartClick}>
+                        (props.complete && props.complete.completed) ?
+                            <Box className={classes.doneIcon}><Done/></Box> :
+                            <Button fullWidth={true}
+                                    onClick={handleStartClick}>
                                 {props.isCurrent ? "Complete" : "Start"}
                             </Button>
                     }
