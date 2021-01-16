@@ -29,7 +29,7 @@ const TrainingExecutionSchema = new mongoose.Schema({
     },
     currentExercise: {
         type: Number,
-        default: 0,
+        default: null,
         // required: true
     },
     completion: {
