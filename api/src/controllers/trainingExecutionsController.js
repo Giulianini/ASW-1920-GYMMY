@@ -139,6 +139,28 @@ exports.updateExecution = async function(req, res) {
             }
             break
     }
+}
 
+exports.removeExecution = async function(req, res) {
+    const username = req.params[params.USERNAME_PARAM]
 
+    const userExists = await User.exists({ username: username })
+    if (!userExists) {
+        return responses.notFound(res)('User not found')
+    }
+
+    const user = await User.findOne({ username: username }).exec()
+    const userId = user._id
+
+    const foundExecution = await TrainingExecution.findOne({ user: userId }).exec()
+    if (!foundExecution) {
+        return responses.notFound(res)('Execution not found')
+    }
+
+    try {
+        await TrainingExecution.deleteOne({ user: userId }).exec()
+        responses.noContent(res)
+    } catch (err) {
+        responses.error(res)(err)
+    }
 }
