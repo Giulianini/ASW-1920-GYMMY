@@ -9,4 +9,6 @@ router.get('/', trainingExecutionsController.getExecution)
 
 router.put('/', trainingExecutionsController.createExecution)
 
+router.patch('/', trainingExecutionsController.updateExecution)
+
 module.exports = router

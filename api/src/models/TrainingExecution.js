@@ -28,9 +28,8 @@ const TrainingExecutionSchema = new mongoose.Schema({
         required: true
     },
     currentExercise: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Exercise',
-        default: null,
+        type: Number,
+        default: 0,
         // required: true
     },
     completion: {
