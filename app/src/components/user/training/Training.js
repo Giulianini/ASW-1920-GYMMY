@@ -42,6 +42,18 @@ function Training() {
         } else {
             userAxios.put("execution", {"card": selectedCard._id}).then(() => {
                 setStarted(true)
+                fetchExecutionStatus()
+            }).catch(reason => {
+                console.log(reason.response.data) //TODO notification
+            })
+        }
+    }
+
+    function checkCardCompletion() {
+        if (completion.filter(c => c.completed).length === completion.length) {
+            userAxios.delete("execution").then(() => {
+                setStarted(false)
+                console.log("YEE FINISHED ALL") //TODO notification
             }).catch(reason => {
                 console.log(reason.response.data) //TODO notification
             })
@@ -49,7 +61,6 @@ function Training() {
     }
 
     const handleCompleteExercise = (index) => {
-        console.log(index)
         userAxios.patch("execution", {
             exerciseIndex: index,
             command: "completeExercise"
@@ -57,6 +68,7 @@ function Training() {
             const newCompletion = completion.slice()
             newCompletion[index].completed = true
             setCompletion(newCompletion)
+            checkCardCompletion()
         }).catch(() => {
             console.log("Error cannot complete exercise") //TODO notification
         })
@@ -73,7 +85,7 @@ function Training() {
         })
     }
 
-    useEffect(() => {
+    function fetchExecutionStatus() {
         userAxios.get("execution").then(res => {
             setCurrentExercise(res.data.currentExercise)
             setCompletion(res.data.completion)
@@ -83,6 +95,10 @@ function Training() {
             setStarted(false)
             console.log("No execution found") //TODO notification
         })
+    }
+
+    useEffect(() => {
+        fetchExecutionStatus()
     }, [currentExercise])
 
     if (loading) {
