@@ -16,7 +16,7 @@ exports.createExecution = async function(req, res) {
 
     const cardExists = await TrainingCard.exists({ _id: cardId })
     if (!cardExists) {
-        return responses.notFound(res)('Card not found')
+        return responses.badRequest(res)('Card not found')
     }
 
     const user = await User.findOne({ username: username }).exec()
