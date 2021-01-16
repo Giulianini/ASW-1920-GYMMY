@@ -108,7 +108,7 @@ const ExerciseDialog = forwardRef((props, ref) => {
                                         <Receipt/>
                                     </ListItemIcon>
                                     <ListItemText primary={"Location"}
-                                                  secondary={exercise && exercise.exercise.locations[0].description}/>
+                                                  secondary={exercise && exercise.exercise.location.description}/>
                                 </ListItem>
                                 <ListItem button
                                           divider={true}

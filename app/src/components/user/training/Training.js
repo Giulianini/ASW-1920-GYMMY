@@ -20,6 +20,9 @@ function Training() {
     const darkMode = useSelector(state => state.userRedux.darkMode)
     const cards = useCards()
     const [selectedCardIndex, setSelectedCardIndex] = useState(0)
+    const selectedCard = cards && cards[selectedCardIndex]
+    const [currentExercise, setCurrentExercise] = useState(null)
+    const [completion, setCompletion] = useState(null)
 
     const exerciseDialogRef = useRef({})
 
@@ -27,18 +30,44 @@ function Training() {
         exerciseDialogRef.current.handleClickDialogOpen(exercise)
     }
 
+    const handleCompleteExercise = (index) => {
+        const newCompletion = completion
+        newCompletion[index].completed = true
+        setCompletion(newCompletion)
+    }
+
+    const handleStartExercise = (index) => {
+        userAxios.patch("execution", {"exerciseIndex": index}).then(res => {
+
+        }).catch(reason => {
+
+        })
+    }
+
+    useEffect(() => {
+        userAxios.get("execution").then(res => {
+            console.log(res.data)
+            setCurrentExercise(res.data.currentExercise)
+            setCompletion(res.data.completion)
+        })
+    }, [currentExercise])
+
     if (loading) {
         return (<div>Loading...</div>)
     } else {
         return (
             <ThemeProvider theme={darkMode ? trainDarkTheme : trainLightTheme}>
                 <ExerciseDialog ref={exerciseDialogRef}/>
-                <TrainingBar cards={cards} selectedCardIndex={selectedCardIndex}
+                <TrainingBar cards={cards} selectedCard={selectedCard} selectedCardIndex={selectedCardIndex}
                              setSelectedCardIndex={setSelectedCardIndex}/>
                 <Grid container direction={"column"} alignItems={"center"} justify={"flex-start"}
                       className={classes.exercisesGrid}>
                     {cards && cards[selectedCardIndex].exercises.map((item, i) =>
                         <ExerciseCard
+                            isCurrent={currentExercise === i}
+                            complete={completion && completion[i]}
+                            handleStartExercise={handleStartExercise}
+                            handleCompleteExercise={handleCompleteExercise}
                             handleExerciseOpen={handleExerciseOpen}
                             key={`card:${selectedCardIndex}-ex:${i}`}
                             index={i}
