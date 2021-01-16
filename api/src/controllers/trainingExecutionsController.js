@@ -4,6 +4,48 @@ const responses = require('./util/responses')
 const User = require('../models/User')
 const TrainingCard = require('../models/TrainingCard')
 const TrainingExecution = require('../models/TrainingExecution')
+const Exercise = require('../models/Exercise')
+
+exports.getExecution = async function(req, res) {
+    const username = req.params[params.USERNAME_PARAM]
+
+    const userExists = await User.exists({ username: username })
+    if (!userExists) {
+        return responses.notFound(res)('User not found')
+    }
+
+    const user = await User.findOne({ username: username }).exec()
+    const userId = user._id
+
+    const foundExecution = await TrainingExecution.findOne({ user: userId }).exec()
+    if (!foundExecution) {
+        return responses.notFound(res)('Execution not found')
+    }
+
+    try {
+        const populatedExecution = await foundExecution.populate({
+                path: 'user',
+                model: User,
+                select: '-password'
+            })
+            .populate({
+                path: 'card',
+                model: TrainingCard
+            })
+            .populate({
+                path: 'currentExercise',
+                model: Exercise
+            })
+            .populate({
+                path: 'completion.exercise',
+                model: Exercise
+            })
+            .execPopulate()
+        responses.json(res)(populatedExecution)
+    } catch (err) {
+        responses.error(res)(err)
+    }
+}
 
 exports.createExecution = async function(req, res) {
     const username = req.params[params.USERNAME_PARAM]
@@ -22,7 +64,7 @@ exports.createExecution = async function(req, res) {
     const user = await User.findOne({ username: username }).exec()
     const userId = user._id
 
-    const executionExists = await TrainingExecution.findOne({ user: userId }).exec()
+    const executionExists = await TrainingExecution.exists({ user: userId })
     if (executionExists) {
         return responses.conflict(res)
     }
