@@ -6,6 +6,11 @@ const ExerciseCompletionSchema = new mongoose.Schema({
         ref: 'Exercise',
         required: true
     },
+    locationCapacity: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'LocationCapacity',
+        required: true
+    },
     completed: {
         type: Boolean,
         default: false,

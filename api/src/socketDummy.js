@@ -10,7 +10,7 @@ socket.on('badUser', (msg) => {
     console.log(msg)
 })
 
-socket.on('locationFull', (msg) => {
+socket.on('capacities', (msg) => {
     console.log(msg)
 })
 

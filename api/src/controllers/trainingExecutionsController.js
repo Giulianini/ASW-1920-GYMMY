@@ -44,6 +44,10 @@ exports.getExecution = async function(req, res) {
                 path: 'completion.exercise',
                 model: Exercise
             })
+            .populate({
+                path: 'completion.locationCapacity',
+                model: LocationCapacity
+            })
             .execPopulate()
         responses.json(res)(populatedExecution)
     } catch (err) {
@@ -74,12 +78,25 @@ exports.createExecution = async function(req, res) {
     }
 
     const exercises = await TrainingCard.findOne({ _id: cardId })
+        .populate({
+            path: 'exercises.exercise',
+            model: Exercise
+        })
         .map(card => card.exercises)
         .exec();
+    const exerciseLocationCapacityIds = await Promise.all(exercises.map(async exercise => {
+        return await LocationCapacity.findOne({location: exercise.exercise.location})
+            .map(doc => doc._id)
+            .exec()
+    }))
     const exerciseIds = exercises.map(exercise => exercise.exercise)
 
-    const exerciseCompletions = exerciseIds.map(exerciseId => {
-        return { exercise: exerciseId, done: false }
+    const exerciseCompletions = exerciseIds.map((exerciseId, index) => {
+        return {
+            exercise: exerciseId,
+            locationCapacity: exerciseLocationCapacityIds[index],
+            completed: false
+        }
     })
 
     const execution = new TrainingExecution({

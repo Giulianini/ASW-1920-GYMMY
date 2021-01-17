@@ -6,8 +6,7 @@ const User = require('../models/User')
 
 exports.watch = function(mongoose, io, userSockets) {
     LocationCapacity.watch().on('change', async data => {
-        const locationCapacityId = data.documentKey._id;
-        const locationCapacity = data.updateDescription.updatedFields.capacity;
+        const locationCapacityId = data.documentKey._id
 
         const location = await LocationCapacity.findById(locationCapacityId)
             .populate({
@@ -32,24 +31,31 @@ exports.watch = function(mongoose, io, userSockets) {
                 path: 'completion.exercise',
                 model: Exercise
             })
+            .populate({
+                path: 'completion.locationCapacity',
+                model: LocationCapacity
+            })
             .exec()
-        console.log(userExecutions)
-        const targetUsernames = userExecutions
+
+        const usernameCapacities = userExecutions
             .filter(execution => {
                 const completion = execution.completion
                 const exercises = completion.filter(obj => !obj.completed)
                     .map(obj => obj.exercise)
-                console.log(exercises)
                 const targetExercises = exercises.filter(exercise => {
                     return exercise.location.toString() === location._id.toString()
                 })
                 return targetExercises.length > 0
             })
-            .map(execution => execution.user.username)
-        console.log(targetUsernames)
+            .map(execution => {
+                return {
+                    username: execution.user.username,
+                    capacities: execution.completion.map(completion => completion.locationCapacity.capacity)
+                }
+            })
 
-        targetUsernames.forEach(username => {
-            io.to(userSockets.get(username)).emit('locationFull', location._id)
+        usernameCapacities.forEach(obj => {
+            io.to(userSockets.get(obj.username)).emit('capacities', obj.capacities)
         })
     })
 }
