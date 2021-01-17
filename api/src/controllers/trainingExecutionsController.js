@@ -158,8 +158,11 @@ exports.updateExecution = async function(req, res) {
                 }
 
                 if (currentExercise !== null && exerciseIndex !== currentExercise && !foundExecution.completion[currentExercise].completed) {
-                    release()
-                    return responses.badRequest(res)('Current exercises is not complete yet')
+                    const currentLocation = foundExecution.completion[currentExercise].exercise.location
+                    const currentLocationCapacity = await LocationCapacity.findOne({ location: currentLocation._id }).exec()
+                    const currentLocationCapacityValue = currentLocationCapacity.capacity
+                    currentLocationCapacity.capacity = currentLocationCapacityValue + 1
+                    await currentLocationCapacity.save()
                 }
 
                 const location = foundExecution.completion[exerciseIndex].exercise.location
