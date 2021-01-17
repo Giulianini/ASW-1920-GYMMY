@@ -54,9 +54,9 @@ const useStyles = makeStyles(theme => ({
         overflow: 'auto'
     },
     icons: {
-        marginLeft: 10,
-        marginRight: 10,
-        fontSize: '300%'
+        marginLeft: 4,
+        marginRight: 4,
+        fontSize: '310%'
     }
 }));
 
