@@ -147,6 +147,7 @@ exports.updateExecution = async function(req, res) {
 
 
     const release = await lock.acquire()
+    const currentExercise = foundExecution.currentExercise;
     switch (command) {
         case 'startExercise':
             try {
@@ -154,6 +155,11 @@ exports.updateExecution = async function(req, res) {
                 if (exerciseIndex >= completionLength || exerciseIndex < 0) {
                     release()
                     return responses.badRequest(res)('Exercise index out of bounds')
+                }
+
+                if (currentExercise !== null && exerciseIndex !== currentExercise && !foundExecution.completion[currentExercise].completed) {
+                    release()
+                    return responses.badRequest(res)('Current exercises is not complete yet')
                 }
 
                 const location = foundExecution.completion[exerciseIndex].exercise.location
@@ -178,7 +184,7 @@ exports.updateExecution = async function(req, res) {
             break
         case 'completeExercise':
             try {
-                foundExecution.completion[foundExecution.currentExercise].completed = true
+                foundExecution.completion[currentExercise].completed = true
                 await foundExecution.save()
 
                 const location = foundExecution.completion[exerciseIndex].exercise.location
