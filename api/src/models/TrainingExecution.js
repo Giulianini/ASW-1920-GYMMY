@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const ExerciseCompletionSchema = new mongoose.Schema({
     exercise: {
         type: mongoose.Schema.ObjectId,
+        ref: 'Exercise',
         required: true
     },
     completed: {
