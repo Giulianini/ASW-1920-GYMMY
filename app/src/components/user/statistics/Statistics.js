@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.down('md')]: {
             paddingTop: 20,
             marginBottom: 100,
-        },
+        }
     }
 }));
 
@@ -120,7 +120,7 @@ const distanceCovered = {
     options: {
         xaxis: {
             categories: ['January', 'February', 'March',
-                'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+                'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         },
         title: {
             text: 'Distance covered',
@@ -185,14 +185,14 @@ function Statistics() {
     const classes = useStyles();
     return (
         <Container maxWidth={"lg"}>
-            <Grid container direction={"column"} alignItems="center" className={classes.rootGrid}>
+            <Grid container direction={"column"} alignContent={"center"} className={classes.rootGrid}>
                 <Grid item>
                     <div>
                         <Chart
                             options={completedActivities.options}
                             series={completedActivities.series}
                             type="bar"
-                            width="460"
+                            width="370"
                         />
                     </div>
                 </Grid>
@@ -203,7 +203,7 @@ function Statistics() {
                             options={distanceCovered.options}
                             series={distanceCovered.series}
                             type="area"
-                            width="460"
+                            width="365"
                         />
                     </div>
                 </Grid>
@@ -214,7 +214,7 @@ function Statistics() {
                             options={workoutTime.options}
                             series={workoutTime.series}
                             type="area"
-                            width="460"
+                            width="365"
                         />
                     </div>
                 </Grid>
