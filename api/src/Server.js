@@ -24,7 +24,6 @@ const io = require('socket.io')(httpServer, {
     cors: {
         origin: "*",
         methods: [ "GET", "POST" ],
-        credentials: true
     }
 })
 const watcher = require('./stream/collectionWatcher')
