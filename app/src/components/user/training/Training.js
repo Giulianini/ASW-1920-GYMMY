@@ -85,6 +85,7 @@ function Training() {
             setCompletion(res.data.completion)
             setStartTime(res.data.startTime)
             setStarted(true)
+            setCapacities(res.data.completion.map(c => c.locationCapacity.capacity))
         }).catch(reason => {
             setStarted(false)
             console.log("No execution found") //TODO notification

@@ -28,6 +28,9 @@ const useStyles = makeStyles(theme => ({
     doneIcon: {
         width: "100%",
         textAlign: "center",
+    },
+    capacityText: {
+        fontWeight: 100,
     }
 }))
 
@@ -51,12 +54,22 @@ function ExerciseCard(props) {
                         title={props.exercise.exercise.name}
                     />
                     <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            {props.exercise.exercise.name}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            {props.exercise.exercise.description}
-                        </Typography>
+                        <Grid container direction={"row"} justify={"space-between"} alignItems={"center"}>
+                            <Grid item>
+                                <Typography gutterBottom variant="h5" component="h2">
+                                    {props.exercise.exercise.name}
+                                </Typography>
+                                <Typography variant="body2" color="textSecondary" component="p">
+                                    {props.exercise.exercise.description}
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="h4" color="textSecondary" component="p"
+                                            className={classes.capacityText}>
+                                    {props.capacities && props.capacities[props.index]}
+                                </Typography>
+                            </Grid>
+                        </Grid>
                     </CardContent>
                 </CardActionArea>
                 <CardActions className={classes.cardActionButton}>

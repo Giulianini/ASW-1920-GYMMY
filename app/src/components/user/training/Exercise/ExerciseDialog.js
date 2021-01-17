@@ -11,9 +11,7 @@ import {
     makeStyles,
     Slide
 } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown"
 import SnackBar from "../../utils/Snackbar";
 import Image from "material-ui-image";
 import {Receipt} from "@material-ui/icons";
@@ -82,10 +80,6 @@ const ExerciseDialog = forwardRef((props, ref) => {
                         aspectRatio={(16 / 9)}
                         disableSpinner
                     />
-                    <IconButton edge="start" onClick={handleClose} className={classes.dropDown}
-                                aria-label="close">
-                        <ArrowDropDownIcon fontSize={"large"}/>
-                    </IconButton>
                 </AppBar>
                 <DialogContent className={classes.dialogContent}>
                     <Grid container direction={"column"} justify={"center"} alignItems={"stretch"}>
