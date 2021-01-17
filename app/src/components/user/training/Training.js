@@ -3,10 +3,11 @@ import {Grid} from "@material-ui/core";
 import {makeStyles, ThemeProvider} from "@material-ui/core/styles";
 import {useSelector} from "react-redux";
 import {trainDarkTheme, trainLightTheme} from "./trainTheme"
-import {userAxios} from "../../../Api";
+import {apiUrl, userAxios} from "../../../Api";
 import ExerciseCard from "./Exercise/ExerciseCard";
 import TrainingBar from "./header/TrainingBar";
 import ExerciseDialog from "./Exercise/ExerciseDialog";
+import {io} from "socket.io-client";
 
 const useStyles = makeStyles({
     exercisesGrid: {
@@ -25,6 +26,7 @@ function Training() {
     const [currentExercise, setCurrentExercise] = useState(null)
     const [completion, setCompletion] = useState(null)
     const [startTime, setStartTime] = useState(null)
+    const [capacities, setCapacities] = useCapacities()
 
     const exerciseDialogRef = useRef({})
 
@@ -49,26 +51,18 @@ function Training() {
         }
     }
 
-    function checkCardCompletion() {
-        if (completion.filter(c => c.completed).length === completion.length) {
-            userAxios.delete("execution").then(() => {
-                setStarted(false)
-                console.log("YEE FINISHED ALL") //TODO notification
-            }).catch(reason => {
-                console.log(reason.response.data) //TODO notification
-            })
-        }
-    }
-
     const handleCompleteExercise = (index) => {
         userAxios.patch("execution", {
             exerciseIndex: index,
             command: "completeExercise"
-        }).then(() => {
+        }).then(res => {
             const newCompletion = completion.slice()
             newCompletion[index].completed = true
             setCompletion(newCompletion)
-            checkCardCompletion()
+            if (res.data.finished) {
+                setStarted(false)
+                setCapacities(null)
+            }
         }).catch(() => {
             console.log("Error cannot complete exercise") //TODO notification
         })
@@ -80,8 +74,8 @@ function Training() {
             command: "startExercise"
         }).then(() => {
             setCurrentExercise(index)
-        }).catch(() => {
-            console.log("Not started") //TODO notification
+        }).catch(reason => {
+            console.log(reason.response) //TODO notification
         })
     }
 
@@ -116,6 +110,7 @@ function Training() {
                       className={classes.exercisesGrid}>
                     {cards && cards[selectedCardIndex].exercises.map((item, i) =>
                         <ExerciseCard
+                            capacities={capacities}
                             isCurrent={currentExercise === i}
                             complete={completion && completion[i]}
                             handleStartExercise={handleStartExercise}
@@ -142,6 +137,20 @@ function Training() {
             })
         }, []) // eslint-disable-line react-hooks/exhaustive-deps
         return cards
+    }
+
+    function useCapacities() {
+        const [capacities, setCapacities] = useState(null)
+        useEffect(() => {
+            const socket = io(`${apiUrl}?username=${localStorage.getItem("username")}`)
+            socket.on('capacities', (data) => {
+                setCapacities(data)
+            })
+            return function disconnect() {
+                socket.disconnect()
+            }
+        }, [])
+        return [capacities, setCapacities]
     }
 }
 
