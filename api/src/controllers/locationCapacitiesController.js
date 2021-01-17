@@ -65,11 +65,10 @@ exports.updateLocationCapacity = async function(req, res) {
         locationCapacity.capacity = newCapacity
         await locationCapacity.save()
 
+        release()
         responses.noContent(res)
     } catch (err) {
         release()
         return responses.error(res)(err)
     }
-
-    release()
 }

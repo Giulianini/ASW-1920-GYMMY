@@ -5,36 +5,48 @@ const User = require('../models/User')
 const TrainingCard = require('../models/TrainingCard')
 const TrainingExecution = require('../models/TrainingExecution')
 const Exercise = require('../models/Exercise')
+const Location = require('../models/Location')
+const LocationCapacity = require('../models/LocationCapacity')
 
-exports.getExecution = async function(req, res) {
+const {Semaphore} = require('await-semaphore');
+
+exports.getExecution = async function (req, res) {
     const username = req.params[params.USERNAME_PARAM]
 
-    const userExists = await User.exists({ username: username })
+    const userExists = await User.exists({username: username})
     if (!userExists) {
         return responses.notFound(res)('User not found')
     }
 
-    const user = await User.findOne({ username: username }).exec()
+    const user = await User.findOne({username: username}).exec()
     const userId = user._id
 
-    const foundExecution = await TrainingExecution.findOne({ user: userId }).exec()
+    const foundExecution = await TrainingExecution.findOne({user: userId}).exec()
     if (!foundExecution) {
         return responses.notFound(res)('Execution not found')
     }
 
     try {
         const populatedExecution = await foundExecution.populate({
-                path: 'user',
-                model: User,
-                select: '-password'
-            })
+            path: 'user',
+            model: User,
+            select: '-password'
+        })
             .populate({
                 path: 'card',
                 model: TrainingCard
             })
             .populate({
+                path: 'currentLocation',
+                model: Location
+            })
+            .populate({
                 path: 'completion.exercise',
                 model: Exercise
+            })
+            .populate({
+                path: 'completion.locationCapacity',
+                model: LocationCapacity
             })
             .execPopulate()
         responses.json(res)(populatedExecution)
@@ -43,35 +55,48 @@ exports.getExecution = async function(req, res) {
     }
 }
 
-exports.createExecution = async function(req, res) {
+exports.createExecution = async function (req, res) {
     const username = req.params[params.USERNAME_PARAM]
     const cardId = req.body.card
 
-    const userExists = await User.exists({ username: username })
+    const userExists = await User.exists({username: username})
     if (!userExists) {
         return responses.notFound(res)('User not found')
     }
 
-    const cardExists = await TrainingCard.exists({ _id: cardId })
+    const cardExists = await TrainingCard.exists({_id: cardId})
     if (!cardExists) {
         return responses.badRequest(res)('Card not found')
     }
 
-    const user = await User.findOne({ username: username }).exec()
+    const user = await User.findOne({username: username}).exec()
     const userId = user._id
 
-    const executionExists = await TrainingExecution.exists({ user: userId })
+    const executionExists = await TrainingExecution.exists({user: userId})
     if (executionExists) {
         return responses.conflict(res)
     }
 
-    const exercises = await TrainingCard.findOne({ _id: cardId })
+    const exercises = await TrainingCard.findOne({_id: cardId})
+        .populate({
+            path: 'exercises.exercise',
+            model: Exercise
+        })
         .map(card => card.exercises)
         .exec();
+    const exerciseLocationCapacityIds = await Promise.all(exercises.map(async exercise => {
+        return await LocationCapacity.findOne({location: exercise.exercise.location})
+            .map(doc => doc._id)
+            .exec()
+    }))
     const exerciseIds = exercises.map(exercise => exercise.exercise)
 
-    const exerciseCompletions = exerciseIds.map(exerciseId => {
-        return { exercise: exerciseId, done: false }
+    const exerciseCompletions = exerciseIds.map((exerciseId, index) => {
+        return {
+            exercise: exerciseId,
+            locationCapacity: exerciseLocationCapacityIds[index],
+            completed: false
+        }
     })
 
     const execution = new TrainingExecution({
@@ -89,20 +114,26 @@ exports.createExecution = async function(req, res) {
     }
 }
 
-exports.updateExecution = async function(req, res) {
+const lock = new Semaphore(1)
+exports.updateExecution = async function (req, res) {
     const username = req.params[params.USERNAME_PARAM]
     const command = req.body.command
     const exerciseIndex = req.body.exerciseIndex
 
-    const userExists = await User.exists({ username: username })
+    const userExists = await User.exists({username: username})
     if (!userExists) {
         return responses.notFound(res)('User not found')
     }
 
-    const user = await User.findOne({ username: username }).exec()
+    const user = await User.findOne({username: username}).exec()
     const userId = user._id
 
-    const foundExecution = await TrainingExecution.findOne({ user: userId }).exec()
+    const foundExecution = await TrainingExecution.findOne({user: userId})
+        .populate({
+            path: 'completion.exercise',
+            model: Exercise
+        })
+        .exec()
     if (!foundExecution) {
         return responses.notFound(res)('Execution not found')
     }
@@ -115,14 +146,39 @@ exports.updateExecution = async function(req, res) {
     }
 
 
+    const release = await lock.acquire()
+    const currentExercise = foundExecution.currentExercise;
     switch (command) {
         case 'startExercise':
-            const completionLength = foundExecution.completion.length
-            if (exerciseIndex >= completionLength || exerciseIndex < 0) {
-                return responses.badRequest(res)('Exercise index out of bounds')
-            }
             try {
+                const completionLength = foundExecution.completion.length
+                if (exerciseIndex >= completionLength || exerciseIndex < 0) {
+                    release()
+                    return responses.badRequest(res)('Exercise index out of bounds')
+                }
+
+                if (currentExercise !== null && exerciseIndex !== currentExercise && !foundExecution.completion[currentExercise].completed) {
+                    const currentLocation = foundExecution.completion[currentExercise].exercise.location
+                    const currentLocationCapacity = await LocationCapacity.findOne({location: currentLocation._id}).exec()
+                    const currentLocationCapacityValue = currentLocationCapacity.capacity
+                    currentLocationCapacity.capacity = currentLocationCapacityValue + 1
+                    await currentLocationCapacity.save()
+                }
+
+                const location = foundExecution.completion[exerciseIndex].exercise.location
+                const locationCapacity = await LocationCapacity.findOne({location: location._id}).exec()
+
+                const currentCapacity = locationCapacity.capacity
+                if (currentCapacity === 0) {
+                    release()
+                    return responses.badRequest(res)("Location is full")
+                }
+
+                locationCapacity.capacity = currentCapacity - 1
+                await locationCapacity.save()
+
                 foundExecution.currentExercise = exerciseIndex
+                foundExecution.currentLocation = location
                 await foundExecution.save()
                 responses.noContent(res)
             } catch (err) {
@@ -131,34 +187,58 @@ exports.updateExecution = async function(req, res) {
             break
         case 'completeExercise':
             try {
-                foundExecution.completion[foundExecution.currentExercise].completed = true
+                foundExecution.completion[currentExercise].completed = true
+                foundExecution.currentExercise = null
+                foundExecution.currentLocation = null
                 await foundExecution.save()
-                responses.noContent(res)
+
+                const location = foundExecution.completion[exerciseIndex].exercise.location
+                const locationCapacity = await LocationCapacity.findOne({location: location._id}).exec()
+
+                const currentCapacity = locationCapacity.capacity
+                if (currentCapacity !== location.defaultCapacity) {
+                    locationCapacity.capacity = currentCapacity + 1
+                }
+                await locationCapacity.save()
+
+                if (foundExecution.completion.filter(c => c.completed).length === foundExecution.completion.length) {
+                    responses.json(res)({finished: true})
+                    await TrainingExecution.deleteOne({user: userId}).exec()
+                    //TODO STATISTICS
+                } else {
+                    responses.json(res)({finished: false})
+                }
             } catch (err) {
                 responses.error(res)(err)
             }
             break
     }
+    release()
 }
 
-exports.removeExecution = async function(req, res) {
+//TODO REMOVE WHEN CAPACITY IS FULL AND IF USER IS AWAY FOR LONG TIME
+exports.removeExecution = async function (req, res) {
     const username = req.params[params.USERNAME_PARAM]
 
-    const userExists = await User.exists({ username: username })
+    const userExists = await User.exists({username: username})
     if (!userExists) {
         return responses.notFound(res)('User not found')
     }
 
-    const user = await User.findOne({ username: username }).exec()
+    const user = await User.findOne({username: username}).exec()
     const userId = user._id
 
-    const foundExecution = await TrainingExecution.findOne({ user: userId }).exec()
+    const foundExecution = await TrainingExecution.findOne({user: userId}).exec()
     if (!foundExecution) {
         return responses.notFound(res)('Execution not found')
     }
 
+    if (!foundExecution.currentExercise) { // if currentexercise == null (null lo metto io in completeExercise)
+        //TODO RESTORE CAPACITY
+    }
+
     try {
-        await TrainingExecution.deleteOne({ user: userId }).exec()
+        await TrainingExecution.deleteOne({user: userId}).exec()
         responses.noContent(res)
     } catch (err) {
         responses.error(res)(err)

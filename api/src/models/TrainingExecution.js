@@ -3,6 +3,12 @@ const mongoose = require('mongoose')
 const ExerciseCompletionSchema = new mongoose.Schema({
     exercise: {
         type: mongoose.Schema.ObjectId,
+        ref: 'Exercise',
+        required: true
+    },
+    locationCapacity: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'LocationCapacity',
         required: true
     },
     completed: {
@@ -31,6 +37,11 @@ const TrainingExecutionSchema = new mongoose.Schema({
         type: Number,
         default: null,
         // required: true
+    },
+    currentLocation: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Location',
+        default: null,
     },
     completion: {
         type: [ExerciseCompletionSchema],

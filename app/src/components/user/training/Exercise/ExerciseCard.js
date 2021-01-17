@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme => ({
 
 function ExerciseCard(props) {
     const classes = useStyles()
+    const available = props.isCurrent || !(props.capacities && props.capacities[props.index] === 0)
     const handleStartClick = () => {
         if (props.isCurrent) {
             props.handleCompleteExercise(props.index)
@@ -63,6 +64,7 @@ function ExerciseCard(props) {
                         (props.complete && props.complete.completed) ?
                             <Box className={classes.doneIcon}><Done/></Box> :
                             <Button fullWidth={true}
+                                    disabled={!available}
                                     onClick={handleStartClick}>
                                 {props.isCurrent ? "Complete" : "Start"}
                             </Button>
