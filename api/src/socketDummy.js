@@ -1,6 +1,6 @@
 const io = require('socket.io-client')
 
-const socket = io('ws://localhost:8080/?username=lrizzato')
+const socket = io('http://localhost:8080?username=lrizzato')
 
 socket.on('welcome', (msg) => {
     console.log(msg)

@@ -20,7 +20,13 @@ const mongoose = require('mongoose')
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
-const io = require('socket.io')(httpServer)
+const io = require('socket.io')(httpServer, {
+    cors: {
+        origin: "http://localhost",
+        methods: [ "GET", "POST" ],
+        credentials: true
+    }
+})
 const watcher = require('./stream/collectionWatcher')
 
 const cors = require('cors')
