@@ -48,7 +48,7 @@ app.use('/session', sessionRoute)
 
 app.use('/locations', locationsRoute)
 
-app.use(`/locations/:${params.LOCATION_PARAM}/capacity`, locationCapacitiesRoute)
+app.use(`/locations/:${params.LOCATION_PARAM}/${params.CAPACITY_ROUTE}`, locationCapacitiesRoute)
 
 app.use('/exercises', exercisesRoute)
 

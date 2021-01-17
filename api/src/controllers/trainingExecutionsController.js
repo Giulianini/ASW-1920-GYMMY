@@ -5,6 +5,10 @@ const User = require('../models/User')
 const TrainingCard = require('../models/TrainingCard')
 const TrainingExecution = require('../models/TrainingExecution')
 const Exercise = require('../models/Exercise')
+const Location = require('../models/Location')
+const LocationCapacity = require('../models/LocationCapacity')
+
+const { Semaphore } = require('await-semaphore');
 
 exports.getExecution = async function(req, res) {
     const username = req.params[params.USERNAME_PARAM]
@@ -31,6 +35,10 @@ exports.getExecution = async function(req, res) {
             .populate({
                 path: 'card',
                 model: TrainingCard
+            })
+            .populate({
+                path: 'currentLocation',
+                model: Location
             })
             .populate({
                 path: 'completion.exercise',
@@ -89,6 +97,7 @@ exports.createExecution = async function(req, res) {
     }
 }
 
+const lock = new Semaphore(1)
 exports.updateExecution = async function(req, res) {
     const username = req.params[params.USERNAME_PARAM]
     const command = req.body.command
@@ -102,7 +111,12 @@ exports.updateExecution = async function(req, res) {
     const user = await User.findOne({ username: username }).exec()
     const userId = user._id
 
-    const foundExecution = await TrainingExecution.findOne({ user: userId }).exec()
+    const foundExecution = await TrainingExecution.findOne({ user: userId })
+        .populate({
+            path: 'completion.exercise',
+            model: Exercise
+        })
+        .exec()
     if (!foundExecution) {
         return responses.notFound(res)('Execution not found')
     }
@@ -115,14 +129,30 @@ exports.updateExecution = async function(req, res) {
     }
 
 
+    const release = await lock.acquire()
     switch (command) {
         case 'startExercise':
-            const completionLength = foundExecution.completion.length
-            if (exerciseIndex >= completionLength || exerciseIndex < 0) {
-                return responses.badRequest(res)('Exercise index out of bounds')
-            }
             try {
+                const completionLength = foundExecution.completion.length
+                if (exerciseIndex >= completionLength || exerciseIndex < 0) {
+                    release()
+                    return responses.badRequest(res)('Exercise index out of bounds')
+                }
+
+                const location = foundExecution.completion[exerciseIndex].exercise.location
+                const locationCapacity = await LocationCapacity.findOne({ location: location._id }).exec()
+
+                const currentCapacity = locationCapacity.capacity
+                if (currentCapacity === 0) {
+                    release()
+                    return responses.badRequest(res)("Location is full")
+                }
+
+                locationCapacity.capacity = currentCapacity - 1
+                await locationCapacity.save()
+
                 foundExecution.currentExercise = exerciseIndex
+                foundExecution.currentLocation = location
                 await foundExecution.save()
                 responses.noContent(res)
             } catch (err) {
@@ -133,12 +163,23 @@ exports.updateExecution = async function(req, res) {
             try {
                 foundExecution.completion[foundExecution.currentExercise].completed = true
                 await foundExecution.save()
+
+                const location = foundExecution.completion[exerciseIndex].exercise.location
+                const locationCapacity = await LocationCapacity.findOne({ location: location._id }).exec()
+
+                const currentCapacity = locationCapacity.capacity
+                if (currentCapacity !== location.defaultCapacity) {
+                    locationCapacity.capacity = currentCapacity + 1
+                }
+                await locationCapacity.save()
+
                 responses.noContent(res)
             } catch (err) {
                 responses.error(res)(err)
             }
             break
     }
+    release()
 }
 
 exports.removeExecution = async function(req, res) {

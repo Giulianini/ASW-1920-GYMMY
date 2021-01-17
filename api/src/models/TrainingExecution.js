@@ -32,6 +32,11 @@ const TrainingExecutionSchema = new mongoose.Schema({
         default: null,
         // required: true
     },
+    currentLocation: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Location',
+        default: null,
+    },
     completion: {
         type: [ExerciseCompletionSchema],
         required: true
