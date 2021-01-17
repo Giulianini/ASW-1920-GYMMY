@@ -48,7 +48,7 @@ app.use('/session', sessionRoute)
 
 app.use('/locations', locationsRoute)
 
-app.use(`/locations/:${params.LOCATION_PARAM}/capacity`, locationCapacitiesRoute)
+app.use(`/locations/:${params.LOCATION_PARAM}/${params.CAPACITY_ROUTE}`, locationCapacitiesRoute)
 
 app.use('/exercises', exercisesRoute)
 
@@ -97,12 +97,25 @@ httpsServer.listen(httpsPort, () => {
     console.log('Listening on port ' + httpsPort)
 });
 
-io.on('connection', (socket) => {
-    console.log('user connected')
+const User = require('./models/User')
+const userSockets = new Map()
+io.on('connection', async (socket) => {
     socket.emit('hello from server')
 
+    const username = socket.request._query['username']
+
+    const userExists = await User.exists({ username: username })
+    if (!userExists) {
+        socket.emit('badUser', "user not found, closing connection")
+        return socket.disconnect()
+    }
+
+    userSockets.set(username, socket.id)
+    socket.emit('welcome', 'welcome to the server')
+    console.log("[WS] connected user " + username)
+
     socket.on('disconnect', () => {
-        console.log('user disconnected')
+        console.log(username + ' disconnected')
     })
 
     socket.on('event', (msg) => {
@@ -111,4 +124,4 @@ io.on('connection', (socket) => {
     })
 })
 
-watcher.watch(mongoose, io)
+watcher.watch(mongoose, io, userSockets)
