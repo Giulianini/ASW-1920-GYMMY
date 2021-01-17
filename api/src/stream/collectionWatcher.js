@@ -4,7 +4,7 @@ const Location = require('../models/Location')
 const Exercise = require('../models/Exercise')
 const User = require('../models/User')
 
-exports.watch = function(mongoose, io, userSockets) {
+exports.watch = function (mongoose, io, userSockets) {
     LocationCapacity.watch().on('change', async data => {
         const locationCapacityId = data.documentKey._id
 
@@ -18,10 +18,9 @@ exports.watch = function(mongoose, io, userSockets) {
 
         const usernames = [...userSockets.keys()]
         const userIds = await Promise.all(usernames.map(async username => {
-            return User.findOne({ username: username }).map(doc => doc._id).exec()
+            return User.findOne({username: username}).map(doc => doc._id).exec()
         }))
-
-        const userExecutions = await TrainingExecution.find({ user: { $in: userIds } })
+        const userExecutions = await TrainingExecution.find({user: {$in: userIds}})
             .populate({
                 path: 'user',
                 select: '-password',
@@ -36,12 +35,10 @@ exports.watch = function(mongoose, io, userSockets) {
                 model: LocationCapacity
             })
             .exec()
-
         const usernameCapacities = userExecutions
             .filter(execution => {
                 const completion = execution.completion
-                const exercises = completion.filter(obj => !obj.completed)
-                    .map(obj => obj.exercise)
+                const exercises = completion.map(obj => obj.exercise) //.filter(obj => !obj.completed) REMOVED
                 const targetExercises = exercises.filter(exercise => {
                     return exercise.location.toString() === location._id.toString()
                 })
@@ -53,7 +50,6 @@ exports.watch = function(mongoose, io, userSockets) {
                     capacities: execution.completion.map(completion => completion.locationCapacity.capacity)
                 }
             })
-
         usernameCapacities.forEach(obj => {
             io.to(userSockets.get(obj.username)).emit('capacities', obj.capacities)
         })
