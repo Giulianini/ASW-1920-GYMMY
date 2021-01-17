@@ -7,10 +7,14 @@ const Location = require('../models/Location')
 const Tag = require('../models/Tag')
 
 async function getExerciseIds(exercises, res) {
-    const exerciseDocs = await Exercise.find()
-        .where('name').in(exercises)
-        .select('_id')
-        .exec()
+    // const exerciseDocs = await Exercise.find()
+    //     .where('name').in(exercises)
+    //     .select('_id')
+    //     .exec()
+    const exerciseDocs = await Promise.all(exercises.map(async (exercise) => {
+        const foundExercise = await Exercise.findOne({ name: exercise }).exec()
+        return foundExercise._id
+    }))
     return exerciseDocs.map(doc => doc._id)
 }
 
@@ -20,7 +24,6 @@ async function getTagIds(tags, res) {
         .in(tags)
         .select('_id')
         .exec()
-    console.log("tagDocs " + tagDocs)
     return tagDocs.map(doc => doc._id)
 }
 
@@ -35,11 +38,12 @@ exports.createTrainingCard = async function(req, res) {
     const trainer = req.body.trainer
     const exercises = req.body.exercises
     const tags = req.body.tags ? req.body.tags : []
-    const tagSet = [...new Set(tags.map(tag => tag.name))]
+    const tagSet = [...new Set(tags)]
+    const minutes = req.body.minutes
 
     const userExists = await User.exists({ username: user })
     if (!userExists) {
-        return responses.notFound(res)
+        return responses.notFound(res)('User not found')
     }
 
     const trainerExists = await User.exists({ username: trainer })
@@ -47,7 +51,8 @@ exports.createTrainingCard = async function(req, res) {
         return responses.badRequest(res)('Trainer does not exist')
     }
 
-    const exerciseIds = await getExerciseIds(exercises.map(obj => obj.exercise))
+    const exerciseNames = exercises.map(obj => obj.exercise);
+    const exerciseIds = await getExerciseIds(exerciseNames)
     if (exerciseIds.length !== exercises.length) {
         return responses.badRequest(res)('Some exercises do not exist')
     }
@@ -70,7 +75,8 @@ exports.createTrainingCard = async function(req, res) {
         title: title,
         user: userId,
         trainer: trainerId,
-        exercises: exercisesWithIds
+        exercises: exercisesWithIds,
+        minutes: minutes
     })
 
     if (tagSet) {
@@ -95,7 +101,7 @@ exports.getUserCard = async function (req, res){
 
     const usernameExists = await User.exists({ username: username })
     if (!usernameExists) {
-        return responses.notFound(res)
+        return responses.notFound(res)('User not found')
     }
 
     if (cardIndex < 0) {
@@ -103,11 +109,35 @@ exports.getUserCard = async function (req, res){
     }
 
     const userId = await getUserId(username)
-    const userCards = await TrainingCard.find({ user: userId }).exec()
+    const userCards = await TrainingCard.find({ user: userId })
+        .populate({
+            path: 'tags',
+            model: Tag
+        })
+        .populate({
+            path: 'user',
+            model: User,
+            select: '-password'
+        })
+        .populate({
+            path: 'trainer',
+            model: User,
+            select: '-password'
+        })
+        .populate({
+            path: 'exercises.exercise',
+            model: Exercise,
+            populate: {
+                path: 'location',
+                model: Location
+            }
+        })
+        .exec()
+
 
     const userCardsAmount = userCards.length
     if (cardIndex >= userCardsAmount) {
-        return responses.notFound(res)
+        return responses.notFound(res)('Card not found at index ' + cardIndex)
     }
 
     responses.json(res)(userCards[cardIndex])
@@ -138,13 +168,13 @@ exports.getUserCards = async function(req, res) {
                 path: 'exercises.exercise',
                 model: Exercise,
                 populate: {
-                    path: 'locations',
+                    path: 'location',
                     model: Location
                 }
             })
             .exec()
         responses.json(res)(userCards)
     } else {
-        responses.notFound(res)
+        responses.notFound(res)('User not found')
     }
 }

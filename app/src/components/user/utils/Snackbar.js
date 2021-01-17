@@ -3,10 +3,10 @@ import {Slide, Snackbar as Snack} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 
 const SnackBar = forwardRef((props, ref) => {
-     function MySnackbar(props) {
+    function MySnackbar(props) {
         const [open, setOpen] = useState(false)
         const [message, setMessage] = useState("")
-         const [severity, setSeverity] = useState("success")
+        const [severity, setSeverity] = useState("success")
 
         const handleMessage = (message, severity) => {
             setSeverity(severity)
@@ -14,11 +14,11 @@ const SnackBar = forwardRef((props, ref) => {
             setOpen(true)
         }
 
-         useImperativeHandle(ref, () => {
-             return {
-                 handleMessage: handleMessage
-             };
-         });
+        useImperativeHandle(ref, () => {
+            return {
+                handleMessage: handleMessage
+            };
+        });
 
         function TransitionRight(props) {
             return <Slide {...props} direction="left"/>
@@ -38,12 +38,13 @@ const SnackBar = forwardRef((props, ref) => {
                 onExited={() => {
                 }}
                 message={message ? message : undefined}>
-                <Alert onClose={() => setOpen(false)} severity={severity}>
+                <Alert onClose={() => setOpen(false)} severity={severity} variant={"filled"}>
                     {message}
                 </Alert>
             </Snack>
         );
     }
+
     return <MySnackbar {...props}/>
 })
 export default SnackBar

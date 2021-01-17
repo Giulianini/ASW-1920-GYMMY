@@ -25,12 +25,10 @@ const TrainingExecutionSchema = new mongoose.Schema({
     },
     startTime: {
         type: Date,
-        default: Date.now(),
         required: true
     },
     currentExercise: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Exercise',
+        type: Number,
         default: null,
         // required: true
     },

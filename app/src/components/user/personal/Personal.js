@@ -83,7 +83,7 @@ function Personal() {
 
     const handleExpandClick = (value) => {
         setExpanded({...expanded, [value]: !expanded[value]});
-    };
+    }
 
     useEffect(() => {
         userAxios.get("").then(res => {

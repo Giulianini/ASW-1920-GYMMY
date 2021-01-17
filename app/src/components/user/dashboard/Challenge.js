@@ -5,33 +5,25 @@ import {makeStyles} from "@material-ui/core/styles";
 import CardContent from "@material-ui/core/CardContent";
 
 const useStyles = makeStyles(theme => ({
-    vSpace: {
-        paddingTop: 5,
-        paddingBottom: 5,
-        margin: 'auto'
-    },
     mediaPersonal: {
         paddingTop: '50%', // 16:9
-        margin: 'auto'
+        margin: 'auto',
+        maxWidth: '100%'
     },
     card: {
         marginBottom: 10,
+        marginRight: 20,
         maxWidth: theme.breakpoints.values.md
     },
     pushCardSize: {
         minWidth: theme.breakpoints.values.md / 2
-    },
-    scrollablePane: {
-        maxHeight: 300,
-        width: '100%',
-        overflow: 'auto'
-    },
+    }
 }))
 
 function Course(props) {
     const classes = useStyles()
     return (
-        <Grid item className={classes.vSpace}>
+        <Grid item xs={12} lg={6}>
             <Card className={classes.card}>
                 <CardActionArea>
                     <CardMedia

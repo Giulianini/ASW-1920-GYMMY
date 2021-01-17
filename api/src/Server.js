@@ -20,6 +20,9 @@ const mongoose = require('mongoose')
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(credentials, app);
 
+const io = require('socket.io')(httpServer)
+const watcher = require('./stream/collectionWatcher')
+
 const cors = require('cors')
 const bodyParser = require("body-parser")
 const log = require('./middleware/log')
@@ -31,6 +34,7 @@ const exercisesRoute = require('./routes/exercisesRoute')
 const trainingCardsRoute = require('./routes/trainingCardsRoute')
 const tagsRoute = require('./routes/tagsRoute')
 const executionRoute = require('./routes/trainingExecutionsRoute')
+const locationCapacitiesRoute = require('./routes/locationCapacitiesRoute')
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -44,7 +48,7 @@ app.use('/session', sessionRoute)
 
 app.use('/locations', locationsRoute)
 
-app.use(`/locations/${params.LOCATION_PARAM}/capacity`, locationsRoute)
+app.use(`/locations/:${params.LOCATION_PARAM}/capacity`, locationCapacitiesRoute)
 
 app.use('/exercises', exercisesRoute)
 
@@ -60,12 +64,13 @@ app.get("/", (req, res) => {
 
 const dbConnection = process.env.DB_CONNECTION;
 const dbName = process.env.DB_NAME;
+const dbReplicaSet = process.env.REPLICA_SET;
 const dbAdmin = process.env.DB_ADMIN
 const dbPassword = process.env.DB_ADMIN_PWD
 console.log("connection " + dbConnection)
 console.log("name " + dbName)
 mongoose.connect(
-    dbConnection.concat(dbName),
+    dbConnection.concat(dbName).concat(dbReplicaSet),
     {
         auth: {authSource: "admin"},
         user: dbAdmin,
@@ -92,3 +97,18 @@ httpsServer.listen(httpsPort, () => {
     console.log('Listening on port ' + httpsPort)
 });
 
+io.on('connection', (socket) => {
+    console.log('user connected')
+    socket.emit('hello from server')
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected')
+    })
+
+    socket.on('event', (msg) => {
+        console.log('received event ' + msg)
+        io.emit('event', msg)
+    })
+})
+
+watcher.watch(mongoose, io)

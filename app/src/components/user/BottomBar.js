@@ -26,10 +26,12 @@ function BottomBar(props) {
             className={classes.root}
             value={value}
             onChange={(e, newRoot) => {
-                dispatch(setAppbarTitle(newRoot.toString().split("/")[1].capitalize()))
-                hideTrainingAppbar(newRoot)
-                setValue(newRoot)
-                history.push(`/${newRoot}`)
+                if (newRoot !== value) {
+                    dispatch(setAppbarTitle(newRoot.toString().split("/")[1].capitalize()))
+                    hideTrainingAppbar(newRoot)
+                    setValue(newRoot)
+                    history.push(`/${newRoot}`)
+                }
             }}
             showLabels
         >

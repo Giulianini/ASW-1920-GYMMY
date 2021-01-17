@@ -15,7 +15,7 @@ exports.getTag = async function(req, res) {
     if (foundTag) {
         responses.json(res)(foundTag)
     } else {
-        responses.notFound(res)
+        responses.notFound(res)('Tag not found')
     }
 }
 
@@ -43,7 +43,7 @@ exports.removeTag = async function(req, res) {
 
     const tagExists = await Tag.exists({ name: tagName })
     if (!tagExists) {
-        responses.notFound(res)
+        responses.notFound(res)('Tag not found')
     } else {
         try {
             await Tag.deleteOne({ name: tagName }).exec()
