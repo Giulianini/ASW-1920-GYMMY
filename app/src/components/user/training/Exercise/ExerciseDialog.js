@@ -9,9 +9,12 @@ import {
     ListItemIcon,
     ListItemText,
     makeStyles,
-    Slide
+    Slide,
+    Tooltip
 } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown"
 import SnackBar from "../../utils/Snackbar";
 import Image from "material-ui-image";
 import {Receipt} from "@material-ui/icons";
@@ -33,20 +36,18 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "center",
     },
     dropDown: {
-        position: "fixed",
-        top: 0,
-        left: 10,
-        opacity: 0.7,
+        margin: "auto"
     },
     dialogContent: {
         margin: 0,
         padding: 0,
-    }
-}));
+    },
+    image: {}
+}))
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
-});
+})
 
 const ExerciseDialog = forwardRef((props, ref) => {
     function MyExerciseDialog(props) {
@@ -79,6 +80,7 @@ const ExerciseDialog = forwardRef((props, ref) => {
                         src={"/pushUp.jpg"}
                         aspectRatio={(16 / 9)}
                         disableSpinner
+                        className={classes.image}
                     />
                 </AppBar>
                 <DialogContent className={classes.dialogContent}>
@@ -132,6 +134,16 @@ const ExerciseDialog = forwardRef((props, ref) => {
                                                   secondary={`${exercise && exercise.rest.minutes} min ${exercise && exercise.rest.seconds} sec`}/>
                                 </ListItem>
                             </List>
+                        </Grid>
+                        <Grid item container direction={"row"} justify={"center"}>
+                            <Grid item>
+                                <Tooltip title={"Close dialog"} className={classes.dropDown}>
+                                    <IconButton edge="start" onClick={handleClose}
+                                                aria-label="close">
+                                        <ArrowDropDownIcon fontSize={"large"}/>
+                                    </IconButton>
+                                </Tooltip>
+                            </Grid>
                         </Grid>
                     </Grid>
                     <BottomTimer restTime={exercise}/>
