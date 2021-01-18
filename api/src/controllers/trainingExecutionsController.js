@@ -131,7 +131,11 @@ exports.updateExecution = async function (req, res) {
     const foundExecution = await TrainingExecution.findOne({user: userId})
         .populate({
             path: 'completion.exercise',
-            model: Exercise
+            model: Exercise,
+            populate: {
+                path: 'location',
+                model: Location
+            }
         })
         .exec()
     if (!foundExecution) {
@@ -194,9 +198,8 @@ exports.updateExecution = async function (req, res) {
 
                 const location = foundExecution.completion[exerciseIndex].exercise.location
                 const locationCapacity = await LocationCapacity.findOne({location: location._id}).exec()
-
                 const currentCapacity = locationCapacity.capacity
-                if (currentCapacity !== location.defaultCapacity) {
+                if (currentCapacity < location.defaultCapacity) {
                     locationCapacity.capacity = currentCapacity + 1
                 }
                 await locationCapacity.save()
@@ -233,8 +236,18 @@ exports.removeExecution = async function (req, res) {
         return responses.notFound(res)('Execution not found')
     }
 
-    if (!foundExecution.currentExercise) { // if currentexercise == null (null lo metto io in completeExercise)
-        //TODO RESTORE CAPACITY
+    if (foundExecution.currentExercise !== null) { // if currentexercise == null (null lo metto io in completeExercise)
+        const locationCapacity = await LocationCapacity.findOne({location: foundExecution.currentLocation})
+            .populate({
+                path: 'location',
+                model: Location
+            })
+            .exec()
+        const currentCapacity = locationCapacity.capacity
+        if (currentCapacity < locationCapacity.location.defaultCapacity) {
+            locationCapacity.capacity = currentCapacity + 1
+        }
+        await locationCapacity.save()
     }
 
     try {
