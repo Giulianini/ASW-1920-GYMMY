@@ -81,7 +81,7 @@ function TrainingBar(props) {
                           alignItems={"center"}>
                         <Grid item>
                             <Typography className={classes.timerText}>
-                                Started: {props.startTime ? `${new Date(props.startTime).getHours()}:${new Date(props.startTime).getMinutes()}` : ""}
+                                Started: {props.startTime ? `${addZero(new Date(props.startTime).getHours())}:${addZero(new Date(props.startTime).getMinutes())}` : ""}
                             </Typography>
                         </Grid>
                         <Grid item>
@@ -100,6 +100,13 @@ function TrainingBar(props) {
             </Grid>
         </AppBar>
     );
+}
+
+function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
 }
 
 export default TrainingBar;
