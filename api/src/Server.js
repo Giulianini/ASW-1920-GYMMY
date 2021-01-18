@@ -120,7 +120,8 @@ io.on('connection', async (socket) => {
     console.log("[WS] connected user " + username)
 
     socket.on('disconnect', () => {
-        console.log(username + ' disconnected')
+        userSockets.delete(username)
+        console.log('[WS] ' + username + ' disconnected')
     })
 
     socket.on('event', (msg) => {
