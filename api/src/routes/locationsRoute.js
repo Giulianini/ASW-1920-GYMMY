@@ -3,7 +3,7 @@ const params = require('./params')
 
 const express = require('express')
 const router = express.Router()
-const authenticate = require('../middleware/auth')
+const auth = require('../middleware/auth')
 
 router.get('/', locationsController.getAllLocations)
 

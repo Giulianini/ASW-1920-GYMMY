@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const authenticate = require('../middleware/auth')
+const auth = require('../middleware/auth')
 const params = require('./params')
 
 const usersController = require('../controllers/usersController')
@@ -8,7 +8,7 @@ const trainingCardsController = require('../controllers/trainingCardsController'
 
 /* User */
 
-router.get('/', authenticate, usersController.getAllUsers)
+router.get('/', auth.authenticateJWT, usersController.getAllUsers)
 
 router.get(`/:${params.USERNAME_PARAM}`, usersController.getUser)
 

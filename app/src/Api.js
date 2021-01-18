@@ -31,12 +31,13 @@ export default function checkApiEndpoint(onMessage, onError) {
 
 
 // Add a 401 response interceptor
-authAxios.interceptors.response.use(function (response) {
+userAxios.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
-    console.log(error)
     if (401 === error.response.status) {
-        window.location.href = `${routes.login.value}`
+        window.location = `/${routes.login.value}`
+    } else if (403 === error.response.status) {
+        window.document.write('403 Forbidden')
     } else {
         return Promise.reject(error);
     }

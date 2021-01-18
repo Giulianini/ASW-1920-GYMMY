@@ -3,14 +3,14 @@ const params = require('./params')
 
 const express = require('express')
 const router = express.Router({ mergeParams: true })
-const authenticate = require('../middleware/auth')
+const auth = require('../middleware/auth')
 
-router.get('/', trainingExecutionsController.getExecution)
+router.get('/', auth.authenticateJWT, trainingExecutionsController.getExecution)
 
-router.put('/', trainingExecutionsController.createExecution)
+router.put('/', auth.authenticateJWT, trainingExecutionsController.createExecution)
 
-router.patch('/', trainingExecutionsController.updateExecution)
+router.patch('/', auth.authenticateJWT, trainingExecutionsController.updateExecution)
 
-router.delete('/', trainingExecutionsController.removeExecution)
+router.delete('/', auth.authenticateJWT, trainingExecutionsController.removeExecution)
 
 module.exports = router

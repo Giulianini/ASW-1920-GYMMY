@@ -38,14 +38,14 @@ function Training() {
             userAxios.delete("execution").then(() => {
                 setStarted(false)
             }).catch(reason => {
-                console.log(reason.response.data) //TODO notification
+                // console.log(reason.response.data) //TODO notification
             })
         } else {
             userAxios.put("execution", {"card": selectedCard._id}).then(() => {
                 setStarted(true)
                 fetchExecutionStatus()
             }).catch(reason => {
-                console.log(reason.response.data) //TODO notification
+                // console.log(reason.response.data) //TODO notification
             })
         }
     }
@@ -74,7 +74,7 @@ function Training() {
         }).then(() => {
             setCurrentExercise(index)
         }).catch(reason => {
-            console.log(reason.response) //TODO notification
+            // console.log(reason.response) //TODO notification
         })
     }
 
@@ -87,7 +87,7 @@ function Training() {
             setCapacities(res.data.completion.map(c => c.locationCapacity.capacity))
         }).catch(reason => {
             setStarted(false)
-            console.log("No execution found") //TODO notification
+            // console.log("No execution found") //TODO notification
         })
     }
 
@@ -132,7 +132,7 @@ function Training() {
                 setCards(res.data)
                 setLoading(false)
             }).catch(reason => {
-                console.log(reason)
+                // console.log(reason)
                 setLoading(false)
             })
         }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -150,7 +150,7 @@ function Training() {
             socket.on('capacities', capacitiesHandler)
 
             return function unsubscribe() {
-                console.log('in unsubscribe')
+                // console.log('in unsubscribe')
                 socket.off('capacities', capacitiesHandler)
             }
         }, [])
