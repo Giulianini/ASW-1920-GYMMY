@@ -199,8 +199,6 @@ exports.updateExecution = async function (req, res) {
                 const location = foundExecution.completion[exerciseIndex].exercise.location
                 const locationCapacity = await LocationCapacity.findOne({location: location._id}).exec()
                 const currentCapacity = locationCapacity.capacity
-                console.log(currentCapacity)
-                console.log(location.defaultCapacity)
                 if (currentCapacity < location.defaultCapacity) {
                     locationCapacity.capacity = currentCapacity + 1
                 }
