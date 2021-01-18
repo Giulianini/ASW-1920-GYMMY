@@ -142,13 +142,19 @@ function Training() {
 
     function useCapacities() {
         const [capacities, setCapacities] = useState(null)
+        const socketRef = useRef(null)
+
         useEffect(() => {
-            const socket = io(`${apiUrl}?username=${localStorage.getItem("username")}`)
-            socket.on('capacities', (data) => {
+            socketRef.current = io(`${apiUrl}?username=${localStorage.getItem("username")}`)
+            socketRef.current.on('capacities', (data) => {
                 setCapacities(data)
             })
+            socketRef.current.on('welcome', (msg) => {
+                console.log(`socket: ${msg}`)
+            })
+
             return function disconnect() {
-                socket.disconnect()
+                socketRef.current.disconnect()
             }
         }, [])
         return [capacities, setCapacities]
