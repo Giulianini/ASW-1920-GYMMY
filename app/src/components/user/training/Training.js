@@ -3,11 +3,10 @@ import {Grid} from "@material-ui/core";
 import {makeStyles, ThemeProvider} from "@material-ui/core/styles";
 import {useSelector} from "react-redux";
 import {trainDarkTheme, trainLightTheme} from "./trainTheme"
-import {apiUrl, userAxios} from "../../../Api";
+import {apiUrl, socket, userAxios} from "../../../Api";
 import ExerciseCard from "./Exercise/ExerciseCard";
 import TrainingBar from "./header/TrainingBar";
 import ExerciseDialog from "./Exercise/ExerciseDialog";
-import {io} from "socket.io-client";
 
 const useStyles = makeStyles({
     exercisesGrid: {
@@ -142,19 +141,17 @@ function Training() {
 
     function useCapacities() {
         const [capacities, setCapacities] = useState(null)
-        const socketRef = useRef(null)
 
         useEffect(() => {
-            socketRef.current = io(`${apiUrl}?username=${localStorage.getItem("username")}`)
-            socketRef.current.on('capacities', (data) => {
+            const capacitiesHandler = (data) => {
                 setCapacities(data)
-            })
-            socketRef.current.on('welcome', (msg) => {
-                console.log(`socket: ${msg}`)
-            })
+            };
 
-            return function disconnect() {
-                socketRef.current.disconnect()
+            socket.on('capacities', capacitiesHandler)
+
+            return function unsubscribe() {
+                console.log('in unsubscribe')
+                socket.off('capacities', capacitiesHandler)
             }
         }, [])
         return [capacities, setCapacities]

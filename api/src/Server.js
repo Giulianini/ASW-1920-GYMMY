@@ -118,10 +118,12 @@ io.on('connection', async (socket) => {
     userSockets.set(username, socket.id)
     socket.emit('welcome', 'welcome to the server')
     console.log("[WS] connected user " + username)
+    console.log(userSockets)
 
     socket.on('disconnect', () => {
         userSockets.delete(username)
         console.log('[WS] ' + username + ' disconnected')
+        console.log(userSockets)
     })
 
     socket.on('event', (msg) => {

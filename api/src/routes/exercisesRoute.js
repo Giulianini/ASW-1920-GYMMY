@@ -9,21 +9,21 @@ const multer = require('multer')
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
-router.get('/', exercisesController.getAllExercises)
+router.get('/', authenticate, exercisesController.getAllExercises)
 
-router.get(`/:${params.EXERCISE_NAME_PARAM}`, exercisesController.getExercise)
+router.get(`/:${params.EXERCISE_NAME_PARAM}`, authenticate, exercisesController.getExercise)
 
-router.post('/', /*authenticate,*/ exercisesController.createExercise)
+router.post('/', authenticate, exercisesController.createExercise)
 
-router.get(`/:${params.EXERCISE_NAME_PARAM}/${params.EXERCISE_IMAGE_ROUTE}`, exercisesController.getExerciseImage)
+router.get(`/:${params.EXERCISE_NAME_PARAM}/${params.EXERCISE_IMAGE_ROUTE}`, authenticate, exercisesController.getExerciseImage)
 
 router.put(`/:${params.EXERCISE_NAME_PARAM}/${params.EXERCISE_IMAGE_ROUTE}`,
-    upload.single('image'), exercisesController.createExerciseImage)
+    upload.single('image'), authenticate, exercisesController.createExerciseImage)
 
-router.delete(`/:${params.EXERCISE_NAME_PARAM}/${params.EXERCISE_IMAGE_ROUTE}`, exercisesController.removeExerciseImage)
+router.delete(`/:${params.EXERCISE_NAME_PARAM}/${params.EXERCISE_IMAGE_ROUTE}`, authenticate, exercisesController.removeExerciseImage)
 
-router.patch(`/:${params.EXERCISE_NAME_PARAM}`, exercisesController.updateExerciseLocations)
+router.patch(`/:${params.EXERCISE_NAME_PARAM}`, authenticate, exercisesController.updateExerciseLocations)
 
-router.delete(`/:${params.EXERCISE_NAME_PARAM}`, exercisesController.removeExercise)
+router.delete(`/:${params.EXERCISE_NAME_PARAM}`, authenticate, exercisesController.removeExercise)
 
 module.exports = router

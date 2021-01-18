@@ -13,7 +13,7 @@ const authenticateJWT = (req, res, next) => {
                     console.log("Forbidden authJwt")
                     return res.sendStatus(403);
                 }
-
+                console.log('authentication ok')
                 req.user = user;
                 req.token = bearerToken
                 next();

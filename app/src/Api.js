@@ -1,5 +1,6 @@
 import axios from "axios";
 import routes from "./components/Routes";
+import {io} from "socket.io-client";
 
 export const apiUrl = process.env.REACT_APP_API_URL
 
@@ -40,3 +41,10 @@ authAxios.interceptors.response.use(function (response) {
         return Promise.reject(error);
     }
 });
+
+export const socket = io(`${apiUrl}?username=${localStorage.getItem("username")}`)
+
+socket.on('welcome', (msg) => {
+    console.log(`socket: ${msg}`)
+})
+
