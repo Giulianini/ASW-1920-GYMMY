@@ -46,6 +46,7 @@ function Training() {
     const handleStartCard = () => {
         if (started) {
             userAxios.delete("execution").then(() => {
+                console.log("deleting")
                 setStarted(false)
             }).catch(reason => {
                 // console.log(reason.response.data) //TODO notification
@@ -121,7 +122,7 @@ function Training() {
                         <Typography variant={"h4"} className={classes.backdropText}>
                             Hey!
                             <br/>
-                            Start an execution
+                            Start a workout
                         </Typography>
                     </Grid>
                     <Grid item>
