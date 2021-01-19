@@ -6,8 +6,7 @@ const ChallengeSchema = new mongoose.Schema({
         required: true
     },
     participants: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'User',
+        type: String,
         required: true
     }],
     expRewards: {
