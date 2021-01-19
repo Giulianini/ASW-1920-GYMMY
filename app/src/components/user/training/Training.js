@@ -9,6 +9,7 @@ import TrainingBar from "./header/TrainingBar";
 import ExerciseDialog from "./Exercise/ExerciseDialog";
 import ChooseExerciseBackdrop from "./utils/ChooseExerciseBackdrop";
 import FinishedBackdrop from "./utils/FinishedBackdrop";
+import SnackBar from "../utils/Snackbar";
 
 const useStyles = makeStyles((theme) => ({
     exercisesGrid: {
@@ -41,9 +42,20 @@ function Training() {
     const [finished, setFinished] = useState(false)
 
     const exerciseDialogRef = useRef({})
+    const snackRef = useRef({})
 
+    const handleSnackOpen = (msg, severity) => {
+        try {
+            snackRef.current.handleMessage(msg, severity)
+        } catch (error) {
+        }
+    }
     const handleExerciseOpen = (exercise) => {
-        exerciseDialogRef.current.handleClickDialogOpen(exercise)
+        try {
+            exerciseDialogRef.current.handleClickDialogOpen(exercise)
+
+        } catch (error) {
+        }
     }
 
     const handleStartCard = () => {
@@ -51,15 +63,17 @@ function Training() {
             userAxios.delete("execution").then(() => {
                 console.log("deleting")
                 setStarted(false)
-            }).catch(reason => {
-                // console.log(reason.response.data) //TODO notification
+            }).catch(() => {
+                console.log("Cannot stop training")
+                handleSnackOpen("Cannot stop training", "error")
             })
         } else {
             userAxios.put("execution", {"card": selectedCard._id}).then(() => {
                 setStarted(true)
                 fetchExecutionStatus()
             }).catch(reason => {
-                // console.log(reason.response.data) //TODO notification
+                console.log("Cannot start training")
+                handleSnackOpen("Cannot start training", "error")
             })
         }
     }
@@ -78,7 +92,8 @@ function Training() {
                 setFinished(true)
             }
         }).catch(() => {
-            console.log("Error cannot complete exercise") //TODO notification
+            handleSnackOpen("Cannot complete exercise", "error")
+            console.log("Error cannot complete exercise")
         })
     }
 
@@ -88,8 +103,9 @@ function Training() {
             command: "startExercise"
         }).then(() => {
             setCurrentExercise(index)
-        }).catch(reason => {
-            // console.log(reason.response) //TODO notification
+        }).catch(() => {
+            console.log("No workouts in progress")
+            handleSnackOpen("No workouts in progress", "info")
         })
     }
 
@@ -101,10 +117,9 @@ function Training() {
             setStarted(true)
             setFinished(false)
             setCapacities(res.data.completion.map(c => c.locationCapacity.capacity))
-        }).catch(reason => {
+        }).catch(() => {
             setStarted(false)
             setBackDrop(true)
-            // console.log("No execution found") //TODO notification
         })
     }
 
@@ -122,6 +137,7 @@ function Training() {
         return (
             <ThemeProvider theme={darkMode ? trainDarkTheme : trainLightTheme}>
                 {backDrop ? <ChooseExerciseBackdrop backDrop={backDrop} setBackDrop={setBackDrop}/> : null}
+                <SnackBar ref={snackRef}/>
                 <ExerciseDialog ref={exerciseDialogRef}/>
                 <TrainingBar cards={cards} selectedCard={selectedCard} completion={completion}
                              startTime={startTime} handleStartCard={handleStartCard}
@@ -163,14 +179,12 @@ function Training() {
 
     function useCapacities() {
         const [capacities, setCapacities] = useState(null)
-
         useEffect(() => {
             const capacitiesHandler = (data) => {
                 setCapacities(data)
             }
             socket.on('capacities', capacitiesHandler)
             return function unsubscribe() {
-                // console.log('in unsubscribe')
                 socket.off('capacities', capacitiesHandler)
             }
         }, [])
