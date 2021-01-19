@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {Container, Grid, withStyles} from "@material-ui/core";
 import {AreaSeries, ArgumentAxis, Chart, Legend, Title, ValueAxis,} from '@devexpress/dx-react-chart-material-ui';
-import {Animation} from '@devexpress/dx-react-chart';
+import {Animation, ArgumentScale} from '@devexpress/dx-react-chart';
+import { scalePoint } from "d3-scale";
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
@@ -60,40 +61,28 @@ const LegendItem = withStyles(legendItemStyles, {name: 'LegendItem'})(LegendItem
 function Statistics() {
     const classes = useStyles();
     const [data, setData] = useState([
-        {year: '2012', android: 10, ios: 11},
-        {year: '2015', android: 12, ios: 13},
+        { month: 'January', ios: 30},
+        { month: 'February', ios: 35},
+        { month: 'March', ios: 25},
+        { month: 'April', ios: 40}
     ])
     return (
         <Container maxWidth={"lg"}>
             <Grid container direction={"column"} alignContent={"center"} className={classes.rootGrid}>
                 <Grid item>
-                    <Chart
-                        data={data}
-                        rootComponent={ChartRoot}
-                    >
-                        <ArgumentAxis/>
-                        <ValueAxis/>
-
-                        <AreaSeries
-                            name="Android"
-                            valueField="android"
-                            argumentField="year"
-                        />
-                        <AreaSeries
-                            name="iOS"
-                            valueField="ios"
-                            argumentField="year"
-                        />
-                        <Animation/>
+                    <Chart data={data} rootComponent={ChartRoot}>
+                        <ArgumentScale factory={scalePoint} />
+                        <ArgumentAxis />
+                        <ValueAxis />
+                        <AreaSeries name="iOS" valueField="ios" argumentField="month" />
+                        <Animation />
                         <Legend
                             position="bottom"
                             rootComponent={LegendRoot}
                             itemComponent={LegendItem}
                             labelComponent={LegendLabel}
                         />
-                        <Title
-                            text="Worldwide Sales to End Users by OS"
-                        />
+                        <Title text="Distance covered (km)" />
                     </Chart>
                 </Grid>
             </Grid>
