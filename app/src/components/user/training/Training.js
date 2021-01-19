@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Backdrop, CircularProgress, Grid, Typography} from "@material-ui/core";
+import {Backdrop, CircularProgress, Grid} from "@material-ui/core";
 import {makeStyles, ThemeProvider} from "@material-ui/core/styles";
 import {useSelector} from "react-redux";
 import {trainDarkTheme, trainLightTheme} from "./trainTheme"
@@ -7,6 +7,8 @@ import {socket, userAxios} from "../../../Api";
 import ExerciseCard from "./Exercise/ExerciseCard";
 import TrainingBar from "./header/TrainingBar";
 import ExerciseDialog from "./Exercise/ExerciseDialog";
+import ChooseExerciseBackdrop from "./utils/ChooseExerciseBackdrop";
+import FinishedBackdrop from "./utils/FinishedBackdrop";
 
 const useStyles = makeStyles((theme) => ({
     exercisesGrid: {
@@ -42,25 +44,6 @@ function Training() {
 
     const handleExerciseOpen = (exercise) => {
         exerciseDialogRef.current.handleClickDialogOpen(exercise)
-    }
-
-    const backdrop = () => {
-        return (<Backdrop className={classes.backdrop} open={backDrop} onClick={() => setBackDrop(false)}>
-            <Grid container direction={"column"} justify={"flex-start"}>
-                <Grid item>
-                    <Typography variant={"h4"} className={classes.backdropText}>
-                        Hey!
-                        <br/>
-                        Start a workout
-                    </Typography>
-                </Grid>
-                <Grid item>
-                    <Typography variant={"h6"} className={classes.backdropText}>
-                        Choose a training card on the top right
-                    </Typography>
-                </Grid>
-            </Grid>
-        </Backdrop>)
     }
 
     const handleStartCard = () => {
@@ -138,13 +121,13 @@ function Training() {
     } else {
         return (
             <ThemeProvider theme={darkMode ? trainDarkTheme : trainLightTheme}>
+                {backDrop ? <ChooseExerciseBackdrop backDrop={backDrop} setBackDrop={setBackDrop}/> : null}
                 <ExerciseDialog ref={exerciseDialogRef}/>
                 <TrainingBar cards={cards} selectedCard={selectedCard} completion={completion}
                              startTime={startTime} handleStartCard={handleStartCard}
                              started={started}
                              selectedCardIndex={selectedCardIndex}
                              setSelectedCardIndex={setSelectedCardIndex}/>
-                {backDrop ? backdrop() : null}
                 <Grid container direction={"column"} alignItems={"center"} justify={"flex-start"}
                       className={classes.exercisesGrid}>
                     {cards && cards[selectedCardIndex].exercises.map((item, i) =>
@@ -160,13 +143,7 @@ function Training() {
                             exercise={item}
                         />)}
                 </Grid>
-                <Backdrop className={classes.backdrop} open={finished} onClick={() => setFinished(false)}>
-                    <Typography variant={"h4"} className={classes.backdropText}>
-                        Workout complete!
-                        <br/>
-                        💪
-                    </Typography>
-                </Backdrop>
+                <FinishedBackdrop backDrop={finished} setBackDrop={setFinished}/>
             </ThemeProvider>
         )
     }
