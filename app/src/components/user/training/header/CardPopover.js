@@ -15,7 +15,7 @@ function CardPopover(props) {
     const open = Boolean(props.anchorEl);
     const id = open ? 'simple-popover' : undefined;
     const handleListItemClick = (event, index) => {
-        props.setSelectedCardIndex(index);
+        props.setSelectedCardIndex(index)
     };
     return (
         <Popover

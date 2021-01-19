@@ -39,7 +39,7 @@ function Training() {
     const snackRef = useRef({})
     // ----------- TRAINING -------------
     const [started, setStarted] = useState(false)
-    const cards = useCards()
+    const cards = useCards() //TODO If null error (vedi gioggia)
     const [selectedCardIndex, setSelectedCardIndex] = useState(0)
     const selectedCard = cards && cards[selectedCardIndex]
     const [currentExercise, setCurrentExercise] = useState(null)
@@ -150,7 +150,9 @@ function Training() {
                              startTime={startTime} handleStartCard={handleStartCard}
                              started={started}
                              selectedCardIndex={selectedCardIndex}
-                             setSelectedCardIndex={setSelectedCardIndex}/>
+                             setSelectedCardIndex={setSelectedCardIndex}
+                             handleSnackOpen={handleSnackOpen()}
+                />
                 <Grid container direction={"column"} alignItems={"center"} justify={"flex-start"}
                       className={classes.exercisesGrid}>
                     {cards && cards[selectedCardIndex].exercises.map((item, i) =>
@@ -176,7 +178,10 @@ function Training() {
         const [cards, setCards] = useState(null)
         useEffect(() => {
             userAxios.get("cards").then(res => {
-                setCards(res.data)
+                if (res.data.length > 1) {
+                    setCards(res.data)
+                    //TODO when click popover with no cards -> warning
+                }
                 setLoading(false)
             }).catch(() => {
                 setLoading(true)
