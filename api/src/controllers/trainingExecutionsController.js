@@ -209,9 +209,9 @@ exports.updateExecution = async function (req, res) {
                 const completedExercisesLength = foundExecution.completion.filter(c => c.completed).length;
                 if (completedExercisesLength === exercisesLength) {
                     responses.json(res)({finished: true})
-                    //TODO STATISTICS
                     const now = Date.now()
                     const statistics = await Statistics.findOne({ user: userId }).exec()
+                    const currentExp = statistics.experiencePoints
                     const history = {
                         date: now,
                         completedAmount: completedExercisesLength,
@@ -220,6 +220,7 @@ exports.updateExecution = async function (req, res) {
                     }
                     await TrainingExecution.deleteOne({user: userId}).exec()
 
+                    statistics.experiencePoints = currentExp + (completedExercisesLength * 1)
                     statistics.executionHistory.push(history)
                     await statistics.save()
                 } else {
@@ -270,12 +271,14 @@ exports.removeExecution = async function (req, res) {
         if (completedExercisesLength > 0) {
             const now = Date.now()
             const statistics = await Statistics.findOne({ user: userId }).exec()
+            const currentExp = statistics.experiencePoints
             const history = {
                 date: now,
                 completedAmount: completedExercisesLength,
                 workoutMinutes: Math.floor((now - foundExecution.startTime) / (1000 * 60)),
                 exercises: foundExecution.completion.filter(c => c.completed).map(obj => obj.exercise)
             }
+            statistics.experiencePoints = currentExp + (completedExercisesLength * 1)
             statistics.executionHistory.push(history)
             await statistics.save()
         }
