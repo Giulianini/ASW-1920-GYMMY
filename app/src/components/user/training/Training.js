@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Training() {
     const classes = useStyles()
-    const [backDrop, setBackDrop] = useState(true)
+    const [backDrop, setBackDrop] = useState(false)
     const [loading, setLoading] = useState(true)
     const [started, setStarted] = useState(false)
     const darkMode = useSelector(state => state.userRedux.darkMode)
@@ -100,6 +100,7 @@ function Training() {
             setCapacities(res.data.completion.map(c => c.locationCapacity.capacity))
         }).catch(reason => {
             setStarted(false)
+            setBackDrop(true)
             // console.log("No execution found") //TODO notification
         })
     }
