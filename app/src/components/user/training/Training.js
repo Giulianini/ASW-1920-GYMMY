@@ -14,11 +14,12 @@ const useStyles = makeStyles((theme) => ({
     },
     backdrop: {
         zIndex: theme.zIndex.drawer + 1,
-        color: '#fff',
+        backdropFilter: `blur(10px)`,
     },
     backdropText: {
         textAlign: "center",
         fontWeight: 100,
+        color: "white"
     }
 }))
 
@@ -41,6 +42,25 @@ function Training() {
 
     const handleExerciseOpen = (exercise) => {
         exerciseDialogRef.current.handleClickDialogOpen(exercise)
+    }
+
+    const backdrop = () => {
+        return (<Backdrop className={classes.backdrop} open={backDrop} onClick={() => setBackDrop(false)}>
+            <Grid container direction={"column"} justify={"flex-start"}>
+                <Grid item>
+                    <Typography variant={"h4"} className={classes.backdropText}>
+                        Hey!
+                        <br/>
+                        Start a workout
+                    </Typography>
+                </Grid>
+                <Grid item>
+                    <Typography variant={"h6"} className={classes.backdropText}>
+                        Choose a training card on the top right
+                    </Typography>
+                </Grid>
+            </Grid>
+        </Backdrop>)
     }
 
     const handleStartCard = () => {
@@ -115,25 +135,6 @@ function Training() {
                 <CircularProgress color="inherit"/>
             </Backdrop>
         )
-    } else if (!started && backDrop && !loading) {
-        return (
-            <Backdrop className={classes.backdrop} open={backDrop} onClick={() => setBackDrop(false)}>
-                <Grid container direction={"column"} justify={"flex-start"}>
-                    <Grid item>
-                        <Typography variant={"h4"} className={classes.backdropText}>
-                            Hey!
-                            <br/>
-                            Start a workout
-                        </Typography>
-                    </Grid>
-                    <Grid item>
-                        <Typography variant={"h6"} className={classes.backdropText}>
-                            Select a training card on the top right
-                        </Typography>
-                    </Grid>
-                </Grid>
-            </Backdrop>
-        )
     } else {
         return (
             <ThemeProvider theme={darkMode ? trainDarkTheme : trainLightTheme}>
@@ -143,6 +144,7 @@ function Training() {
                              started={started}
                              selectedCardIndex={selectedCardIndex}
                              setSelectedCardIndex={setSelectedCardIndex}/>
+                {backDrop ? backdrop() : null}
                 <Grid container direction={"column"} alignItems={"center"} justify={"flex-start"}
                       className={classes.exercisesGrid}>
                     {cards && cards[selectedCardIndex].exercises.map((item, i) =>
@@ -160,9 +162,9 @@ function Training() {
                 </Grid>
                 <Backdrop className={classes.backdrop} open={finished} onClick={() => setFinished(false)}>
                     <Typography variant={"h4"} className={classes.backdropText}>
-                        Yee!
-                        <br/>
                         Workout complete!
+                        <br/>
+                        💪
                     </Typography>
                 </Backdrop>
             </ThemeProvider>
