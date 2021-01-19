@@ -6,16 +6,7 @@ import {Animation, BarSeries, Stack} from '@devexpress/dx-react-chart';
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
-        [theme.breakpoints.up('md')]: {
-            height: "95vh",
-        },
-        [theme.breakpoints.down('md')]: {
-            paddingTop: 20,
-            marginBottom: 100,
-        }
-    },
-    chartWidth: {
-        width: '70%'
+
     }
 }));
 
