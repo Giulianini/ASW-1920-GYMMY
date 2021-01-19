@@ -41,11 +41,7 @@ const EditPersonalDialog = forwardRef((props, ref) => {
             "height": false,
             "weight": false
         })
-        const [saveUserInfo, setSaveUserInfo] = React.useState({
-            "age": "",
-            "height": "",
-            "weight": ""
-        })
+        const [saveUserInfo, setSaveUserInfo] = React.useState(props.userInfo)
 
         const handleClickOpen = () => {
             setOpen(true);
@@ -58,7 +54,7 @@ const EditPersonalDialog = forwardRef((props, ref) => {
         const handleChange = (prop) => (event) => {
             let value = event.target.value
             isNaN(value) ? setErrors({...errors, [prop]: true}) : setErrors({...errors, [prop]: false})
-            setSaveUserInfo({ ...saveUserInfo, [prop]: value });
+            setSaveUserInfo({...saveUserInfo, [prop]: value});
         }
 
         const openSnack = (msg, severity) => {
@@ -82,7 +78,7 @@ const EditPersonalDialog = forwardRef((props, ref) => {
                         props.setUserInfo({...saveUserInfo})
                     }).catch(reason => {
                     //Todo
-                    })
+                })
             } else {
                 openSnack(`${erroredFields.join(" and ")} must be numbers!`, "warning")
             }
@@ -149,6 +145,7 @@ const EditPersonalDialog = forwardRef((props, ref) => {
             </Dialog>
         );
     }
+
     return <MyEditPersonalDialog {...props}/>
 })
 
