@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {Container, Grid, withStyles} from "@material-ui/core";
 import {AreaSeries, ArgumentAxis, Chart, Legend, Title, ValueAxis,} from '@devexpress/dx-react-chart-material-ui';
-import {Animation, ArgumentScale} from '@devexpress/dx-react-chart';
-import { scalePoint } from "d3-scale";
+import {Animation, BarSeries, Stack} from '@devexpress/dx-react-chart';
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
@@ -14,6 +13,9 @@ const useStyles = makeStyles(theme => ({
             paddingTop: 20,
             marginBottom: 100,
         }
+    },
+    chartWidth: {
+        width: '70%'
     }
 }));
 
@@ -60,21 +62,58 @@ const LegendItem = withStyles(legendItemStyles, {name: 'LegendItem'})(LegendItem
 
 function Statistics() {
     const classes = useStyles();
-    const [data, setData] = useState([
-        { month: 'January', ios: 30},
-        { month: 'February', ios: 35},
-        { month: 'March', ios: 25},
-        { month: 'April', ios: 40}
-    ])
+    const [distanceData, setDistanceData] = useState([
+        {month: 'Jan', km: 30},
+        {month: 'Feb', km: 35},
+        {month: 'Mar', km: 25},
+        {month: 'Apr', km: 40},
+        {month: 'May', km: 30},
+        {month: 'Jun', km: 35},
+        {month: 'Jul', km: 25},
+        {month: 'Aug', km: 40},
+        {month: 'Sep', km: 30},
+        {month: 'Oct', km: 35},
+        {month: 'Nov', km: 25},
+        {month: 'Dec', km: 40}
+    ]);
+    const [activityData, setActivityData] = useState([
+        {month: 'Jan', completedActivities: 130},
+        {month: 'Feb', completedActivities: 140},
+        {month: 'Mar', completedActivities: 144},
+        {month: 'Apr', completedActivities: 124},
+        {month: 'May', completedActivities: 144},
+        {month: 'Jun', completedActivities: 112},
+        {month: 'Jul', completedActivities: 142},
+        {month: 'Aug', completedActivities: 144},
+        {month: 'Sep', completedActivities: 123},
+        {month: 'Oct', completedActivities: 141},
+        {month: 'Nov', completedActivities: 128},
+        {month: 'Dec', completedActivities: 130}
+    ]);
+    const [workoutData, setWorkoutData] = useState([
+        {month: 'Jan', min: 1440},
+        {month: 'Feb', min: 1225},
+        {month: 'Mar', min: 1335},
+        {month: 'Apr', min: 1642},
+        {month: 'May', min: 1958},
+        {month: 'Jun', min: 1245},
+        {month: 'Jul', min: 1528},
+        {month: 'Aug', min: 1502},
+        {month: 'Sep', min: 1367},
+        {month: 'Oct', min: 1942},
+        {month: 'Nov', min: 1759},
+        {month: 'Dec', min: 1635}
+    ]);
+
+
     return (
         <Container maxWidth={"lg"}>
             <Grid container direction={"column"} alignContent={"center"} className={classes.rootGrid}>
                 <Grid item>
-                    <Chart data={data} rootComponent={ChartRoot}>
-                        <ArgumentScale factory={scalePoint} />
+                    <Chart data={distanceData} rootComponent={ChartRoot}>
                         <ArgumentAxis />
                         <ValueAxis />
-                        <AreaSeries name="iOS" valueField="ios" argumentField="month" />
+                        <AreaSeries name="Distance" valueField="km" argumentField="month" />
                         <Animation />
                         <Legend
                             position="bottom"
@@ -82,7 +121,44 @@ function Statistics() {
                             itemComponent={LegendItem}
                             labelComponent={LegendLabel}
                         />
-                        <Title text="Distance covered (km)" />
+                        <Title text="Distance covered (running + cyclette)" />
+                    </Chart>
+                </Grid>
+
+                <Grid item>
+                    <Chart
+                        data={activityData}
+                    >
+                        <ArgumentAxis />
+                        <ValueAxis
+                            max={2400}
+                        />
+
+                        <BarSeries
+                            name="# of completed activities related to own training card"
+                            valueField="completedActivities"
+                            argumentField="month"
+                        />
+
+                        <Animation />
+                        <Legend position="bottom" rootComponent={ChartRoot} labelComponent={LegendLabel} />
+                        <Title text="Completed exercises (#)" />
+                    </Chart>
+                </Grid>
+
+                <Grid item>
+                    <Chart data={workoutData} rootComponent={ChartRoot}>
+                        <ArgumentAxis />
+                        <ValueAxis />
+                        <AreaSeries name="Workout" valueField="min" argumentField="month" />
+                        <Animation />
+                        <Legend
+                            position="bottom"
+                            rootComponent={LegendRoot}
+                            itemComponent={LegendItem}
+                            labelComponent={LegendLabel}
+                        />
+                        <Title text="Workout time (active minutes)" />
                     </Chart>
                 </Grid>
             </Grid>
