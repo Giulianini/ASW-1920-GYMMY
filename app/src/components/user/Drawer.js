@@ -69,7 +69,11 @@ function Drawer(props) {
                     <ListItemIcon>
                         <Lock/>
                     </ListItemIcon>
-                    <ListItemText id="logout" primary="Logout"/>
+                    <ListItemText id="logout" primary="Logout" onClick={() => {
+                        localStorage.clear()
+                        dispatch(setDarkMode(false))
+                        history.push(`/${routes.login.value}`)
+                    }}/>
                 </ListItem>
             </List>
         </SwipeableDrawer>
