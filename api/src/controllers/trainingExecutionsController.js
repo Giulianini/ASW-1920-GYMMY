@@ -208,7 +208,6 @@ exports.updateExecution = async function (req, res) {
                 const exercisesLength = foundExecution.completion.length;
                 const completedExercisesLength = foundExecution.completion.filter(c => c.completed).length;
                 if (completedExercisesLength === exercisesLength) {
-                    responses.json(res)({finished: true})
                     const now = Date.now()
                     const statistics = await Statistics.findOne({ user: userId }).exec()
                     const currentExp = statistics.experiencePoints
@@ -223,6 +222,8 @@ exports.updateExecution = async function (req, res) {
                     statistics.experiencePoints = currentExp + (completedExercisesLength * 1)
                     statistics.executionHistory.push(history)
                     await statistics.save()
+
+                    responses.json(res)({finished: true})
                 } else {
                     responses.json(res)({finished: false})
                 }
