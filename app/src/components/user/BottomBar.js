@@ -47,12 +47,13 @@ function BottomBar(props) {
     );
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     root: {
+        zIndex: theme.zIndex.drawer + 1,
         position: "sticky",
         bottom: 0,
     }
-})
+}))
 
 
 export default BottomBar;
