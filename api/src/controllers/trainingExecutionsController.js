@@ -7,6 +7,7 @@ const TrainingExecution = require('../models/TrainingExecution')
 const Exercise = require('../models/Exercise')
 const Location = require('../models/Location')
 const LocationCapacity = require('../models/LocationCapacity')
+const Statistics = require('../models/Statistics')
 
 const {Semaphore} = require('await-semaphore');
 
@@ -204,10 +205,23 @@ exports.updateExecution = async function (req, res) {
                 }
                 await locationCapacity.save()
 
-                if (foundExecution.completion.filter(c => c.completed).length === foundExecution.completion.length) {
+                const exercisesLength = foundExecution.completion.length;
+                const completedExercisesLength = foundExecution.completion.filter(c => c.completed).length;
+                if (completedExercisesLength === exercisesLength) {
                     responses.json(res)({finished: true})
-                    await TrainingExecution.deleteOne({user: userId}).exec()
                     //TODO STATISTICS
+                    const now = Date.now()
+                    const statistics = await Statistics.findOne({ user: userId }).exec()
+                    const history = {
+                        date: now,
+                        completedAmount: completedExercisesLength,
+                        workoutMinutes: Math.floor((now - foundExecution.startTime) / (1000 * 60)),
+                        exercises: foundExecution.completion.map(obj => obj.exercise)
+                    }
+                    await TrainingExecution.deleteOne({user: userId}).exec()
+
+                    statistics.executionHistory.push(history)
+                    await statistics.save()
                 } else {
                     responses.json(res)({finished: false})
                 }
@@ -251,7 +265,23 @@ exports.removeExecution = async function (req, res) {
     }
 
     try {
+        const completedExercisesLength = foundExecution.completion.filter(c => c.completed).length;
+
+        if (completedExercisesLength > 0) {
+            const now = Date.now()
+            const statistics = await Statistics.findOne({ user: userId }).exec()
+            const history = {
+                date: now,
+                completedAmount: completedExercisesLength,
+                workoutMinutes: Math.floor((now - foundExecution.startTime) / (1000 * 60)),
+                exercises: foundExecution.completion.filter(c => c.completed).map(obj => obj.exercise)
+            }
+            statistics.executionHistory.push(history)
+            await statistics.save()
+        }
+
         await TrainingExecution.deleteOne({user: userId}).exec()
+
         responses.noContent(res)
     } catch (err) {
         responses.error(res)(err)
