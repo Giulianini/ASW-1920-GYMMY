@@ -15,7 +15,6 @@ const useStyles = makeStyles({
     timerText: {
         padding: 10,
         fontWeight: 100,
-        //fontSize: 40,
         textAlign: "center",
     },
 })
@@ -52,6 +51,7 @@ function BottomTimer(props) {
             }
         }
     }, [secs, started])
+    
     return (
         <Grid container direction={"column"} justify={"center"} alignItems={"stretch"} className={classes.bottomBar}>
             <Grid item>

@@ -20,7 +20,7 @@ import Image from "material-ui-image";
 import {Receipt} from "@material-ui/icons";
 import BottomTimer from "./BottomTimer";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
     appBar: {
         position: 'sticky',
     },
@@ -43,14 +43,14 @@ const useStyles = makeStyles((theme) => ({
         padding: 0,
     },
     image: {}
-}))
+})
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 })
 
 const ExerciseDialog = forwardRef((props, ref) => {
-    function MyExerciseDialog(props) {
+    function MyExerciseDialog() {
         const classes = useStyles();
         const snackRef = useRef({})
         const [open, setOpen] = React.useState(false);

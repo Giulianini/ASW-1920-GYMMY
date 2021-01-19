@@ -14,8 +14,6 @@ const useStyles = makeStyles(theme => ({
     },
     cardMedia: {
         height: 0,
-        //width: '100%',
-        //padding: '27%', // 16:9
         paddingTop: '56.25%', // 16:9,
     },
     pushCardSize: {
@@ -44,6 +42,7 @@ function ExerciseCard(props) {
             props.handleStartExercise(props.index)
         }
     }
+    
     return (
         <Grid item xs={11} lg={6}>
             <Card className={classes.card}>

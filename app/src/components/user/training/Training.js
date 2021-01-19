@@ -28,10 +28,17 @@ const useStyles = makeStyles((theme) => ({
 
 function Training() {
     const classes = useStyles()
+    // ----------- ENVIRONMENT -------------
+    const darkMode = useSelector(state => state.userRedux.darkMode)
+    // ----------- INTERACTION -------------
     const [backDrop, setBackDrop] = useState(false)
     const [loading, setLoading] = useState(true)
+    const [finished, setFinished] = useState(false)
+    // ----------- REFS -------------
+    const exerciseDialogRef = useRef({})
+    const snackRef = useRef({})
+    // ----------- TRAINING -------------
     const [started, setStarted] = useState(false)
-    const darkMode = useSelector(state => state.userRedux.darkMode)
     const cards = useCards()
     const [selectedCardIndex, setSelectedCardIndex] = useState(0)
     const selectedCard = cards && cards[selectedCardIndex]
@@ -39,11 +46,8 @@ function Training() {
     const [completion, setCompletion] = useState(null)
     const [startTime, setStartTime] = useState(null)
     const [capacities, setCapacities] = useCapacities()
-    const [finished, setFinished] = useState(false)
 
-    const exerciseDialogRef = useRef({})
-    const snackRef = useRef({})
-
+    // ----------- REF HANDLERS -------------
     const handleSnackOpen = (msg, severity) => {
         try {
             snackRef.current.handleMessage(msg, severity)
@@ -53,16 +57,16 @@ function Training() {
     const handleExerciseOpen = (exercise) => {
         try {
             exerciseDialogRef.current.handleClickDialogOpen(exercise)
-
         } catch (error) {
         }
     }
 
+    // ----------- HANDLERS: CARD/START EX/COMPLETE EX -------------
     const handleStartCard = () => {
         if (started) {
             userAxios.delete("execution").then(() => {
-                console.log("deleting")
                 setStarted(false)
+                handleSnackOpen("We have canceled your workout", "info")
             }).catch(() => {
                 console.log("Cannot stop training")
                 handleSnackOpen("Cannot stop training", "error")
@@ -71,11 +75,23 @@ function Training() {
             userAxios.put("execution", {"card": selectedCard._id}).then(() => {
                 setStarted(true)
                 fetchExecutionStatus()
-            }).catch(reason => {
+            }).catch(() => {
                 console.log("Cannot start training")
                 handleSnackOpen("Cannot start training", "error")
             })
         }
+    }
+
+    const handleStartExercise = (index) => {
+        userAxios.patch("execution", {
+            exerciseIndex: index,
+            command: "startExercise"
+        }).then(() => {
+            setCurrentExercise(index)
+        }).catch(() => {
+            console.log("No workouts in progress")
+            handleSnackOpen("No workouts in progress", "info")
+        })
     }
 
     const handleCompleteExercise = (index) => {
@@ -97,17 +113,11 @@ function Training() {
         })
     }
 
-    const handleStartExercise = (index) => {
-        userAxios.patch("execution", {
-            exerciseIndex: index,
-            command: "startExercise"
-        }).then(() => {
-            setCurrentExercise(index)
-        }).catch(() => {
-            console.log("No workouts in progress")
-            handleSnackOpen("No workouts in progress", "info")
-        })
-    }
+    // ----------- FETCHING DATA -------------
+
+    useEffect(() => {
+        fetchExecutionStatus()
+    }, [currentExercise])
 
     function fetchExecutionStatus() {
         userAxios.get("execution").then(res => {
@@ -123,10 +133,7 @@ function Training() {
         })
     }
 
-    useEffect(() => {
-        fetchExecutionStatus()
-    }, [currentExercise])
-
+    // #################### RENDER #####################
     if (loading) {
         return (
             <Backdrop className={classes.backdrop} open={backDrop}>
@@ -164,6 +171,7 @@ function Training() {
         )
     }
 
+    // ----------- CUSTOM HOOKS -------------
     function useCards() {
         const [cards, setCards] = useState(null)
         useEffect(() => {
@@ -191,6 +199,5 @@ function Training() {
         return [capacities, setCapacities]
     }
 }
-
 
 export default Training;
