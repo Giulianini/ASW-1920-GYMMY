@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 20,
     },
     backdrop: {
-        zIndex: theme.zIndex.drawer + 1,
+        zIndex: theme.zIndex.drawer + 2,
         backdropFilter: `blur(10px)`,
     },
     backdropText: {
