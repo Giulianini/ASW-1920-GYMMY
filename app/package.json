@@ -62,6 +62,7 @@
     ]
   },
   "devDependencies": {
-    "@mui-treasury/components": "^1.9.2"
+    "@mui-treasury/components": "^1.9.2",
+    "d3-scale": "^3.2.3"
   }
 }

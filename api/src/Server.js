@@ -40,6 +40,7 @@ const trainingCardsRoute = require('./routes/trainingCardsRoute')
 const tagsRoute = require('./routes/tagsRoute')
 const executionRoute = require('./routes/trainingExecutionsRoute')
 const locationCapacitiesRoute = require('./routes/locationCapacitiesRoute')
+const statisticsRoute = require('./routes/statisticsRoute')
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -60,6 +61,8 @@ app.use('/exercises', exercisesRoute)
 app.use(`/users/:${params.USERNAME_PARAM}/${params.USER_CARDS_ROUTE}`, trainingCardsRoute)
 
 app.use(`/users/:${params.USERNAME_PARAM}/${params.EXECUTION_ROUTE}`, executionRoute)
+
+app.use(`/users/:${params.USERNAME_PARAM}/${params.STATISTICS_ROUTE}`, statisticsRoute)
 
 app.use('/tags', tagsRoute)
 
