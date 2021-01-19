@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const responses = require('./util/responses')
 
 const User = require('../models/User')
+const Statistics = require('../models/Statistics')
 
 async function getUserId(username) {
     return User.findOne({ username: username }).map(doc => doc._id).exec()
@@ -30,14 +31,21 @@ exports.createUser = async function (req, res) {
         responses.conflict(res)
     } else {
         bcrypt.hash(password, saltRounds, async (err, hash) => {
-            const user = new User({
-                username: username,
-                email: email,
-                password: hash,
-                role: userRole,
-            })
             try {
+                const user = new User({
+                    username: username,
+                    email: email,
+                    password: hash,
+                    role: userRole,
+                })
                 await user.save();
+
+                const userStatistics = new Statistics({
+                    user: user._id,
+                    executionHistory: []
+                })
+                await userStatistics.save()
+
                 responses.created(res)({
                     username: username,
                     email: email,
