@@ -8,19 +8,13 @@ export const baseAxios = axios.create({
     baseURL: apiUrl
 })
 
-export const authAxios = axios.create({
-    baseURL: apiUrl,
-    headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`
-    }
-})
-
-export const userAxios = axios.create({
-    baseURL: `${apiUrl}/users/${localStorage.getItem("username")}`,
-    headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwt")}`
-    }
-})
+export const userAxios = axios.create()
+userAxios.interceptors.request
+    .use((config) => {
+        config.baseURL = `${apiUrl}/users/${localStorage.getItem("username")}`
+        config.headers.Authorization = `Bearer ${localStorage.getItem("jwt")}`
+        return config
+    })
 
 
 export default function checkApiEndpoint(onMessage, onError) {
@@ -35,6 +29,7 @@ userAxios.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
     if (401 === error.response.status) {
+        console.log("diocane")
         window.location = `/${routes.login.value}`
     } else if (403 === error.response.status) {
         window.document.write('403 Forbidden')

@@ -1,15 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import {authAxios} from "../../../Api";
-import {
-    Container,
-    Divider,
-    Grid,
-    LinearProgress,
-    List,
-    ListItem,
-    Typography,
-} from "@material-ui/core";
+import {Container, Divider, Grid, LinearProgress, List, ListItem, Typography,} from "@material-ui/core";
 import EditPersonalDialog from "../personal/EditPersonalDialog";
 import SpeedIcon from '@material-ui/icons/Speed';
 import BarChartIcon from '@material-ui/icons/BarChart';
@@ -20,6 +11,7 @@ import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import Course from "./Course";
 import Challenge from "./Challenge";
 import CustomStepper from "./CustomStepper"
+import {userAxios} from "../../../Api";
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
@@ -76,7 +68,7 @@ const challenges = [{
 
 const courses = [{
     "title": "Functional training",
-    "desc":  "Enroll in the functional training class. All needed equipment is provided to you.",
+    "desc": "Enroll in the functional training class. All needed equipment is provided to you.",
     "image": "/functional.jpg",
 }, {
     "title": "Zumba",
@@ -98,7 +90,7 @@ function Dashboard() {
 
     useEffect(() => {
         let username = localStorage.getItem("username")
-        authAxios.get(`/users/${username}`).then(res => {
+        userAxios.get("/").then(res => {
             setUserInfo({...res.data})
         }).catch(reason => {
             console.log(reason)
@@ -145,7 +137,8 @@ function Dashboard() {
                         </Typography>
                     </Grid>
 
-                    <Grid item container direction={"column"} alignItems={"center"} justify={"flex-start"} className={classes.scrollablePane}>
+                    <Grid item container direction={"column"} alignItems={"center"} justify={"flex-start"}
+                          className={classes.scrollablePane}>
                         {challenges.map((item, i) => <Challenge key={i} item={item}/>)}
                     </Grid>
 
@@ -155,7 +148,8 @@ function Dashboard() {
                         </Typography>
                     </Grid>
 
-                    <Grid item container direction={"column"} alignItems={"center"} justify={"flex-start"} className={classes.scrollablePane}>
+                    <Grid item container direction={"column"} alignItems={"center"} justify={"flex-start"}
+                          className={classes.scrollablePane}>
                         {courses.map((item, i) => <Course key={i} item={item}/>)}
                     </Grid>
 

@@ -14,7 +14,7 @@ import {
 import routes from "../Routes";
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {setDarkMode} from "../../redux/ducks/user/user";
+import {resetUser, setDarkMode} from "../../redux/ducks/user/user";
 
 const useStyles = makeStyles({
     list: {
@@ -70,8 +70,8 @@ function Drawer(props) {
                         <Lock/>
                     </ListItemIcon>
                     <ListItemText id="logout" primary="Logout" onClick={() => {
+                        dispatch(resetUser())
                         localStorage.clear()
-                        dispatch(setDarkMode(false))
                         history.push(`/${routes.login.value}`)
                     }}/>
                 </ListItem>
