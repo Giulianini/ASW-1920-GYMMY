@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {Container, Grid, withStyles} from "@material-ui/core";
 import {AreaSeries, ArgumentAxis, Chart, Legend, Title, ValueAxis,} from '@devexpress/dx-react-chart-material-ui';
-import {Animation, BarSeries, Stack} from '@devexpress/dx-react-chart';
+import {Animation, BarSeries} from '@devexpress/dx-react-chart';
+import {userAxios} from "../../../Api";
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
@@ -50,7 +51,6 @@ const LegendRoot = withStyles(legendStyles, {name: 'LegendRoot'})(LegendRootBase
 const LegendLabel = withStyles(legendLabelStyles, {name: 'LegendLabel'})(LegendLabelBase);
 const LegendItem = withStyles(legendItemStyles, {name: 'LegendItem'})(LegendItemBase);
 
-
 function Statistics() {
     const classes = useStyles();
     const [distanceData, setDistanceData] = useState([
@@ -81,21 +81,49 @@ function Statistics() {
         {month: 'Nov', completedActivities: 128},
         {month: 'Dec', completedActivities: 130}
     ]);
-    const [workoutData, setWorkoutData] = useState([
-        {month: 'Jan', min: 1440},
-        {month: 'Feb', min: 1225},
-        {month: 'Mar', min: 1335},
-        {month: 'Apr', min: 1642},
-        {month: 'May', min: 1958},
-        {month: 'Jun', min: 1245},
-        {month: 'Jul', min: 1528},
-        {month: 'Aug', min: 1502},
-        {month: 'Sep', min: 1367},
-        {month: 'Oct', min: 1942},
-        {month: 'Nov', min: 1759},
-        {month: 'Dec', min: 1635}
-    ]);
+    const [workoutData, setWorkoutData] = useState([]);
 
+
+    // ----------- FETCHING DATA -------------
+    useEffect(() => {
+        fetchStatistics()
+    },[])
+
+    function fetchStatistics() {
+        userAxios.get("statistics").then(res => {
+            console.log(res.data.executionHistory)
+            const history = res.data.executionHistory
+            const historyWithMonths = history.map(obj => {
+                const month = new Date(obj.date).getMonth()
+                return {
+                    minutes: obj.workoutMinutes,
+                    month: month
+                }
+            })
+            const groupedHistory = historyWithMonths.reduce((acc, obj) => {
+                acc[obj.month] = {
+                    min: (obj.month in acc ? acc[obj.month].minutes : 0) + obj.minutes
+                }
+                return acc
+            }, {})
+            console.log(groupedHistory)
+            setWorkoutData(groupedHistory.map((k, v) => {
+                return {
+                    month: "Jan",
+                    min: v.min
+                }
+            }))
+            /*setWorkoutData([{
+                month: "Jan",
+                min: 100
+            },
+                {
+                    month: "Feb",
+                    min: 500
+                }])*/
+        }).catch(() => {
+        })
+    }
 
     return (
         <Container maxWidth={"lg"}>
