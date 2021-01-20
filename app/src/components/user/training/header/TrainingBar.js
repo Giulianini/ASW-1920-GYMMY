@@ -41,7 +41,14 @@ function TrainingBar(props) {
     const classes = useStyles()
     const [anchorEl, setAnchorEl] = useState(null)
     const percentage = props.completion ? (props.completion.filter(c => c.completed).length * 1.0 / props.completion.length).toFixed(1) * 100 : 0
-    const handleExpandCardClick = (event) => setAnchorEl(event.currentTarget)
+
+    const handleExpandCardClick = (event) => {
+        if (props.cards) {
+            setAnchorEl(event.currentTarget)
+        } else {
+            props.handleSnackOpen("Card not found. Contact us and we will create a workout for you 🤗", "warning")
+        }
+    }
 
     const handleClose = () => setAnchorEl(null)
     return (
@@ -57,8 +64,10 @@ function TrainingBar(props) {
                                 className={classes.titleText}> {props.selectedCard && props.selectedCard.title}</Typography>
                         </Grid>
                         <Grid item>
-                            <IconButton onClick={props.started ? () => {
-                            } : handleExpandCardClick}>
+                            <IconButton
+                                disabled={props.started}
+                                onClick={handleExpandCardClick}
+                            >
                                 <ExpandMore/>
                             </IconButton>
                             <CardPopover anchorEl={anchorEl} handleClose={handleClose} {...props}/>
@@ -81,11 +90,12 @@ function TrainingBar(props) {
                           alignItems={"center"}>
                         <Grid item>
                             <Typography className={classes.timerText}>
-                                Started: {props.startTime ? `${addZero(new Date(props.startTime).getHours())}:${addZero(new Date(props.startTime).getMinutes())}` : ""}
+                                {props.startTime ? `Started: ${addZero(new Date(props.startTime).getHours())}:${addZero(new Date(props.startTime).getMinutes())}` : ""}
                             </Typography>
                         </Grid>
                         <Grid item>
                             <Button variant={"outlined"} className={classes.playButton}
+                                    disabled={!props.selectedCard}
                                     onClick={props.handleStartCard}>
                                 {props.started ? "Cancel" : "Start"}
                             </Button>

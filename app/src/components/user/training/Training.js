@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Backdrop, CircularProgress, Grid} from "@material-ui/core";
+import {Grid} from "@material-ui/core";
 import {makeStyles, ThemeProvider} from "@material-ui/core/styles";
 import {useSelector} from "react-redux";
 import {trainDarkTheme, trainLightTheme} from "./trainTheme"
@@ -10,14 +10,11 @@ import ExerciseDialog from "./Exercise/ExerciseDialog";
 import ChooseExerciseBackdrop from "./utils/ChooseExerciseBackdrop";
 import FinishedBackdrop from "./utils/FinishedBackdrop";
 import SnackBar from "../utils/Snackbar";
+import LoadingBackdrop from "./utils/LoadingBackdrop";
 
 const useStyles = makeStyles((theme) => ({
     exercisesGrid: {
         marginTop: 20,
-    },
-    backdrop: {
-        zIndex: theme.zIndex.drawer + 1,
-        backdropFilter: `blur(10px)`,
     },
     backdropText: {
         textAlign: "center",
@@ -136,9 +133,7 @@ function Training() {
     // #################### RENDER #####################
     if (loading) {
         return (
-            <Backdrop className={classes.backdrop} open={backDrop}>
-                <CircularProgress color="inherit"/>
-            </Backdrop>
+            <LoadingBackdrop backDrop={backDrop}/>
         )
     } else {
         return (
@@ -151,7 +146,7 @@ function Training() {
                              started={started}
                              selectedCardIndex={selectedCardIndex}
                              setSelectedCardIndex={setSelectedCardIndex}
-                             handleSnackOpen={handleSnackOpen()}
+                             handleSnackOpen={handleSnackOpen}
                 />
                 <Grid container direction={"column"} alignItems={"center"} justify={"flex-start"}
                       className={classes.exercisesGrid}>
@@ -178,7 +173,7 @@ function Training() {
         const [cards, setCards] = useState(null)
         useEffect(() => {
             userAxios.get("cards").then(res => {
-                if (res.data.length > 1) {
+                if (res.data.length > 0) {
                     setCards(res.data)
                     //TODO when click popover with no cards -> warning
                 }
