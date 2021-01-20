@@ -1,14 +1,5 @@
 import React, {useRef} from 'react';
-import {
-    Box,
-    Fab,
-    FormControl,
-    Grid,
-    InputAdornment,
-    InputLabel,
-    OutlinedInput,
-    Typography
-} from "@material-ui/core";
+import {Box, Fab, FormControl, Grid, InputAdornment, InputLabel, OutlinedInput, Typography} from "@material-ui/core";
 import {useHistory} from "react-router-dom"
 import SendIcon from '@material-ui/icons/Send';
 import {makeStyles} from "@material-ui/core/styles";
@@ -71,7 +62,8 @@ function Login() {
         showPassword: false,
     });
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault()
         baseAxios.post('/session', {
             "username": values['username'],
             "password": values['password'],
@@ -85,11 +77,11 @@ function Login() {
     }
 
     const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
+        setValues({...values, [prop]: event.target.value});
     };
 
     const handleClickShowPassword = () => {
-        setValues({ ...values, showPassword: !values.showPassword });
+        setValues({...values, showPassword: !values.showPassword});
     };
 
     const handleMouseDownPassword = (event) => {
@@ -100,13 +92,14 @@ function Login() {
         <Box className={classes.rootBox}>
             <SnackBar ref={snackRef}/>
             <Box py={10}>
-                <Grid container direction="column" alignItems="center" justify={"center"} >
+                <Grid container direction="column" alignItems="center" justify={"center"} component={"form"}
+                      onSubmit={handleSubmit}>
                     <Grid item>
                         <Typography className={classes.title}>
                             Login
                         </Typography>
                     </Grid>
-                    <Grid item md={6} lg={4} xl={3} container direction="column" className={classes.textFieldGrid} >
+                    <Grid item md={6} lg={4} xl={3} container direction="column" className={classes.textFieldGrid}>
                         <FormControl required={true} fullWidth={true} variant={"filled"}>
                             <InputLabel>Username</InputLabel>
                             <OutlinedInput
@@ -121,7 +114,7 @@ function Login() {
                             />
                         </FormControl>
                         <FormControl required={true} variant="filled">
-                            <InputLabel >Password</InputLabel>
+                            <InputLabel>Password</InputLabel>
                             <OutlinedInput
                                 className={classes.textFieldForm}
                                 id="password"
@@ -136,7 +129,7 @@ function Login() {
                                             onMouseDown={handleMouseDownPassword}
                                             edge="end"
                                         >
-                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                            {values.showPassword ? <Visibility/> : <VisibilityOff/>}
                                         </IconButton>
                                     </InputAdornment>
                                 }
@@ -144,13 +137,14 @@ function Login() {
                         </FormControl>
                     </Grid>
                     <Fab color={"primary"}
-                         onClick={handleSubmit}
+                         type={"submit"}
+                         onSubmit={handleSubmit}
                          disabled={false}
                          href={""}
                          icontheme={"Filled"}
                          size={"large"}
                          variant={"round"}>
-                        <SendIcon />
+                        <SendIcon/>
                     </Fab>
                 </Grid>
             </Box>
