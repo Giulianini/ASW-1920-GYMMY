@@ -1,14 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {
-    Box,
-    Fab,
-    FormControl,
-    Grid,
-    InputAdornment,
-    InputLabel,
-    OutlinedInput,
-    Typography
-} from "@material-ui/core";
+import {Box, Fab, FormControl, Grid, InputAdornment, InputLabel, OutlinedInput, Typography} from "@material-ui/core";
 import SendIcon from '@material-ui/icons/Send';
 import {makeStyles} from "@material-ui/core/styles";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
@@ -72,11 +63,11 @@ export default function Signup() {
     });
 
     const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
+        setValues({...values, [prop]: event.target.value});
     };
 
     const handleClickShowPassword = () => {
-        setValues({ ...values, showPassword: !values.showPassword });
+        setValues({...values, showPassword: !values.showPassword});
     };
 
     const handleMouseDownPassword = (event) => {
@@ -105,13 +96,14 @@ export default function Signup() {
         <Box className={classes.rootBox}>
             <SnackBar ref={snackRef}/>
             <Box py={10}>
-                <Grid container direction="column" alignItems="center" justify={"center"} >
+                <Grid container direction="column" alignItems="center" justify={"center"} component={"form"}
+                      onSubmit={handleSubmit}>
                     <Grid item>
                         <Typography component={"div"} className={classes.title}>
                             Sign up
                         </Typography>
                     </Grid>
-                    <Grid item md={6} lg={4} xl={3} container direction="column" className={classes.textFieldGrid} >
+                    <Grid item md={6} lg={4} xl={3} container direction="column" className={classes.textFieldGrid}>
                         <FormControl required={true} fullWidth={true} variant={"filled"}>
                             <InputLabel htmlFor="outlined-adornment-password">Email</InputLabel>
                             <OutlinedInput
@@ -139,7 +131,7 @@ export default function Signup() {
                             />
                         </FormControl>
                         <FormControl variant="filled">
-                            <InputLabel >Password</InputLabel>
+                            <InputLabel>Password</InputLabel>
                             <OutlinedInput
                                 className={classes.textFieldForm}
                                 id="password"
@@ -154,7 +146,7 @@ export default function Signup() {
                                             onMouseDown={handleMouseDownPassword}
                                             edge="end"
                                         >
-                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                            {values.showPassword ? <Visibility/> : <VisibilityOff/>}
                                         </IconButton>
                                     </InputAdornment>
                                 }
@@ -177,7 +169,7 @@ export default function Signup() {
                                             onMouseDown={handleMouseDownPassword}
                                             edge="end"
                                         >
-                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                            {values.showPassword ? <Visibility/> : <VisibilityOff/>}
                                         </IconButton>
                                     </InputAdornment>
                                 }
@@ -185,13 +177,13 @@ export default function Signup() {
                         </FormControl>
                     </Grid>
                     <Fab color={"primary"}
-                         disabled={false}
+                         type={"submit"}
                          href={""}
                          icontheme={"Filled"}
                          size={"large"}
-                         onClick={handleSubmit}
+                         onSubmit={handleSubmit}
                          variant={"round"}>
-                        <SendIcon />
+                        <SendIcon/>
                     </Fab>
                 </Grid>
             </Box>
