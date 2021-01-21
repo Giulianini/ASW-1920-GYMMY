@@ -43,7 +43,8 @@ exports.createUser = async function (req, res) {
                 const userStatistics = new Statistics({
                     user: user._id,
                     executionHistory: [],
-                    workoutMinutesByMonth: []
+                    workoutMinutesByMonth: [],
+                    exercisesByMonth: []
                 })
                 await userStatistics.save()
 

@@ -34,6 +34,21 @@ const WorkoutMinutesSchema = new mongoose.Schema({
     }
 })
 
+const ExercisesAmountSchema = new mongoose.Schema({
+    month: {
+        type: Number,
+        required: true
+    },
+    year: {
+        type: Number,
+        required: true
+    },
+    exercises: {
+        type: Number,
+        required: true
+    }
+})
+
 const StatisticsSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.ObjectId,
@@ -50,6 +65,10 @@ const StatisticsSchema = new mongoose.Schema({
     },
     workoutMinutesByMonth: {
         type: [WorkoutMinutesSchema],
+        required: true
+    },
+    exercisesByMonth: {
+        type: [ExercisesAmountSchema],
         required: true
     }
 })

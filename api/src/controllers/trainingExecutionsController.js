@@ -115,6 +115,52 @@ exports.createExecution = async function (req, res) {
     }
 }
 
+async function saveStatistics(userId, foundExecution, completedExercisesLength) {
+    const now = new Date()
+    const statistics = await Statistics.findOne({ user: userId }).exec()
+    const currentExp = statistics.experiencePoints
+    const minutes = Math.floor((now - foundExecution.startTime) / (1000 * 60));
+    const history = {
+        date: now,
+        completedAmount: completedExercisesLength,
+        workoutMinutes: minutes,
+        exercises: foundExecution.completion.map(obj => obj.exercise)
+    }
+
+    const month = now.getMonth()
+    const year = now.getFullYear()
+
+    const workoutMinutes = statistics.workoutMinutesByMonth
+        .filter(obj => obj.month === month && obj.year === year)
+    if (workoutMinutes.length > 0) {
+        workoutMinutes[0].minutes = workoutMinutes[0].minutes + minutes
+    } else {
+        const minutesByMonth = {
+            month: month,
+            year: year,
+            minutes: minutes
+        }
+        statistics.workoutMinutesByMonth.push(minutesByMonth)
+    }
+
+    const exercisesAmount = statistics.exercisesByMonth
+        .filter(obj => obj.month === month && obj.year === year)
+    if (exercisesAmount.length > 0) {
+        exercisesAmount[0].exercises = exercisesAmount[0].exercises + completedExercisesLength
+    } else {
+        const exercises = {
+            month: month,
+            year: year,
+            exercises: completedExercisesLength
+        }
+        statistics.exercisesByMonth.push(exercises)
+    }
+
+    statistics.experiencePoints = currentExp + (completedExercisesLength * 1)
+    statistics.executionHistory.push(history)
+    await statistics.save()
+}
+
 const lock = new Semaphore(1)
 exports.updateExecution = async function (req, res) {
     const username = req.params[params.USERNAME_PARAM]
@@ -207,39 +253,10 @@ exports.updateExecution = async function (req, res) {
 
                 const exercisesLength = foundExecution.completion.length;
                 const completedExercisesLength = foundExecution.completion.filter(c => c.completed).length;
+
                 if (completedExercisesLength === exercisesLength) {
-                    const now = new Date()
-                    const statistics = await Statistics.findOne({ user: userId }).exec()
-                    const currentExp = statistics.experiencePoints
-                    const minutes = Math.floor((now - foundExecution.startTime) / (1000 * 60));
-                    const history = {
-                        date: now,
-                        completedAmount: completedExercisesLength,
-                        workoutMinutes: minutes,
-                        exercises: foundExecution.completion.map(obj => obj.exercise)
-                    }
-
-                    const month = now.getMonth()
-                    const year = now.getFullYear()
-                    const workoutMinutes = statistics.workoutMinutesByMonth
-                        .filter(obj => obj.month === month && obj.year === year)
-                    if (workoutMinutes.length > 0) {
-                        workoutMinutes[0].minutes = workoutMinutes[0].minutes + minutes
-                    } else {
-                        const minutesByMonth = {
-                            month: month,
-                            year: year,
-                            minutes: minutes
-                        }
-                        statistics.workoutMinutesByMonth.push(minutesByMonth)
-                    }
-
+                    await saveStatistics(userId, foundExecution, completedExercisesLength)
                     await TrainingExecution.deleteOne({user: userId}).exec()
-
-                    statistics.experiencePoints = currentExp + (completedExercisesLength * 1)
-                    statistics.executionHistory.push(history)
-                    await statistics.save()
-
                     responses.json(res)({finished: true})
                 } else {
                     responses.json(res)({finished: false})
@@ -268,7 +285,9 @@ exports.removeExecution = async function (req, res) {
         return responses.notFound(res)('Execution not found')
     }
 
-    if (foundExecution.currentExercise !== null) { // if currentexercise == null (null lo metto io in completeExercise)
+    if (foundExecution.currentExercise !== null) {
+        const release = await lock.acquire()
+
         const locationCapacity = await LocationCapacity.findOne({location: foundExecution.currentLocation})
             .populate({
                 path: 'location',
@@ -280,39 +299,15 @@ exports.removeExecution = async function (req, res) {
             locationCapacity.capacity = currentCapacity + 1
         }
         await locationCapacity.save()
+
+        release()
     }
 
     try {
         const completedExercisesLength = foundExecution.completion.filter(c => c.completed).length;
 
         if (completedExercisesLength > 0) {
-            const now = new Date()
-            const statistics = await Statistics.findOne({ user: userId }).exec()
-            const currentExp = statistics.experiencePoints
-            const minutes = Math.floor((now - foundExecution.startTime) / (1000 * 60));
-            const history = {
-                date: now,
-                completedAmount: completedExercisesLength,
-                workoutMinutes: minutes,
-                exercises: foundExecution.completion.filter(c => c.completed).map(obj => obj.exercise)
-            }
-            const month = now.getMonth()
-            const year = now.getFullYear()
-            const workoutMinutes = statistics.workoutMinutesByMonth
-                .filter(obj => obj.month === month && obj.year === year)
-            if (workoutMinutes.length > 0) {
-                workoutMinutes[0].minutes = workoutMinutes[0].minutes + minutes
-            } else {
-                const minutesByMonth = {
-                    month: month,
-                    year: year,
-                    minutes: minutes
-                }
-                statistics.workoutMinutesByMonth.push(minutesByMonth)
-            }
-            statistics.experiencePoints = currentExp + (completedExercisesLength * 1)
-            statistics.executionHistory.push(history)
-            await statistics.save()
+            await saveStatistics(userId, foundExecution, completedExercisesLength)
         }
 
         await TrainingExecution.deleteOne({user: userId}).exec()
