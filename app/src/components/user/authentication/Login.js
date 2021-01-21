@@ -1,6 +1,6 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Box, Fab, FormControl, Grid, InputAdornment, InputLabel, OutlinedInput, Typography} from "@material-ui/core";
-import {useHistory} from "react-router-dom"
+import {useHistory, useLocation} from "react-router-dom"
 import SendIcon from '@material-ui/icons/Send';
 import {makeStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
@@ -56,6 +56,7 @@ function Login() {
     const classes = useStyles();
     const snackRef = useRef({})
     const history = useHistory()
+    const location = useLocation()
     const [values, setValues] = React.useState({
         username: '',
         password: '',
@@ -71,7 +72,7 @@ function Login() {
             localStorage.setItem("jwt", res.data.accessToken)
             localStorage.setItem("username", res.data.username)
             history.push(routes.dashboard.value)
-        }).catch(reason => {
+        }).catch(() => {
             snackRef.current.handleMessage("Login failed", "error")
         })
     }
@@ -87,6 +88,12 @@ function Login() {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+
+    useEffect(() => {
+        if (location.state && location.state.registered) {
+            snackRef.current.handleMessage(`Hi ${location.state.username} we have registered your account. Sign in to Gymmy`, "success")
+        }
+    }, [])
 
     return (
         <Box className={classes.rootBox}>

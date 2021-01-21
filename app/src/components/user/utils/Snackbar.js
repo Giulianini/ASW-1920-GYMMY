@@ -39,7 +39,7 @@ const SnackBar = forwardRef((props, ref) => {
                     }}
                     open={open}
                     TransitionComponent={TransitionRight}
-                    autoHideDuration={3000}
+                    autoHideDuration={4000}
                     onClose={handleClose}
                 >
                     <Alert onClose={handleClose} severity={severity} variant={"filled"}>

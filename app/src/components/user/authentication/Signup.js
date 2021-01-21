@@ -6,6 +6,8 @@ import {Visibility, VisibilityOff} from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 import {baseAxios} from "../../../Api";
 import SnackBar from "../utils/Snackbar";
+import {useHistory} from "react-router-dom";
+import routes from "../../Routes";
 
 const backgroundImage = "authLanding.jpeg";
 
@@ -52,6 +54,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function Signup() {
     const classes = useStyles();
+    const history = useHistory()
     const snackRef = useRef({})
     const [passError, setPassError] = useState(false)
     const [values, setValues] = React.useState({
@@ -74,17 +77,22 @@ export default function Signup() {
         event.preventDefault();
     };
 
-    const handleSubmit = () => {
-        if (values['password'] === values['password2']) {
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (values.password && values.password === values.password2) {
             setPassError(false)
             baseAxios.post('/users', {
                 "username": values['username'],
                 "email": values['mail'],
                 "password": values['password'],
             }).then(res => {
-                snackRef.current.handleMessage(`${res.data["username"]} registered as ${res.data["role"]}`, "success")
-            }).catch(err => {
-                snackRef.current.handleMessage(`Error registering user ${err}`, "error")
+                history.push(routes.login.value, {registered: true, username: res.data.username})
+            }).catch(reason => {
+                if (reason.response.data.toString() === "Conflict") {
+                    snackRef.current.handleMessage(`Username already exists`, "error")
+                } else {
+                    snackRef.current.handleMessage(`Error registering user`, "error")
+                }
             })
         } else {
             setPassError(true)
@@ -130,7 +138,7 @@ export default function Signup() {
                                 }}
                             />
                         </FormControl>
-                        <FormControl variant="filled">
+                        <FormControl required={true} fullWidth={true} variant="filled">
                             <InputLabel>Password</InputLabel>
                             <OutlinedInput
                                 className={classes.textFieldForm}
@@ -152,7 +160,7 @@ export default function Signup() {
                                 }
                             />
                         </FormControl>
-                        <FormControl variant="filled">
+                        <FormControl required={true} fullWidth={true} variant="filled">
                             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                             <OutlinedInput
                                 className={classes.textFieldForm}
