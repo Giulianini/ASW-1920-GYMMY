@@ -42,7 +42,8 @@ exports.createUser = async function (req, res) {
 
                 const userStatistics = new Statistics({
                     user: user._id,
-                    executionHistory: []
+                    executionHistory: [],
+                    workoutMinutesByMonth: []
                 })
                 await userStatistics.save()
 
@@ -89,7 +90,7 @@ exports.updateMeasures = async function(req, res) {
     }
 }
 
-exports.removeUser = async function(req, res) {
+exports.removeUser = async function(req, res) { //TODO remove user statistics?
     const username = req.params.username
     const foundUser = await findUser(username)
     if (foundUser) {

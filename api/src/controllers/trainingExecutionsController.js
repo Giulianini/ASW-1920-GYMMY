@@ -208,15 +208,32 @@ exports.updateExecution = async function (req, res) {
                 const exercisesLength = foundExecution.completion.length;
                 const completedExercisesLength = foundExecution.completion.filter(c => c.completed).length;
                 if (completedExercisesLength === exercisesLength) {
-                    const now = Date.now()
+                    const now = new Date()
                     const statistics = await Statistics.findOne({ user: userId }).exec()
                     const currentExp = statistics.experiencePoints
+                    const minutes = Math.floor((now - foundExecution.startTime) / (1000 * 60));
                     const history = {
                         date: now,
                         completedAmount: completedExercisesLength,
-                        workoutMinutes: Math.floor((now - foundExecution.startTime) / (1000 * 60)),
+                        workoutMinutes: minutes,
                         exercises: foundExecution.completion.map(obj => obj.exercise)
                     }
+
+                    const month = now.getMonth()
+                    const year = now.getFullYear()
+                    const workoutMinutes = statistics.workoutMinutesByMonth
+                        .filter(obj => obj.month === month && obj.year === year)
+                    if (workoutMinutes.length > 0) {
+                        workoutMinutes[0].minutes = workoutMinutes[0].minutes + minutes
+                    } else {
+                        const minutesByMonth = {
+                            month: month,
+                            year: year,
+                            minutes: minutes
+                        }
+                        statistics.workoutMinutesByMonth.push(minutesByMonth)
+                    }
+
                     await TrainingExecution.deleteOne({user: userId}).exec()
 
                     statistics.experiencePoints = currentExp + (completedExercisesLength * 1)
@@ -235,7 +252,6 @@ exports.updateExecution = async function (req, res) {
     release()
 }
 
-//TODO REMOVE WHEN CAPACITY IS FULL AND IF USER IS AWAY FOR LONG TIME
 exports.removeExecution = async function (req, res) {
     const username = req.params[params.USERNAME_PARAM]
 
@@ -270,14 +286,29 @@ exports.removeExecution = async function (req, res) {
         const completedExercisesLength = foundExecution.completion.filter(c => c.completed).length;
 
         if (completedExercisesLength > 0) {
-            const now = Date.now()
+            const now = new Date()
             const statistics = await Statistics.findOne({ user: userId }).exec()
             const currentExp = statistics.experiencePoints
+            const minutes = Math.floor((now - foundExecution.startTime) / (1000 * 60));
             const history = {
                 date: now,
                 completedAmount: completedExercisesLength,
-                workoutMinutes: Math.floor((now - foundExecution.startTime) / (1000 * 60)),
+                workoutMinutes: minutes,
                 exercises: foundExecution.completion.filter(c => c.completed).map(obj => obj.exercise)
+            }
+            const month = now.getMonth()
+            const year = now.getFullYear()
+            const workoutMinutes = statistics.workoutMinutesByMonth
+                .filter(obj => obj.month === month && obj.year === year)
+            if (workoutMinutes.length > 0) {
+                workoutMinutes[0].minutes = workoutMinutes[0].minutes + minutes
+            } else {
+                const minutesByMonth = {
+                    month: month,
+                    year: year,
+                    minutes: minutes
+                }
+                statistics.workoutMinutesByMonth.push(minutesByMonth)
             }
             statistics.experiencePoints = currentExp + (completedExercisesLength * 1)
             statistics.executionHistory.push(history)
