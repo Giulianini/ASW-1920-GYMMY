@@ -42,6 +42,7 @@ const executionRoute = require('./routes/trainingExecutionsRoute')
 const locationCapacitiesRoute = require('./routes/locationCapacitiesRoute')
 const statisticsRoute = require('./routes/statisticsRoute')
 const challengesRoute = require('./routes/challengesRoute')
+const coursesRoute = require('./routes/coursesRoute')
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -68,6 +69,8 @@ app.use(`/users/:${params.USERNAME_PARAM}/${params.STATISTICS_ROUTE}`, statistic
 app.use('/tags', tagsRoute)
 
 app.use('/challenges', challengesRoute)
+
+app.use('/courses', coursesRoute)
 
 app.get("/", (req, res) => {
     res.send("Gymmy API")

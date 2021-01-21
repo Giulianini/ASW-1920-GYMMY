@@ -6,12 +6,7 @@ const Challenge = require('../models/Challenge')
 const Statistics = require('../models/Statistics')
 
 exports.getChallenges = async function(req, res) {
-    const challenges = await Challenge.find()
-        .populate({
-            path: 'participants',
-            model: User
-        })
-        .exec()
+    const challenges = await Challenge.find().exec()
     responses.json(res)(challenges)
 }
 
