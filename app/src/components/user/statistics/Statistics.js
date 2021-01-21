@@ -91,36 +91,17 @@ function Statistics() {
 
     function fetchStatistics() {
         userAxios.get("statistics").then(res => {
-            console.log(res.data.executionHistory)
-            const history = res.data.executionHistory
-            const historyWithMonths = history.map(obj => {
-                const month = new Date(obj.date).getMonth()
-                return {
-                    minutes: obj.workoutMinutes,
-                    month: month
-                }
-            })
-            const groupedHistory = historyWithMonths.reduce((acc, obj) => {
-                acc[obj.month] = {
-                    min: (obj.month in acc ? acc[obj.month].minutes : 0) + obj.minutes
-                }
-                return acc
-            }, {})
-            console.log(groupedHistory)
-            setWorkoutData(groupedHistory.map((k, v) => {
-                return {
-                    month: "Jan",
-                    min: v.min
-                }
-            }))
-            /*setWorkoutData([{
-                month: "Jan",
-                min: 100
-            },
-                {
-                    month: "Feb",
-                    min: 500
-                }])*/
+            const workoutMinutesByMonth = res.data.workoutMinutesByMonth
+            const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+            const minutesLastYear = workoutMinutesByMonth.slice(-12)
+                .map(obj => {
+                    return {
+                        month: `${months[obj.month]} ${obj.year}`,
+                        min: obj.minutes
+                    }
+                })
+            setWorkoutData(minutesLastYear)
         }).catch(() => {
         })
     }
