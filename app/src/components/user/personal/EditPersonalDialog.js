@@ -1,4 +1,4 @@
-import React, {forwardRef, useImperativeHandle, useRef} from 'react';
+import React, {forwardRef, useImperativeHandle} from 'react';
 import {
     AppBar,
     Button,
@@ -14,7 +14,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown"
 import {userAxios} from "../../../Api";
-import SnackBar from "../utils/Snackbar";
+import {useSnackbar} from "notistack";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +34,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const EditPersonalDialog = forwardRef((props, ref) => {
     function MyEditPersonalDialog(props) {
         const classes = useStyles();
-        const snackRef = useRef({})
+        const {enqueueSnackbar} = useSnackbar()
         const [open, setOpen] = React.useState(false);
         const [errors, setErrors] = React.useState({
             "age": false,
@@ -57,10 +57,6 @@ const EditPersonalDialog = forwardRef((props, ref) => {
             setSaveUserInfo({...saveUserInfo, [prop]: value});
         }
 
-        const openSnack = (msg, severity) => {
-            snackRef.current.handleMessage(msg, severity)
-        }
-
         const handleSave = () => {
             let check = true
             let erroredFields = []
@@ -68,7 +64,6 @@ const EditPersonalDialog = forwardRef((props, ref) => {
                 if (errors[error]) {
                     check = false
                     erroredFields.push(error)
-                    console.log(erroredFields)
                 }
             }
             if (check) {
@@ -76,11 +71,12 @@ const EditPersonalDialog = forwardRef((props, ref) => {
                 userAxios.patch('/measures', {...saveUserInfo})
                     .then(() => {
                         props.setUserInfo({...saveUserInfo})
-                    }).catch(reason => {
-                    //Todo
+                        enqueueSnackbar("Personal info saved correctly", {variant: "success"})
+                    }).catch(() => {
+                    enqueueSnackbar("Cannot save personal info", {variant: "error"})
                 })
             } else {
-                openSnack(`${erroredFields.join(" and ")} must be numbers!`, "warning")
+                enqueueSnackbar(`${erroredFields.join(" and ")} must be numbers!`, {variant: "warning"})
             }
         }
 
@@ -93,7 +89,6 @@ const EditPersonalDialog = forwardRef((props, ref) => {
 
         return (
             <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-                <SnackBar ref={snackRef}/>
                 <AppBar className={classes.appBar}>
                     <Toolbar>
                         <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">

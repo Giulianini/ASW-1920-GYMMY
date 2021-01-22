@@ -9,8 +9,8 @@ import TrainingBar from "./header/TrainingBar";
 import ExerciseDialog from "./Exercise/ExerciseDialog";
 import ChooseExerciseBackdrop from "./utils/ChooseExerciseBackdrop";
 import FinishedBackdrop from "./utils/FinishedBackdrop";
-import SnackBar from "../utils/Snackbar";
 import LoadingBackdrop from "./utils/LoadingBackdrop";
+import {useSnackbar} from "notistack";
 
 const useStyles = makeStyles((theme) => ({
     exercisesGrid: {
@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 function Training() {
     const classes = useStyles()
     // ----------- ENVIRONMENT -------------
+    const {enqueueSnackbar} = useSnackbar()
     const darkMode = useSelector(state => state.userRedux.darkMode)
     // ----------- INTERACTION -------------
     const [backDrop, setBackDrop] = useState(false)
@@ -33,7 +34,6 @@ function Training() {
     const [finished, setFinished] = useState(false)
     // ----------- REFS -------------
     const exerciseDialogRef = useRef({})
-    const snackRef = useRef({})
     // ----------- TRAINING -------------
     const [started, setStarted] = useState(false)
     const cards = useCards() //TODO If null error (vedi gioggia)
@@ -45,12 +45,6 @@ function Training() {
     const [capacities, setCapacities] = useCapacities()
 
     // ----------- REF HANDLERS -------------
-    const handleSnackOpen = (msg, severity) => {
-        try {
-            snackRef.current.handleMessage(msg, severity)
-        } catch (error) {
-        }
-    }
     const handleExerciseOpen = (exercise) => {
         try {
             exerciseDialogRef.current.handleClickDialogOpen(exercise)
@@ -63,10 +57,10 @@ function Training() {
         if (started) {
             userAxios.delete("execution").then(() => {
                 setStarted(false)
-                handleSnackOpen("We have canceled your workout", "info")
+                enqueueSnackbar("We have canceled your workout", {variant: "info"})
             }).catch(() => {
                 console.log("Cannot stop training")
-                handleSnackOpen("Cannot stop training", "error")
+                enqueueSnackbar("Cannot stop training", {variant: "error"})
             })
         } else {
             userAxios.put("execution", {"card": selectedCard._id}).then(() => {
@@ -74,7 +68,7 @@ function Training() {
                 fetchExecutionStatus()
             }).catch(() => {
                 console.log("Cannot start training")
-                handleSnackOpen("Cannot start training", "error")
+                enqueueSnackbar("Cannot start training", {variant: "error"})
             })
         }
     }
@@ -87,7 +81,7 @@ function Training() {
             setCurrentExercise(index)
         }).catch(() => {
             console.log("No workouts in progress")
-            handleSnackOpen("No workouts in progress", "info")
+            enqueueSnackbar("No workouts in progress", {variant: "error"})
         })
     }
 
@@ -105,7 +99,7 @@ function Training() {
                 setFinished(true)
             }
         }).catch(() => {
-            handleSnackOpen("Cannot complete exercise", "error")
+            enqueueSnackbar("Cannot complete exercise", {variant: "error"})
             console.log("Error cannot complete exercise")
         })
     }
@@ -139,14 +133,12 @@ function Training() {
         return (
             <ThemeProvider theme={darkMode ? trainDarkTheme : trainLightTheme}>
                 {backDrop ? <ChooseExerciseBackdrop backDrop={backDrop} setBackDrop={setBackDrop}/> : null}
-                <SnackBar ref={snackRef}/>
                 <ExerciseDialog ref={exerciseDialogRef}/>
                 <TrainingBar cards={cards} selectedCard={selectedCard} completion={completion}
                              startTime={startTime} handleStartCard={handleStartCard}
                              started={started}
                              selectedCardIndex={selectedCardIndex}
                              setSelectedCardIndex={setSelectedCardIndex}
-                             handleSnackOpen={handleSnackOpen}
                 />
                 <Grid container direction={"column"} alignItems={"center"} justify={"flex-start"}
                       className={classes.exercisesGrid}>
@@ -175,7 +167,6 @@ function Training() {
             userAxios.get("cards").then(res => {
                 if (res.data.length > 0) {
                     setCards(res.data)
-                    //TODO when click popover with no cards -> warning
                 }
                 setLoading(false)
             }).catch(() => {

@@ -1,13 +1,13 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect} from 'react';
 import {Box, Fab, FormControl, Grid, InputAdornment, InputLabel, OutlinedInput, Typography} from "@material-ui/core";
 import {Link, useHistory, useLocation} from "react-router-dom"
 import SendIcon from '@material-ui/icons/Send';
 import {makeStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
-import SnackBar from "../utils/Snackbar";
 import {baseAxios} from "../../../Api";
 import routes from "../../Routes";
+import {useSnackbar} from "notistack";
 
 const backgroundImage = "authLanding.jpeg";
 
@@ -59,9 +59,9 @@ const useStyles = makeStyles(theme => ({
 
 function Login() {
     const classes = useStyles();
-    const snackRef = useRef({})
     const history = useHistory()
     const location = useLocation()
+    const {enqueueSnackbar} = useSnackbar()
     const [values, setValues] = React.useState({
         username: '',
         password: '',
@@ -78,7 +78,9 @@ function Login() {
             localStorage.setItem("username", res.data.username)
             history.push(routes.dashboard.value)
         }).catch(() => {
-            snackRef.current.handleMessage("Login failed", "error")
+            enqueueSnackbar("Login failed", {
+                variant: "error"
+            })
         })
     }
 
@@ -96,13 +98,13 @@ function Login() {
 
     useEffect(() => {
         if (location.state && location.state.registered) {
-            snackRef.current.handleMessage(`Hi ${location.state.username} we have registered your account. Sign in to Gymmy`, "success")
+            enqueueSnackbar(`Hi ${location.state.username} we have registered your account. Sign in to Gymmy`,
+                {variant: "success"})
         }
     }, [])
 
     return (
         <Box className={classes.rootBox}>
-            <SnackBar ref={snackRef}/>
             <Box py={10}>
                 <Grid container direction="column" alignItems="center" justify={"center"} component={"form"}
                       onSubmit={handleSubmit}>

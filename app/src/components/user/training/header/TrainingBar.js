@@ -3,6 +3,7 @@ import {AppBar, Button, Chip, Grid, IconButton, LinearProgress, Typography} from
 import {makeStyles} from "@material-ui/core/styles";
 import {ExpandMore, Grade} from "@material-ui/icons";
 import CardPopover from "./CardPopover";
+import {useSnackbar} from "notistack";
 
 const useStyles = makeStyles({
     headerBar: {
@@ -39,6 +40,7 @@ const useStyles = makeStyles({
 
 function TrainingBar(props) {
     const classes = useStyles()
+    const {enqueueSnackbar} = useSnackbar()
     const [anchorEl, setAnchorEl] = useState(null)
     const percentage = props.completion ? (props.completion.filter(c => c.completed).length * 1.0 / props.completion.length).toFixed(1) * 100 : 0
 
@@ -46,7 +48,7 @@ function TrainingBar(props) {
         if (props.cards) {
             setAnchorEl(event.currentTarget)
         } else {
-            props.handleSnackOpen("Card not found. Contact us and we will create a workout for you 🤗", "warning")
+            enqueueSnackbar("Card not found. Contact us and we will create a workout for you 🤗", {variant: "warning"})
         }
     }
 

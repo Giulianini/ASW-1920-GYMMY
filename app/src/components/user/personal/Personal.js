@@ -16,7 +16,6 @@ import {Container, Grid, Tooltip} from "@material-ui/core";
 import CreateIcon from '@material-ui/icons/Create';
 import {userAxios} from "../../../Api";
 import EditPersonalDialog from "./EditPersonalDialog";
-import SnackBar from "../utils/Snackbar";
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
@@ -63,21 +62,20 @@ const useStyles = makeStyles(theme => ({
 function Personal() {
     const classes = useStyles();
     const dialogRef = useRef({})
-    const snackRef = useRef({})
     const [expanded, setExpanded] = React.useState({
         "personal": false,
         "objectives": false,
     })
     const [userInfo, setUserInfo] = React.useState({
         "username": "",
-        "age": undefined,
-        "height": undefined,
-        "weight": undefined,
-        "mainGoal": undefined,
-        "targetWeight": undefined,
-        "targetBMI": undefined,
-        "targetCalories": undefined,
-        "targetMinWorkouts": undefined
+        "age": "",
+        "height": "",
+        "weight": "",
+        "mainGoal": "",
+        "targetWeight": "",
+        "targetBMI": "",
+        "targetCalories": "",
+        "targetMinWorkouts": ""
     })
     //const big = useMediaQuery(theme => theme.breakpoints.up('md'))
 
@@ -95,7 +93,6 @@ function Personal() {
 
     return (
         <Container>
-            <SnackBar ref={snackRef}/>
             <EditPersonalDialog ref={dialogRef} userInfo={userInfo} setUserInfo={setUserInfo}/>
             <Grid container direction={"row"} justify="space-around" alignItems="center"
                   className={classes.rootGrid}>
@@ -198,18 +195,6 @@ function Personal() {
                         <div className={classes.pushCardSize}/>
                     </Card>
                 </Grid>
-                {/*
-                  <Fab color={"primary"}
-                       disabled={false}
-                       href={""}
-                       icontheme={"Filled"}
-                       size={"large"}
-                       variant={"round"}
-                       onClick={() => dialogRef.current.handleClickOpen()}
-                       className={classes.customFab}>
-                      <CreateIcon />
-                  </Fab>
-*/}
             </Grid>
         </Container>
     );

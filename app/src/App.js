@@ -9,19 +9,22 @@ import Home from "./components/Home";
 import {CssBaseline} from "@material-ui/core";
 import {Provider} from "react-redux";
 import store from "./redux/configureStore";
+import CloseSnackbarProvider from "./components/user/utils/CloseSnackbarProvider";
 
 function App() {
     return (
         <Provider store={store}>
-            <Router>
-                <CssBaseline/>
-                <Switch>
-                    <Route path={`/${routes.login.value}`} children={<Login/>}/>
-                    <Route path={`/${routes.signup.value}`} children={<Signup/>}/>
-                    <Route path={`/${routes.user.value}`} children={<User/>}/>
-                    <Route path={`/`} children={<Home/>}/>
-                </Switch>
-            </Router>
+            <CloseSnackbarProvider>
+                <Router>
+                    <CssBaseline/>
+                    <Switch>
+                        <Route path={`/${routes.login.value}`} children={<Login/>}/>
+                        <Route path={`/${routes.signup.value}`} children={<Signup/>}/>
+                        <Route path={`/${routes.user.value}`} children={<User/>}/>
+                        <Route path={`/`} children={<Home/>}/>
+                    </Switch>
+                </Router>
+            </CloseSnackbarProvider>
         </Provider>
     );
 }
