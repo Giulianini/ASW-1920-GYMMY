@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Grid} from "@material-ui/core";
+import {Fab, Grid} from "@material-ui/core";
 import {makeStyles, ThemeProvider} from "@material-ui/core/styles";
 import {useSelector} from "react-redux";
 import {trainDarkTheme, trainLightTheme} from "./trainTheme"
@@ -11,6 +11,8 @@ import ChooseExerciseBackdrop from "./utils/ChooseExerciseBackdrop";
 import FinishedBackdrop from "./utils/FinishedBackdrop";
 import LoadingBackdrop from "./utils/LoadingBackdrop";
 import {useSnackbar} from "notistack";
+import MonitorDialog from "./MonitorDialog";
+import {Speed} from "@material-ui/icons";
 
 const useStyles = makeStyles(() => ({
     exercisesGrid: {
@@ -20,7 +22,13 @@ const useStyles = makeStyles(() => ({
         textAlign: "center",
         fontWeight: 100,
         color: "white"
+    },
+    fab: {
+        position: "fixed",
+        right: 10,
+        bottom: 65,
     }
+
 }))
 
 function Training() {
@@ -34,6 +42,7 @@ function Training() {
     const [finished, setFinished] = useState(false)
     // ----------- REFS -------------
     const exerciseDialogRef = useRef({})
+    const monitorDialogRef = useRef({})
     // ----------- TRAINING -------------
     const [started, setStarted] = useState(false)
     const cards = useCards() //TODO If null error (vedi gioggia)
@@ -144,6 +153,7 @@ function Training() {
             <ThemeProvider theme={darkMode ? trainDarkTheme : trainLightTheme}>
                 {backDrop ? <ChooseExerciseBackdrop backDrop={backDrop} setBackDrop={setBackDrop}/> : null}
                 <ExerciseDialog ref={exerciseDialogRef}/>
+                <MonitorDialog ref={monitorDialogRef}/>
                 <TrainingBar cards={cards} selectedCard={selectedCard} completion={completion}
                              startTime={startTime} handleStartCard={handleStartCard}
                              started={started}
@@ -165,6 +175,16 @@ function Training() {
                             exercise={item}
                         />)}
                 </Grid>
+                <Fab
+                    className={classes.fab}
+                    color={"secondary"}
+                    onClick={() => monitorDialogRef.current.handleClickDialogOpen()}
+                    disabled={false}
+                    icontheme={"Filled"}
+                    size={"large"}
+                    variant={"round"}>
+                    <Speed/>
+                </Fab>
                 <FinishedBackdrop backDrop={finished} setBackDrop={setFinished}/>
             </ThemeProvider>
         )

@@ -1,4 +1,4 @@
-import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
+import React, {forwardRef, useImperativeHandle, useState} from 'react';
 import {
     AppBar,
     Dialog,
@@ -15,7 +15,6 @@ import {
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown"
-import SnackBar from "../../utils/Snackbar";
 import Image from "material-ui-image";
 import {Receipt} from "@material-ui/icons";
 import BottomTimer from "./BottomTimer";
@@ -52,8 +51,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const ExerciseDialog = forwardRef((props, ref) => {
     function MyExerciseDialog() {
         const classes = useStyles();
-        const snackRef = useRef({})
-        const [open, setOpen] = React.useState(false);
+        const [open, setOpen] = React.useState(false)
         const [exercise, setExercise] = useState(null)
 
         const handleClickDialogOpen = (exercise) => {
@@ -71,10 +69,8 @@ const ExerciseDialog = forwardRef((props, ref) => {
             };
         });
 
-
         return (
             <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-                <SnackBar ref={snackRef}/>
                 <AppBar elevation={0} className={classes.appBar}>
                     <Image
                         src={"/pushUp.jpg"}
