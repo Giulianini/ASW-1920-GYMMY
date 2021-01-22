@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {Box, Fab, FormControl, Grid, InputAdornment, InputLabel, OutlinedInput, Typography} from "@material-ui/core";
-import {useHistory, useLocation} from "react-router-dom"
+import {Link, useHistory, useLocation} from "react-router-dom"
 import SendIcon from '@material-ui/icons/Send';
 import {makeStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
@@ -46,9 +46,14 @@ const useStyles = makeStyles(theme => ({
             marginRight: 0,
         },
         marginTop: 100,
-        marginBottom: 100,
+        marginBottom: 10,
         borderRadius: 10,
         opacity: 0.7,
+    },
+    linkText: {
+        marginBottom: 100,
+        fontWeight: 100,
+        color: "white",
     }
 }));
 
@@ -142,6 +147,13 @@ function Login() {
                                 }
                             />
                         </FormControl>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant={"body1"} className={classes.linkText}>
+                            Not registered yet? <Link to={{pathname: routes.signup.value}}
+                                                      style={{color: 'white'}}> Signup </Link>
+                        </Typography>
+
                     </Grid>
                     <Fab color={"primary"}
                          type={"submit"}

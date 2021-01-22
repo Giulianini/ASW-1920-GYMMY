@@ -6,7 +6,7 @@ import {Visibility, VisibilityOff} from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 import {baseAxios} from "../../../Api";
 import SnackBar from "../utils/Snackbar";
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import routes from "../../Routes";
 
 const backgroundImage = "authLanding.jpeg";
@@ -46,9 +46,14 @@ const useStyles = makeStyles(theme => ({
             marginRight: 0,
         },
         marginTop: 100,
-        marginBottom: 100,
+        marginBottom: 10,
         borderRadius: 10,
         opacity: 0.7,
+    },
+    linkText: {
+        marginBottom: 100,
+        fontWeight: 100,
+        color: "white",
     }
 }));
 
@@ -183,6 +188,13 @@ export default function Signup() {
                                 }
                             />
                         </FormControl>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant={"body1"} className={classes.linkText}>
+                            Already registered? <Link to={{pathname: routes.login.value}}
+                                                      style={{color: 'white'}}> Login </Link>
+                        </Typography>
+
                     </Grid>
                     <Fab color={"primary"}
                          type={"submit"}
