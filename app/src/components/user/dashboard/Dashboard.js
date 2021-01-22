@@ -87,15 +87,34 @@ function Dashboard() {
         "username": undefined,
         "score": undefined
     })
+    const [courseInfo, setCourseInfo] = React.useState({
+        "title": undefined,
+        "description": undefined,
+        "image": undefined,
+        "participants": undefined
+    })
 
     useEffect(() => {
+        fetchUser()
+        fetchCourses()
+    }, [])
+
+    function fetchUser() {
         let username = localStorage.getItem("username")
         userAxios.get("/").then(res => {
             setUserInfo({...res.data})
         }).catch(reason => {
             console.log(reason)
         })
-    }, [])
+    }
+
+    function fetchCourses() {
+        userAxios.get("courses").then(res => {
+            const courses = res.data.getCourses()
+            setCourseInfo(courses)
+        }).catch(() => {
+        })
+    }
 
     return (
         <Container maxWidth={"lg"}>
