@@ -93,10 +93,16 @@ function Dashboard() {
         "image": undefined,
         "participants": undefined
     })
+    const [challengeInfo, setChallengeInfo] = React.useState({
+        "description": undefined,
+        "participants": undefined,
+        "expRewards": undefined
+    })
 
     useEffect(() => {
         fetchUser()
         fetchCourses()
+        fetchChallenges()
     }, [])
 
     function fetchUser() {
@@ -112,6 +118,14 @@ function Dashboard() {
         userAxios.get("courses").then(res => {
             const courses = res.data.getCourses()
             setCourseInfo(courses)
+        }).catch(() => {
+        })
+    }
+
+    function fetchChallenges() {
+        userAxios.get("challenges").then(res => {
+            const challenges = res.data.getChallenges()
+            setChallengeInfo(challenges)
         }).catch(() => {
         })
     }
