@@ -1,9 +1,9 @@
 import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
 import {Dialog, DialogContent, FormControl, Grid, InputLabel, Select, Slide} from "@material-ui/core";
-import {AreaSeries, ArgumentAxis, Chart, Title, ValueAxis,} from '@devexpress/dx-react-chart-material-ui';
+import {ArgumentAxis, Chart, Title, ValueAxis,} from '@devexpress/dx-react-chart-material-ui';
 import {Animation, ArgumentScale, LineSeries} from '@devexpress/dx-react-chart';
 import {scalePoint} from 'd3-scale';
-import {area, curveCatmullRom, line,} from 'd3-shape';
+import {curveCatmullRom, line,} from 'd3-shape';
 import Typography from "@material-ui/core/Typography";
 import {makeStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
@@ -45,7 +45,7 @@ const MonitorDialog = forwardRef((props, ref) => {
         const classes = useStyles()
         const [state, setState] = React.useState({
             sampling: 2,
-            seriesLength: 10,
+            seriesLength: 15,
         });
         const [open, setOpen] = React.useState(false)
         const [heartData, setHeartData] = useState([{seconds: 0, rate: 0}])
@@ -70,17 +70,6 @@ const MonitorDialog = forwardRef((props, ref) => {
                 handleClickDialogOpen: handleClickDialogOpen
             };
         })
-
-        const Area = props => (
-            <AreaSeries.Path
-                {...props}
-                path={area()
-                    .x(({arg}) => arg)
-                    .y1(({val}) => val)
-                    .y0(({startVal}) => startVal)
-                    .curve(curveCatmullRom)}
-            />
-        )
 
         const Line = props => (
             <LineSeries.Path
@@ -147,7 +136,6 @@ const MonitorDialog = forwardRef((props, ref) => {
 
         const handleChange = (event) => {
             const name = event.target.name
-            console.log(name)
             setState({
                 ...state,
                 [name]: event.target.value,
@@ -164,17 +152,17 @@ const MonitorDialog = forwardRef((props, ref) => {
                         <ArgumentAxis/>
                         <ValueAxis/>
 
-                        <AreaSeries
+                        <LineSeries
                             name="HeartRate"
                             valueField="rate"
                             argumentField="seconds"
-                            seriesComponent={Area}
+                            seriesComponent={Line}
                         />
-                        <Animation/>
                         <Title
-                            text={`Heart frequency: ${heartData[spo2Data.length - 1].rate}BPM`}
+                            text={`Heart frequency: ${heartData[heartData.length - 1].rate}BPM`}
                             textComponent={Text}
                         />
+                        <Animation/>
                     </Chart>
                     <Chart
                         data={spo2Data}
@@ -227,8 +215,8 @@ const MonitorDialog = forwardRef((props, ref) => {
                                         id: 'seriesLength',
                                     }}
                                 >
-                                    <option value={5}>5</option>
                                     <option value={10}>10</option>
+                                    <option value={15}>15</option>
                                     <option value={20}>20</option>
                                 </Select>
                             </FormControl>
