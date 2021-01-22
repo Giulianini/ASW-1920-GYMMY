@@ -79,9 +79,14 @@ function Training() {
             command: "startExercise"
         }).then(() => {
             setCurrentExercise(index)
-        }).catch(() => {
-            console.log("No workouts in progress")
-            enqueueSnackbar("No workouts in progress", {variant: "error"})
+        }).catch((reason) => {
+            if (reason.response.status === 404) {
+                console.log("No workouts in progress")
+                enqueueSnackbar("No workouts in progress", {variant: "error"})
+            } else {
+                enqueueSnackbar("Cannot start exercise", {variant: "error"})
+                console.log("Cannot start exercise")
+            }
         })
     }
 
@@ -98,9 +103,14 @@ function Training() {
                 setCapacities(null)
                 setFinished(true)
             }
-        }).catch(() => {
-            enqueueSnackbar("Cannot complete exercise", {variant: "error"})
-            console.log("Error cannot complete exercise")
+        }).catch((reason) => {
+            if (reason.response.status === 404) {
+                console.log("No workouts in progress")
+                enqueueSnackbar("No workouts in progress", {variant: "error"})
+            } else {
+                enqueueSnackbar("Cannot complete exercise", {variant: "error"})
+                console.log("Cannot complete exercise")
+            }
         })
     }
 
