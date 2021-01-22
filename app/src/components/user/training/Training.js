@@ -12,7 +12,7 @@ import FinishedBackdrop from "./utils/FinishedBackdrop";
 import LoadingBackdrop from "./utils/LoadingBackdrop";
 import {useSnackbar} from "notistack";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     exercisesGrid: {
         marginTop: 20,
     },
