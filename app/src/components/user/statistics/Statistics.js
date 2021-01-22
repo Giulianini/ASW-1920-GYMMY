@@ -84,12 +84,49 @@ function Statistics() {
     const [workoutData, setWorkoutData] = useState([]);
 
 
-    // ----------- FETCHING DATA -------------
+    // ----------- FETCHING STATS DATA -------------
     useEffect(() => {
-        fetchStatistics()
+        //fetchCoveredDistanceStats()
+        fetchCompletedExStats()
+        fetchWorkoutMinsStats()
     },[])
 
-    function fetchStatistics() {
+    // TODO waiting for APIs to support covered distance
+    /*function fetchCoveredDistanceStats() {
+        userAxios.get("statistics").then(res => {
+            const exercisesByMonth = res.data.exercisesByMonth
+            const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+            const exercisesLastYear = exercisesByMonth.slice(-12)
+                .map(obj => {
+                    return {
+                        month: `${months[obj.month]} ${obj.year}`,
+                        min: obj.minutes
+                    }
+                })
+            setActivityData(exercisesLastYear)
+        }).catch(() => {
+        })
+    }*/
+
+    function fetchCompletedExStats() {
+        userAxios.get("statistics").then(res => {
+            const exercisesByMonth = res.data.exercisesByMonth
+            const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+            const exercisesLastYear = exercisesByMonth.slice(-12)
+                .map(obj => {
+                    return {
+                        month: `${months[obj.month]} ${obj.year}`,
+                        completedActivities: obj.completedActivities
+                    }
+                })
+            setActivityData(exercisesLastYear)
+        }).catch(() => {
+        })
+    }
+
+    function fetchWorkoutMinsStats() {
         userAxios.get("statistics").then(res => {
             const workoutMinutesByMonth = res.data.workoutMinutesByMonth
             const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
