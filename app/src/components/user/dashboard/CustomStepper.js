@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import {makeStyles, withStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -58,7 +58,7 @@ const useStepIconStyle = makeStyles({
 
 function StepIcons(props) {
     const classes = useStepIconStyle();
-    const { active, completed } = props;
+    const {active, completed} = props;
 
     return (
         <div
@@ -66,7 +66,7 @@ function StepIcons(props) {
                 [classes.active]: active,
             })}
         >
-            {completed ? <Check className={classes.completed} /> : <div className={classes.circle} />}
+            {completed ? <Check className={classes.completed}/> : <div className={classes.circle}/>}
         </div>
     );
 }
@@ -134,9 +134,9 @@ function StepIconFilling(props) {
     const {active, completed} = props;
 
     const icons = {
-        1: <BeenhereIcon />,
-        2: <GradeIcon />,
-        3: <EmojiEventsIcon />,
+        1: <BeenhereIcon/>,
+        2: <GradeIcon/>,
+        3: <EmojiEventsIcon/>,
     };
 
     return (
@@ -166,9 +166,15 @@ StepIconFilling.propTypes = {
     icon: PropTypes.node,
 };
 
+const StepperStyle = makeStyles({
+    root: {
+        backgroundColor: 'transparent'
+    }
+})
+
 export default function CustomizedSteppers() {
     const [activeStep, setActiveStep] = React.useState(1);  // 0 = beginner, 1 = intermediate, 2 = advanced
-
+    const classes = StepperStyle()
     // Level increase
     const handleNext = () => {
         setActiveStep((prevLevel) => prevLevel + 1);
@@ -185,7 +191,7 @@ export default function CustomizedSteppers() {
     };
 
     return (
-        <Stepper alternativeLabel activeStep={activeStep} connector={<SteppingConnector />}>
+        <Stepper alternativeLabel className={classes.root} activeStep={activeStep} connector={<SteppingConnector/>}>
             <Step key={"Beginner"}>
                 <StepLabel StepIconComponent={StepIconFilling}>{"Beginner (0-100 points)"}</StepLabel>
             </Step>
