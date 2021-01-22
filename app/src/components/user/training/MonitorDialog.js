@@ -58,12 +58,16 @@ const MonitorDialog = forwardRef((props, ref) => {
         const spo2Randomness = 3
 
         const handleClickDialogOpen = () => {
-            setOpen(true);
+            setOpen(true)
+            clearTimeout(spo2Id)
+            clearTimeout(heartId)
+            setHeartData([{seconds: 0, rate: 0}])
+            setSpo2Data([{seconds: 0, saturation: 0}])
         };
 
         const handleClose = () => {
-            setOpen(false);
-        };
+            setOpen(false)
+        }
 
         useImperativeHandle(ref, () => {
             return {
@@ -96,14 +100,24 @@ const MonitorDialog = forwardRef((props, ref) => {
                 const lastSeconds = heartData[heartData.length - 1].seconds
                 let data = [{}]
                 if (heartData.length > state.seriesLength) {
-                    data = heartData.slice(heartData.length - state.seriesLength, heartData.length)
+                    data = heartData.slice(1, heartData.length).map((d, index) => ({
+                        seconds: index * state.sampling,
+                        rate: d.rate
+                    }))
+                    data.push({
+                        seconds: lastSeconds,
+                        rate: randomRate
+                    })
                 } else {
-                    data = heartData.slice()
+                    data = heartData.slice().map((d, index) => ({
+                        seconds: index * state.sampling,
+                        rate: d.rate
+                    }))
+                    data.push({
+                        seconds: lastSeconds + parseInt(state.sampling),
+                        rate: randomRate
+                    })
                 }
-                data.push({
-                    seconds: lastSeconds + parseInt(state.sampling),
-                    rate: randomRate
-                })
                 setHeartData(data)
             }, 1000 * state.sampling)
             setHeartId(id)
@@ -118,14 +132,24 @@ const MonitorDialog = forwardRef((props, ref) => {
                 const randomRate = Math.floor(Math.random() * spo2Randomness) + spo2BaseRate
                 let data = []
                 if (spo2Data.length > state.seriesLength) {
-                    data = spo2Data.slice(spo2Data.length - state.seriesLength, spo2Data.length)
+                    data = spo2Data.slice(1, spo2Data.length).map((d, index) => ({
+                        seconds: index * state.sampling,
+                        saturation: d.saturation
+                    }))
+                    data.push({
+                        seconds: lastSeconds,
+                        saturation: randomRate
+                    })
                 } else {
-                    data = spo2Data.slice()
+                    data = spo2Data.slice().map((d, index) => ({
+                        seconds: index * state.sampling,
+                        saturation: d.saturation
+                    }))
+                    data.push({
+                        seconds: lastSeconds + parseInt(state.sampling),
+                        saturation: randomRate
+                    })
                 }
-                data.push({
-                    seconds: lastSeconds + parseInt(state.sampling),
-                    saturation: randomRate
-                })
                 setSpo2Data(data)
             }, 1000 * state.sampling)
             setSpo2Id(id)
