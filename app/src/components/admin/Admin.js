@@ -33,7 +33,7 @@ function Admin(props) {
             </Box>
             <BottomBar tabs={routes}/>
         </ThemeProvider>
-    );
+    )
 }
 
 export default Admin;
