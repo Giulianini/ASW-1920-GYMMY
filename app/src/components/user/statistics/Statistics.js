@@ -86,28 +86,9 @@ function Statistics() {
 
     // ----------- FETCHING STATS DATA -------------
     useEffect(() => {
-        //fetchCoveredDistanceStats()
         fetchCompletedExStats()
         fetchWorkoutMinsStats()
     },[])
-
-    // TODO waiting for APIs to support covered distance
-    /*function fetchCoveredDistanceStats() {
-        userAxios.get("statistics").then(res => {
-            const exercisesByMonth = res.data.exercisesByMonth
-            const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
-            const exercisesLastYear = exercisesByMonth.slice(-12)
-                .map(obj => {
-                    return {
-                        month: `${months[obj.month]} ${obj.year}`,
-                        min: obj.minutes
-                    }
-                })
-            setActivityData(exercisesLastYear)
-        }).catch(() => {
-        })
-    }*/
 
     function fetchCompletedExStats() {
         userAxios.get("statistics").then(res => {
@@ -146,22 +127,6 @@ function Statistics() {
     return (
         <Container maxWidth={"lg"}>
             <Grid container direction={"column"} alignContent={"center"} className={classes.rootGrid}>
-                <Grid item>
-                    <Chart data={distanceData} rootComponent={ChartRoot}>
-                        <ArgumentAxis />
-                        <ValueAxis />
-                        <AreaSeries name="Distance" valueField="km" argumentField="month" />
-                        <Animation />
-                        <Legend
-                            position="bottom"
-                            rootComponent={LegendRoot}
-                            itemComponent={LegendItem}
-                            labelComponent={LegendLabel}
-                        />
-                        <Title text="Distance covered (running + cyclette)" />
-                    </Chart>
-                </Grid>
-
                 <Grid item>
                     <Chart
                         data={activityData}
