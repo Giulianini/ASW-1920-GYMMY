@@ -53,34 +53,7 @@ const LegendItem = withStyles(legendItemStyles, {name: 'LegendItem'})(LegendItem
 
 function Statistics() {
     const classes = useStyles();
-    const [distanceData, setDistanceData] = useState([
-        {month: 'Jan', km: 30},
-        {month: 'Feb', km: 35},
-        {month: 'Mar', km: 25},
-        {month: 'Apr', km: 40},
-        {month: 'May', km: 30},
-        {month: 'Jun', km: 35},
-        {month: 'Jul', km: 25},
-        {month: 'Aug', km: 40},
-        {month: 'Sep', km: 30},
-        {month: 'Oct', km: 35},
-        {month: 'Nov', km: 25},
-        {month: 'Dec', km: 40}
-    ]);
-    const [activityData, setActivityData] = useState([
-        {month: 'Jan', completedActivities: 130},
-        {month: 'Feb', completedActivities: 140},
-        {month: 'Mar', completedActivities: 144},
-        {month: 'Apr', completedActivities: 124},
-        {month: 'May', completedActivities: 144},
-        {month: 'Jun', completedActivities: 112},
-        {month: 'Jul', completedActivities: 142},
-        {month: 'Aug', completedActivities: 144},
-        {month: 'Sep', completedActivities: 123},
-        {month: 'Oct', completedActivities: 141},
-        {month: 'Nov', completedActivities: 128},
-        {month: 'Dec', completedActivities: 130}
-    ]);
+    const [activityData, setActivityData] = useState([]);
     const [workoutData, setWorkoutData] = useState([]);
 
 
