@@ -3,6 +3,16 @@ const routes = {
         name: "User",
         value: "user",
     },
+    admin: {
+        name: "Admin",
+        value: "admin",
+        routes: {
+            dashboard: {
+                name: "Dashboard",
+                value: `admin/dashboard`
+            }
+        }
+    },
     dashboard: {
         name: "Dashboard",
         value: "user/dashboard",

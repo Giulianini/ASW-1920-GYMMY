@@ -1,4 +1,5 @@
 import User from "./components/user/User";
+import Admin from "./components/admin/Admin";
 import "@fontsource/roboto"
 import React from "react";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
@@ -21,6 +22,7 @@ function App() {
                         <Route path={`/${routes.login.value}`} children={<Login/>}/>
                         <Route path={`/${routes.signup.value}`} children={<Signup/>}/>
                         <Route path={`/${routes.user.value}`} children={<User/>}/>
+                        <Route path={`/${routes.admin.value}`} children={<Admin/>}/>
                         <Route path={`/`} children={<Home/>}/>
                     </Switch>
                 </Router>
