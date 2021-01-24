@@ -135,7 +135,7 @@ const MonitorDialog = forwardRef((props, ref) => {
 
         const updateSaturationData = useCallback(() => {
             const randomRate = Math.floor(Math.random() * spo2Randomness) + spo2BasePercentage
-            const lastSeconds = state.sampling * (heartData.length - 1)
+            const lastSeconds = state.sampling * (spo2Data.length - 1)
             let data = []
             if (spo2Data.length > state.seriesLength) {
                 data = spo2Data.slice(1, state.seriesLength + 1).map((d, index) => ({
