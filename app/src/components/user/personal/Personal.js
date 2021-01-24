@@ -84,12 +84,16 @@ function Personal() {
     }
 
     useEffect(() => {
-        userAxios.get("").then(res => {
+        fetchPersonalData()
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+    function fetchPersonalData() {
+        userAxios.get("users").then(res => {
             setUserInfo({...res.data})
         }).catch(reason => {
             console.log(reason)
         })
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    }
 
     return (
         <Container>
@@ -157,8 +161,8 @@ function Personal() {
                                     </IconButton>
                                 </Tooltip>
                             }
-                            title={"Lose Weight"}  // {userInfo.mainGoal} --> from DB
-                            subheader="Your personal goals"
+                            title={userInfo.mainGoal}
+                            subheader="Your personal goal"
                         />
                         <CardMedia
                             className={classes.mediaTarget}
@@ -195,6 +199,18 @@ function Personal() {
                         <div className={classes.pushCardSize}/>
                     </Card>
                 </Grid>
+                {/*
+                  <Fab color={"primary"}
+                       disabled={false}
+                       href={""}
+                       icontheme={"Filled"}
+                       size={"large"}
+                       variant={"round"}
+                       onClick={() => dialogRef.current.handleClickOpen()}
+                       className={classes.customFab}>
+                      <CreateIcon />
+                  </Fab>
+                 */}
             </Grid>
         </Container>
     );
