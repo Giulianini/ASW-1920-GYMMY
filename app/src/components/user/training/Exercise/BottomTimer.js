@@ -38,9 +38,9 @@ function BottomTimer(props) {
         setSecs(0)
     }
 
-    const updateCallback = useCallback(() => {
+    const updateTimerCallback = useCallback(() => {
         if (started) {
-            if (remainSeconds === 0) {
+            if (remainSeconds <= 0) {
                 toggleStop()
                 play()
             } else {
@@ -50,11 +50,11 @@ function BottomTimer(props) {
                 setTimerID(id)
             }
         }
-    }, [secs, started])
+    }, [secs, started]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-        updateCallback()
-    }, [updateCallback])
+        updateTimerCallback()
+    }, [updateTimerCallback])
 
     return (
         <Grid container direction={"column"} justify={"center"} alignItems={"stretch"} className={classes.bottomBar}>
