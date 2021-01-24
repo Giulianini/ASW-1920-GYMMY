@@ -124,7 +124,7 @@ const MonitorDialog = forwardRef((props, ref) => {
             return function cleanup() {
                 clearTimeout(heartId)
             }
-        }, [heartData])
+        }, [heartData]) // eslint-disable-line react-hooks/exhaustive-deps
 
         useEffect(() => {
             const id = setTimeout(() => {
@@ -156,7 +156,7 @@ const MonitorDialog = forwardRef((props, ref) => {
             return function cleanup() {
                 clearTimeout(spo2Id)
             }
-        }, [spo2Data])
+        }, [spo2Data]) // eslint-disable-line react-hooks/exhaustive-deps
 
         const handleChange = (event) => {
             const name = event.target.name

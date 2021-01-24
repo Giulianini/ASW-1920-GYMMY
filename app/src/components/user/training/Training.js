@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Fab, Grid} from "@material-ui/core";
 import {makeStyles, ThemeProvider} from "@material-ui/core/styles";
 import {useSelector} from "react-redux";
@@ -124,12 +124,7 @@ function Training() {
     }
 
     // ----------- FETCHING DATA -------------
-
-    useEffect(() => {
-        fetchExecutionStatus()
-    }, [currentExercise])
-
-    function fetchExecutionStatus() {
+    const fetchExecutionStatus = useCallback(() => {
         userAxios.get("execution").then(res => {
             setCurrentExercise(res.data.currentExercise)
             setCompletion(res.data.completion)
@@ -141,7 +136,12 @@ function Training() {
             setStarted(false)
             setBackDrop(true)
         })
-    }
+    }, [setCapacities])
+
+    useEffect(() => {
+        fetchExecutionStatus()
+    }, [fetchExecutionStatus, currentExercise])
+
 
     // #################### RENDER #####################
     if (loading) {

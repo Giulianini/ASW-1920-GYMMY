@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Grid, LinearProgress, makeStyles} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import {Pause, PlayArrow, Stop} from "@material-ui/icons";
@@ -38,7 +38,7 @@ function BottomTimer(props) {
         setSecs(0)
     }
 
-    useEffect(() => {
+    const updateCallback = useCallback(() => {
         if (started) {
             if (remainSeconds === 0) {
                 toggleStop()
@@ -51,7 +51,11 @@ function BottomTimer(props) {
             }
         }
     }, [secs, started])
-    
+
+    useEffect(() => {
+        updateCallback()
+    }, [updateCallback])
+
     return (
         <Grid container direction={"column"} justify={"center"} alignItems={"stretch"} className={classes.bottomBar}>
             <Grid item>
