@@ -8,6 +8,14 @@ export const baseAxios = axios.create({
     baseURL: apiUrl
 })
 
+export const capacitiesAxios = axios.create()
+capacitiesAxios.interceptors.request
+    .use((config) => {
+        config.baseURL = `${apiUrl}/capacities`
+        config.headers.Authorization = `Bearer ${localStorage.getItem("jwt")}`
+        return config
+    })
+
 export const userAxios = axios.create()
 userAxios.interceptors.request
     .use((config) => {
@@ -29,7 +37,6 @@ userAxios.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
     if (401 === error.response.status) {
-        console.log("diocane")
         window.location = `/${routes.login.value}`
     } else if (403 === error.response.status) {
         window.document.write('403 Forbidden')

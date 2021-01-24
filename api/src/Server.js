@@ -39,6 +39,7 @@ const exercisesRoute = require('./routes/exercisesRoute')
 const trainingCardsRoute = require('./routes/trainingCardsRoute')
 const tagsRoute = require('./routes/tagsRoute')
 const executionRoute = require('./routes/trainingExecutionsRoute')
+const allCapacitiesRoute = require('./routes/allCapacitiesRoute')
 const locationCapacitiesRoute = require('./routes/locationCapacitiesRoute')
 const statisticsRoute = require('./routes/statisticsRoute')
 const challengesRoute = require('./routes/challengesRoute')
@@ -55,6 +56,8 @@ app.use('/users', usersRoute)
 app.use('/session', sessionRoute)
 
 app.use('/locations', locationsRoute)
+
+app.use('/capacities', allCapacitiesRoute)
 
 app.use(`/locations/:${params.LOCATION_PARAM}/${params.CAPACITY_ROUTE}`, locationCapacitiesRoute)
 
