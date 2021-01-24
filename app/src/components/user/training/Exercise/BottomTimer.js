@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Grid, LinearProgress, makeStyles} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import {Pause, PlayArrow, Stop} from "@material-ui/icons";
@@ -38,9 +38,9 @@ function BottomTimer(props) {
         setSecs(0)
     }
 
-    useEffect(() => {
+    const updateTimerCallback = useCallback(() => {
         if (started) {
-            if (remainSeconds === 0) {
+            if (remainSeconds <= 0) {
                 toggleStop()
                 play()
             } else {
@@ -50,8 +50,12 @@ function BottomTimer(props) {
                 setTimerID(id)
             }
         }
-    }, [secs, started])
-    
+    }, [secs, started]) // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        updateTimerCallback()
+    }, [updateTimerCallback])
+
     return (
         <Grid container direction={"column"} justify={"center"} alignItems={"stretch"} className={classes.bottomBar}>
             <Grid item>

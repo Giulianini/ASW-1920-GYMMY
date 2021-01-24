@@ -16,6 +16,7 @@ import {Container, Grid, Tooltip} from "@material-ui/core";
 import CreateIcon from '@material-ui/icons/Create';
 import {userAxios} from "../../../Api";
 import EditPersonalDialog from "./EditPersonalDialog";
+import {useSnackbar} from "notistack";
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
@@ -29,7 +30,10 @@ const useStyles = makeStyles(theme => ({
     },
     card: {
         marginBottom: 10,
-        maxWidth: theme.breakpoints.values.md
+        maxWidth: theme.breakpoints.values.md,
+    },
+    titleCard: {
+        fontWeight: 300,
     },
     mediaPersonal: {
         width: '30%',
@@ -62,6 +66,7 @@ const useStyles = makeStyles(theme => ({
 function Personal() {
     const classes = useStyles();
     const dialogRef = useRef({})
+    const {enqueueSnackbar} = useSnackbar()
     const [expanded, setExpanded] = React.useState({
         "personal": false,
         "objectives": false,
@@ -84,12 +89,17 @@ function Personal() {
     }
 
     useEffect(() => {
+        fetchPersonalData()
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+    function fetchPersonalData() {
         userAxios.get("").then(res => {
             setUserInfo({...res.data})
         }).catch(reason => {
+            enqueueSnackbar("Cannot retrieve user information", {variant: "error"})
             console.log(reason)
         })
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    }
 
     return (
         <Container>
@@ -109,7 +119,12 @@ function Personal() {
                                     </IconButton>
                                 </Tooltip>
                             }
-                            title="Information"
+                            className={classes.titleCard}
+                            title={
+                                <Typography variant={"h5"} className={classes.titleCard}>
+                                    Information
+                                </Typography>
+                            }
                             subheader="Your Personal information"
                         />
                         <CardMedia
@@ -157,8 +172,12 @@ function Personal() {
                                     </IconButton>
                                 </Tooltip>
                             }
-                            title={"Lose Weight"}  // {userInfo.mainGoal} --> from DB
-                            subheader="Your personal goals"
+                            title={
+                                <Typography variant={"h5"} className={classes.titleCard}>
+                                    {userInfo.mainGoal}
+                                </Typography>
+                            }
+                            subheader="Your personal goal"
                         />
                         <CardMedia
                             className={classes.mediaTarget}

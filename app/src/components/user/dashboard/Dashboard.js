@@ -31,10 +31,9 @@ const useStyles = makeStyles(theme => ({
         margin: 'auto'
     },
     score: {
-        fontSize: 30,
-        fontWeight: "normal",
+        fontWeight: 300,
         letterSpacing: 1.5,
-        color: "#e13333",
+        color: theme.palette.primary.main,
         margin: "auto"
     },
     otherText: {
@@ -85,7 +84,7 @@ function Dashboard() {
     const dialogRef = useRef({})
     const [userInfo, setUserInfo] = React.useState({
         "username": undefined,
-        "score": undefined
+        "experiencePoints": undefined
     })
     const [courseInfo, setCourseInfo] = React.useState({
         "title": undefined,
@@ -107,8 +106,9 @@ function Dashboard() {
 
     function fetchUser() {
         let username = localStorage.getItem("username")
-        userAxios.get("/").then(res => {
+        userAxios.get("statistics").then(res => {
             setUserInfo({...res.data})
+            console.log(userInfo.experiencePoints)
         }).catch(reason => {
             console.log(reason)
         })
@@ -149,8 +149,8 @@ function Dashboard() {
                             </ListItem>
                             <Divider className={classes.divider}/>
                             <ListItem>
-                                <Typography className={classes.score}>
-                                    {userInfo.score}/3000
+                                <Typography variant={"h4"} className={classes.score}>
+                                    {userInfo.experiencePoints}/3000 pts
                                 </Typography>
                             </ListItem>
                             <Divider className={classes.divider}/>

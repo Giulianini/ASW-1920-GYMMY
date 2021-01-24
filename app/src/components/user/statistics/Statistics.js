@@ -53,61 +53,15 @@ const LegendItem = withStyles(legendItemStyles, {name: 'LegendItem'})(LegendItem
 
 function Statistics() {
     const classes = useStyles();
-    const [distanceData, setDistanceData] = useState([
-        {month: 'Jan', km: 30},
-        {month: 'Feb', km: 35},
-        {month: 'Mar', km: 25},
-        {month: 'Apr', km: 40},
-        {month: 'May', km: 30},
-        {month: 'Jun', km: 35},
-        {month: 'Jul', km: 25},
-        {month: 'Aug', km: 40},
-        {month: 'Sep', km: 30},
-        {month: 'Oct', km: 35},
-        {month: 'Nov', km: 25},
-        {month: 'Dec', km: 40}
-    ]);
-    const [activityData, setActivityData] = useState([
-        {month: 'Jan', completedActivities: 130},
-        {month: 'Feb', completedActivities: 140},
-        {month: 'Mar', completedActivities: 144},
-        {month: 'Apr', completedActivities: 124},
-        {month: 'May', completedActivities: 144},
-        {month: 'Jun', completedActivities: 112},
-        {month: 'Jul', completedActivities: 142},
-        {month: 'Aug', completedActivities: 144},
-        {month: 'Sep', completedActivities: 123},
-        {month: 'Oct', completedActivities: 141},
-        {month: 'Nov', completedActivities: 128},
-        {month: 'Dec', completedActivities: 130}
-    ]);
+    const [activityData, setActivityData] = useState([]);
     const [workoutData, setWorkoutData] = useState([]);
 
 
     // ----------- FETCHING STATS DATA -------------
     useEffect(() => {
-        //fetchCoveredDistanceStats()
         fetchCompletedExStats()
         fetchWorkoutMinsStats()
     },[])
-
-    // TODO waiting for APIs to support covered distance
-    /*function fetchCoveredDistanceStats() {
-        userAxios.get("statistics").then(res => {
-            const exercisesByMonth = res.data.exercisesByMonth
-            const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
-            const exercisesLastYear = exercisesByMonth.slice(-12)
-                .map(obj => {
-                    return {
-                        month: `${months[obj.month]} ${obj.year}`,
-                        min: obj.minutes
-                    }
-                })
-            setActivityData(exercisesLastYear)
-        }).catch(() => {
-        })
-    }*/
 
     function fetchCompletedExStats() {
         userAxios.get("statistics").then(res => {
@@ -146,22 +100,6 @@ function Statistics() {
     return (
         <Container maxWidth={"lg"}>
             <Grid container direction={"column"} alignContent={"center"} className={classes.rootGrid}>
-                <Grid item>
-                    <Chart data={distanceData} rootComponent={ChartRoot}>
-                        <ArgumentAxis />
-                        <ValueAxis />
-                        <AreaSeries name="Distance" valueField="km" argumentField="month" />
-                        <Animation />
-                        <Legend
-                            position="bottom"
-                            rootComponent={LegendRoot}
-                            itemComponent={LegendItem}
-                            labelComponent={LegendLabel}
-                        />
-                        <Title text="Distance covered (running + cyclette)" />
-                    </Chart>
-                </Grid>
-
                 <Grid item>
                     <Chart
                         data={activityData}

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Box, Fab, FormControl, Grid, InputAdornment, InputLabel, OutlinedInput, Typography} from "@material-ui/core";
 import {Link, useHistory, useLocation} from "react-router-dom"
 import SendIcon from '@material-ui/icons/Send';
@@ -94,14 +94,18 @@ function Login() {
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
-    };
+    }
 
-    useEffect(() => {
+    const welcomeFromRegistration = useCallback(() => {
         if (location.state && location.state.registered) {
             enqueueSnackbar(`Hi ${location.state.username} we have registered your account. Sign in to Gymmy`,
                 {variant: "success"})
         }
-    }, [])
+    }, [location.state, enqueueSnackbar])
+
+    useEffect(() => {
+        welcomeFromRegistration()
+    }, [welcomeFromRegistration])
 
     return (
         <Box className={classes.rootBox}>

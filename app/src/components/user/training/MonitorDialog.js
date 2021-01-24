@@ -1,4 +1,4 @@
-import React, {forwardRef, useEffect, useImperativeHandle, useState} from 'react';
+import React, {forwardRef, useCallback, useEffect, useImperativeHandle, useState} from 'react';
 import {Dialog, DialogContent, FormControl, Grid, InputLabel, Select, Slide} from "@material-ui/core";
 import {ArgumentAxis, Chart, Title, ValueAxis,} from '@devexpress/dx-react-chart-material-ui';
 import {Animation, ArgumentScale, LineSeries} from '@devexpress/dx-react-chart';
@@ -43,36 +43,41 @@ const MonitorDialog = forwardRef((props, ref) => {
 
     function MyMonitorDialog() {
         const classes = useStyles()
+        // ----------- GENERAL -------------
         const [state, setState] = React.useState({
             sampling: 2,
-            seriesLength: 15,
-        });
+            seriesLength: 10,
+        })
+        // ----------- INTERACTION -------------
         const [open, setOpen] = React.useState(false)
+        const [timerId, setTimerId] = useState(0)
+        // ----------- HEART -------------
         const [heartData, setHeartData] = useState([{seconds: 0, rate: 0}])
-        const [heartId, setHeartId] = useState(0)
-        const [spo2Data, setSpo2Data] = useState([{seconds: 0, saturation: 0}])
-        const [spo2Id, setSpo2Id] = useState(0)
         const heartBaseRate = 100
         const heartRandomness = 10
-        const spo2BaseRate = 97
+        // ----------- SATURATION -------------
+        const [spo2Data, setSpo2Data] = useState([{seconds: 0, saturation: 0}])
+        const spo2BasePercentage = 97
         const spo2Randomness = 3
 
+
         const handleClickDialogOpen = () => {
-            setOpen(true)
-            clearTimeout(spo2Id)
-            clearTimeout(heartId)
+            clearTimeout(timerId)
             setHeartData([{seconds: 0, rate: 0}])
             setSpo2Data([{seconds: 0, saturation: 0}])
-        };
+            triggerTimeout()
+            setOpen(true)
+        }
 
         const handleClose = () => {
             setOpen(false)
+            clearTimeout(timerId)
         }
 
         useImperativeHandle(ref, () => {
             return {
                 handleClickDialogOpen: handleClickDialogOpen
-            };
+            }
         })
 
         const Line = props => (
@@ -94,70 +99,6 @@ const MonitorDialog = forwardRef((props, ref) => {
             )
         }
 
-        useEffect(() => {
-            const id = setTimeout(() => {
-                const randomRate = Math.floor(Math.random() * heartRandomness) + heartBaseRate
-                const lastSeconds = heartData[heartData.length - 1].seconds
-                let data = [{}]
-                if (heartData.length > state.seriesLength) {
-                    data = heartData.slice(1, heartData.length).map((d, index) => ({
-                        seconds: index * state.sampling,
-                        rate: d.rate
-                    }))
-                    data.push({
-                        seconds: lastSeconds,
-                        rate: randomRate
-                    })
-                } else {
-                    data = heartData.slice().map((d, index) => ({
-                        seconds: index * state.sampling,
-                        rate: d.rate
-                    }))
-                    data.push({
-                        seconds: lastSeconds + parseInt(state.sampling),
-                        rate: randomRate
-                    })
-                }
-                setHeartData(data)
-            }, 1000 * state.sampling)
-            setHeartId(id)
-            return function cleanup() {
-                clearTimeout(heartId)
-            }
-        }, [heartData])
-
-        useEffect(() => {
-            const id = setTimeout(() => {
-                const lastSeconds = spo2Data[spo2Data.length - 1].seconds
-                const randomRate = Math.floor(Math.random() * spo2Randomness) + spo2BaseRate
-                let data = []
-                if (spo2Data.length > state.seriesLength) {
-                    data = spo2Data.slice(1, spo2Data.length).map((d, index) => ({
-                        seconds: index * state.sampling,
-                        saturation: d.saturation
-                    }))
-                    data.push({
-                        seconds: lastSeconds,
-                        saturation: randomRate
-                    })
-                } else {
-                    data = spo2Data.slice().map((d, index) => ({
-                        seconds: index * state.sampling,
-                        saturation: d.saturation
-                    }))
-                    data.push({
-                        seconds: lastSeconds + parseInt(state.sampling),
-                        saturation: randomRate
-                    })
-                }
-                setSpo2Data(data)
-            }, 1000 * state.sampling)
-            setSpo2Id(id)
-            return function cleanup() {
-                clearTimeout(spo2Id)
-            }
-        }, [spo2Data])
-
         const handleChange = (event) => {
             const name = event.target.name
             setState({
@@ -165,6 +106,73 @@ const MonitorDialog = forwardRef((props, ref) => {
                 [name]: event.target.value,
             })
         }
+
+        const updateHearthData = useCallback(() => {
+            const randomRate = Math.floor(Math.random() * heartRandomness) + heartBaseRate
+            const lastSeconds = state.sampling * (heartData.length - 1)
+            let data = []
+            if (heartData.length > state.seriesLength) {
+                data = heartData.slice(1, state.seriesLength + 1).map((d, index) => ({
+                    seconds: index * state.sampling,
+                    rate: d.rate
+                }))
+                data.push({
+                    seconds: lastSeconds,
+                    rate: randomRate
+                })
+            } else {
+                data = heartData.slice().map((d, index) => ({
+                    seconds: index * state.sampling,
+                    rate: d.rate
+                }))
+                data.push({
+                    seconds: lastSeconds + parseInt(state.sampling),
+                    rate: randomRate
+                })
+            }
+            setHeartData(data)
+        }, [state, heartData])
+
+        const updateSaturationData = useCallback(() => {
+            const randomRate = Math.floor(Math.random() * spo2Randomness) + spo2BasePercentage
+            const lastSeconds = state.sampling * (spo2Data.length - 1)
+            let data = []
+            if (spo2Data.length > state.seriesLength) {
+                data = spo2Data.slice(1, state.seriesLength + 1).map((d, index) => ({
+                    seconds: index * state.sampling,
+                    saturation: d.saturation
+                }))
+                data.push({
+                    seconds: lastSeconds,
+                    saturation: randomRate
+                })
+            } else {
+                data = spo2Data.slice().map((d, index) => ({
+                    seconds: index * state.sampling,
+                    saturation: d.saturation
+                }))
+                data.push({
+                    seconds: lastSeconds + parseInt(state.sampling),
+                    saturation: randomRate
+                })
+            }
+            setSpo2Data(data)
+        }, [state, spo2Data])
+
+        const triggerTimeout = useCallback(() => {
+            const id = setTimeout(() => {
+                if (open) {
+                    updateHearthData()
+                    updateSaturationData()
+                }
+            }, 1000 * state.sampling)
+            setTimerId(id)
+            return function cleanup() {
+                clearTimeout(id)
+            }
+        }, [open, updateSaturationData, updateHearthData]) // eslint-disable-line react-hooks/exhaustive-deps
+
+        useEffect(triggerTimeout, [triggerTimeout])
 
         return (
             <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
@@ -221,6 +229,7 @@ const MonitorDialog = forwardRef((props, ref) => {
                                         id: 'sampling',
                                     }}
                                 >
+                                    <option value={1}>1</option>
                                     <option value={2}>2</option>
                                     <option value={5}>5</option>
                                     <option value={10}>10</option>
@@ -239,6 +248,7 @@ const MonitorDialog = forwardRef((props, ref) => {
                                         id: 'seriesLength',
                                     }}
                                 >
+                                    <option value={5}>5</option>
                                     <option value={10}>10</option>
                                     <option value={15}>15</option>
                                     <option value={20}>20</option>
