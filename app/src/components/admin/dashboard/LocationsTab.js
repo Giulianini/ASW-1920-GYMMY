@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Grid, Typography} from "@material-ui/core";
 import {DataGrid} from "@material-ui/data-grid";
 import {makeStyles} from "@material-ui/core/styles";
-import {socket, capacitiesAxios} from "../../../Api";
+import {socket, baseAxios} from "../../../Api";
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -46,7 +46,7 @@ function LocationsTab(props) {
         const [locations, setLocations] = useState([])
 
         const fetchLocations = useCallback(() => {
-            capacitiesAxios.get("").then(res => {
+            baseAxios.get("capacities").then(res => {
                 const locationsData = res.data
                 const rows = locationsData.map((obj, index) => {
                     return {

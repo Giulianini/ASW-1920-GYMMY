@@ -4,14 +4,10 @@ import {io} from "socket.io-client";
 
 export const apiUrl = process.env.REACT_APP_API_URL
 
-export const baseAxios = axios.create({
-    baseURL: apiUrl
-})
-
-export const capacitiesAxios = axios.create()
-capacitiesAxios.interceptors.request
+export const baseAxios = axios.create()
+baseAxios.interceptors.request
     .use((config) => {
-        config.baseURL = `${apiUrl}/capacities`
+        config.baseURL = apiUrl
         config.headers.Authorization = `Bearer ${localStorage.getItem("jwt")}`
         return config
     })
