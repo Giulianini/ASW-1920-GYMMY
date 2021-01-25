@@ -2,15 +2,33 @@ const trainingExecutionsController = require("../controllers/trainingExecutionsC
 const params = require('./params')
 
 const express = require('express')
-const router = express.Router({ mergeParams: true })
+const router = express.Router({mergeParams: true})
 const auth = require('../middleware/auth')
 
-router.get('/', auth.authenticateJWT, trainingExecutionsController.getExecution)
+router.use(auth.authenticateJWT)
 
-router.put('/', auth.authenticateJWT, trainingExecutionsController.createExecution)
+router.get('/',
+    auth.authorizeUserAndTrainer,
+    auth.ensureUserOwnsInfo,
+    trainingExecutionsController.getExecution
+)
 
-router.patch('/', auth.authenticateJWT, trainingExecutionsController.updateExecution)
+router.put('/',
+    auth.authorizeUser,
+    auth.ensureUserOwnsInfo,
+    trainingExecutionsController.createExecution
+)
 
-router.delete('/', auth.authenticateJWT, trainingExecutionsController.removeExecution)
+router.patch('/',
+    auth.authorizeUser,
+    auth.ensureUserOwnsInfo,
+    trainingExecutionsController.updateExecution
+)
+
+router.delete('/',
+    auth.authorizeUser,
+    auth.ensureUserOwnsInfo,
+    trainingExecutionsController.removeExecution
+)
 
 module.exports = router

@@ -5,12 +5,26 @@ const express = require('express')
 const router = express.Router()
 const auth = require('../middleware/auth')
 
-router.get('/', locationsController.getAllLocations)
+router.use(auth.authenticateJWT)
 
-router.get(`/:${params.LOCATION_PARAM}`, locationsController.getLocation)
+router.get('/',
+    auth.authorizeUserAndTrainer,
+    locationsController.getAllLocations
+)
 
-router.post('/', /*authenticate,*/ locationsController.createLocation)
+router.get(`/:${params.LOCATION_PARAM}`,
+    auth.authorizeUserAndTrainer,
+    locationsController.getLocation
+)
 
-router.patch(`/:${params.LOCATION_PARAM}`, /*authenticate,*/ locationsController.updateLocationDescription)
+router.post('/',
+    auth.authorizeTrainer,
+    locationsController.createLocation
+)
+
+router.patch(`/:${params.LOCATION_PARAM}`,
+    auth.authorizeTrainer,
+    locationsController.updateLocationDescription
+)
 
 module.exports = router

@@ -2,11 +2,19 @@ const locationCapacitiesController = require("../controllers/locationCapacitiesC
 const params = require('./params')
 
 const express = require('express')
-const router = express.Router({ mergeParams: true })
+const router = express.Router({mergeParams: true})
 const auth = require('../middleware/auth')
 
-router.get('/', locationCapacitiesController.getLocationCapacity)
+router.use(auth.authenticateJWT)
 
-router.patch('/', locationCapacitiesController.updateLocationCapacity)
+router.get('/',
+    auth.authorizeUserAndTrainer,
+    locationCapacitiesController.getLocationCapacity
+)
+
+router.patch('/',
+    auth.authorizeUserAndTrainer,
+    locationCapacitiesController.updateLocationCapacity
+)
 
 module.exports = router

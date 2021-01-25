@@ -2,15 +2,29 @@ const challengesController = require("../controllers/challengesController")
 const params = require('./params')
 
 const express = require('express')
-const router = express.Router({ mergeParams: true })
+const router = express.Router({mergeParams: true})
 const auth = require('../middleware/auth')
 
-router.get('/', challengesController.getChallenges)
+router.use(auth.authenticateJWT)
 
-router.post(`/`, challengesController.createChallenge)
+router.get('/',
+    auth.authorizeUserAndTrainer,
+    challengesController.getChallenges
+)
 
-router.patch(`/:${params.CHALLENGE_ID_PARAM}`, challengesController.enrollInChallenge)
+router.post(`/`,
+    auth.authorizeTrainer,
+    challengesController.createChallenge
+)
 
-router.delete(`/:${params.CHALLENGE_ID_PARAM}`, challengesController.closeChallenge)
+router.patch(`/:${params.CHALLENGE_ID_PARAM}`,
+    auth.authorizeUser,
+    challengesController.enrollInChallenge
+)
+
+router.delete(`/:${params.CHALLENGE_ID_PARAM}`,
+    auth.authorizeTrainer,
+    challengesController.closeChallenge
+)
 
 module.exports = router

@@ -7,23 +7,49 @@ const auth = require('../middleware/auth')
 
 const multer = require('multer')
 const storage = multer.memoryStorage()
-const upload = multer({ storage: storage })
+const upload = multer({storage: storage})
 
-router.get('/', auth.authenticateJWT, exercisesController.getAllExercises)
+router.use(auth.authenticateJWT)
 
-router.get(`/:${params.EXERCISE_NAME_PARAM}`, auth.authenticateJWT, exercisesController.getExercise)
+router.get('/',
+    auth.authorizeUserAndTrainer,
+    exercisesController.getAllExercises
+)
 
-router.post('/', auth.authenticateJWT, exercisesController.createExercise)
+router.get(`/:${params.EXERCISE_NAME_PARAM}`,
+    auth.authorizeUserAndTrainer,
+    exercisesController.getExercise
+)
 
-router.get(`/:${params.EXERCISE_NAME_PARAM}/${params.EXERCISE_IMAGE_ROUTE}`, auth.authenticateJWT, exercisesController.getExerciseImage)
+router.post('/',
+    auth.authorizeTrainer,
+    exercisesController.createExercise
+)
+
+router.get(`/:${params.EXERCISE_NAME_PARAM}/${params.EXERCISE_IMAGE_ROUTE}`,
+    auth.authorizeUserAndTrainer,
+    exercisesController.getExerciseImage
+)
 
 router.put(`/:${params.EXERCISE_NAME_PARAM}/${params.EXERCISE_IMAGE_ROUTE}`,
-    upload.single('image'), auth.authenticateJWT, exercisesController.createExerciseImage)
+    upload.single('image'),
+    auth.authorizeTrainer,
+    exercisesController.createExerciseImage
+)
 
-router.delete(`/:${params.EXERCISE_NAME_PARAM}/${params.EXERCISE_IMAGE_ROUTE}`, auth.authenticateJWT, exercisesController.removeExerciseImage)
+router.delete(`/:${params.EXERCISE_NAME_PARAM}/${params.EXERCISE_IMAGE_ROUTE}`,
+    auth.authorizeTrainer,
+    exercisesController.removeExerciseImage
+)
 
-router.patch(`/:${params.EXERCISE_NAME_PARAM}`, auth.authenticateJWT, exercisesController.updateExerciseLocations)
+router.patch(`/:${params.EXERCISE_NAME_PARAM}`,
+    auth.authorizeTrainer,
+    exercisesController.updateExerciseLocations
+)
 
-router.delete(`/:${params.EXERCISE_NAME_PARAM}`, auth.authenticateJWT, exercisesController.removeExercise)
+router.delete(`/:${params.EXERCISE_NAME_PARAM}`,
+    auth.authorizeTrainer,
+    exercisesController.removeExercise
+)
 
 module.exports = router

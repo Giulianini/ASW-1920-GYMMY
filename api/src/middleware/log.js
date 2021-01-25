@@ -3,7 +3,7 @@ const log = (req, res, next) => {
     const originalUrl = req.originalUrl;
     const contentType = req.header('Content-Type')
 
-    console.log(`${method} ${originalUrl} Content-Type: ${contentType}`)
+    console.log(`[ROUTER] ${method} ${originalUrl} Content-Type: ${contentType}`)
 
     next()
 }

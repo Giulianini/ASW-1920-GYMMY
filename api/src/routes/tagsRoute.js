@@ -5,12 +5,26 @@ const params = require('./params')
 
 const tagsController = require('../controllers/tagsController')
 
-router.get('/', tagsController.getAllTags)
+router.use(auth.authenticateJWT)
 
-router.get(`/:${params.TAG_NAME_PARAM}`, tagsController.getTag)
+router.get('/',
+    auth.authorizeUserAndTrainer,
+    tagsController.getAllTags
+)
 
-router.post('/', tagsController.createTag)
+router.get(`/:${params.TAG_NAME_PARAM}`,
+    auth.authorizeUserAndTrainer,
+    tagsController.getTag
+)
 
-router.delete(`/:${params.TAG_NAME_PARAM}`, tagsController.removeTag)
+router.post('/',
+    auth.authorizeTrainer,
+    tagsController.createTag
+)
+
+router.delete(`/:${params.TAG_NAME_PARAM}`,
+    auth.authorizeTrainer,
+    tagsController.removeTag
+)
 
 module.exports = router
