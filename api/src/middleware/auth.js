@@ -32,8 +32,8 @@ exports.authorizeUser = (req, res, next) => {
     if (role === 'user') {
         next()
     } else {
-        console.log(`[AUTH] ${req.user.username} not authorized @ ${req.url}`)
-        res.sendStatus(403)
+        console.log(`[AUTH] ${req.user.username} not authorized @ ${req.originalUrl}`)
+        return res.sendStatus(403)
     }
 }
 
@@ -42,8 +42,8 @@ exports.authorizeTrainer = (req, res, next) => {
     if (role === 'trainer') {
         next()
     } else {
-        console.log(`[AUTH] ${req.user.username} not authorized @ ${req.url}`)
-        res.sendStatus(403)
+        console.log(`[AUTH] ${req.user.username} not authorized @ ${req.originalUrl}`)
+        return res.sendStatus(403)
     }
 }
 
@@ -52,8 +52,8 @@ exports.authorizeUserAndTrainer = (req, res, next) => {
     if (role === 'user' || role === 'trainer') {
         next()
     } else {
-        console.log(`[AUTH] ${req.user.username} not authorized @ ${req.url}`)
-        res.sendStatus(403)
+        console.log(`[AUTH] ${req.user.username} not authorized @ ${req.originalUrl}`)
+        return res.sendStatus(403)
     }
 }
 
@@ -62,13 +62,10 @@ exports.ensureUserOwnsInfo = (req, res, next) => {
     const role = req.user.role
     const usernameParam = req.params[params.USERNAME_PARAM]
 
-    if (!username === usernameParam) {
-        console.log(`[AUTH] ${req.user.username} doesn't own info @ ${req.url}`)
-        res.sendStatus(403)
-    } else if (role !== 'trainer') {
-        console.log(`[AUTH] ${req.user.username} not authorized @ ${req.url}`)
-        res.sendStatus(403)
+    if (username === usernameParam || role === 'trainer') {
+        next()
+    } else {
+        console.log(`[AUTH] ${req.user.username} doesn't own info @ ${req.originalUrl}`)
+        return res.sendStatus(403)
     }
-
-    next()
 }
