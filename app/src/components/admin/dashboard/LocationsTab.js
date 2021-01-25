@@ -31,38 +31,63 @@ const useStyles = makeStyles((theme) => ({
 function LocationsTab(props) {
     const classes = useStyles()
 
-    const [rows, setRows] = useState([])
-
-    const fetchLocations = useCallback(() => {
-        capacitiesAxios.get("").then(res => {
-            const locationsData = res.data
-            console.log(locationsData)
-            const rows = locationsData.map((obj, index) => {
-                return {
-                    id: index,
-                    location: obj.location.description,
-                    available: obj.capacity,
-                    capacity: obj.location.defaultCapacity
-                }
-            })
-            console.log(rows)
-            setRows(rows)
-        }).catch(reason => {
-        })
-    }, [])
-
-    useEffect(() => {
-        fetchLocations()
-    }, [fetchLocations]) // eslint-disable-line react-hooks/exhaustive-deps
+    const locations = useLocations()
 
     return (
         <Grid container direction={"column"} justify={"flex-start"} alignItems={"center"} className={classes.grid}>
             <Typography variant={"h5"} className={classes.tableTitle}>Locations usage</Typography>
             <Grid item xs={12} md={8} className={classes.gridItem}>
-                <DataGrid rows={rows} columns={columns} pageSize={8} autoHeight/>
+                <DataGrid rows={locations} columns={columns} pageSize={8} autoHeight/>
             </Grid>
         </Grid>
     );
+
+    function useLocations() {
+        const [locations, setLocations] = useState([])
+
+        const fetchLocations = useCallback(() => {
+            capacitiesAxios.get("").then(res => {
+                const locationsData = res.data
+                const rows = locationsData.map((obj, index) => {
+                    return {
+                        id: index,
+                        location: obj.location.description,
+                        available: obj.capacity,
+                        capacity: obj.location.defaultCapacity
+                    }
+                })
+                console.log(rows)
+                setLocations(rows)
+            }).catch(reason => {
+            })
+        }, [])
+
+        useEffect(() => {
+            fetchLocations()
+        }, [fetchLocations]) // eslint-disable-line react-hooks/exhaustive-deps
+
+        const setSocketCallback = useCallback(() => {
+            const capacitiesHandler = (data) => {
+                const location = data.location
+                const capacity = data.capacity
+                const updatedLocations = locations.map(obj => {
+                    if (obj.location === location) {
+                        obj.available = capacity
+                        console.log(obj)
+                    }
+                    return obj
+                })
+                setLocations(updatedLocations)
+            }
+            socket.on('capacityUpdate', capacitiesHandler)
+            return function unsubscribe() {
+                socket.off('capacityUpdate', capacitiesHandler)
+            }
+        }, [locations])
+
+        useEffect(setSocketCallback, [setSocketCallback])
+        return locations
+    }
 }
 
 export default LocationsTab;

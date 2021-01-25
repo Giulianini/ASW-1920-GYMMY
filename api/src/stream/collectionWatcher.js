@@ -4,7 +4,7 @@ const Location = require('../models/Location')
 const Exercise = require('../models/Exercise')
 const User = require('../models/User')
 
-exports.watch = function (mongoose, io, userSockets) {
+exports.watch = function (mongoose, io, userSockets, trainerSockets) {
     LocationCapacity.watch().on('change', async data => {
         const locationCapacityId = data.documentKey._id
 
@@ -53,5 +53,25 @@ exports.watch = function (mongoose, io, userSockets) {
         usernameCapacities.forEach(obj => {
             io.to(userSockets.get(obj.username)).emit('capacities', obj.capacities)
         })
+    })
+
+    LocationCapacity.watch().on('change', async data => {
+        const locationCapacityId = data.documentKey._id
+        const locationCapacity = await LocationCapacity.findById(locationCapacityId)
+            .populate({
+                path: 'location',
+                model: Location
+            })
+            .exec()
+
+        const locationName = locationCapacity.location.description
+        const locationCapacityValue = locationCapacity.capacity
+
+        trainerSockets.forEach((socketId, username) => {
+                io.to(socketId).emit('capacityUpdate', {
+                    location: locationName,
+                    capacity: locationCapacityValue
+                })
+            })
     })
 }

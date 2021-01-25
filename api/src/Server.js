@@ -116,26 +116,35 @@ httpsServer.listen(httpsPort, () => {
 
 const User = require('./models/User')
 const userSockets = new Map()
+const trainerSockets = new Map()
 io.on('connection', async (socket) => {
     socket.emit('hello from server')
 
     const username = socket.request._query['username']
 
-    const userExists = await User.exists({ username: username })
-    if (!userExists) {
+    const foundUser = await User.findOne({ username: username }).exec()
+    if (!foundUser) {
         socket.emit('badUser', "user not found, closing connection")
         return socket.disconnect()
     }
 
-    userSockets.set(username, socket.id)
+    const role = foundUser.role
+    if (role === 'user') {
+        userSockets.set(username, socket.id)
+        console.log(userSockets)
+    } else if (role === 'trainer') {
+        trainerSockets.set(username, socket.id)
+        console.log(trainerSockets)
+    }
+
     socket.emit('welcome', 'welcome to the server')
     console.log("[WS] connected user " + username)
-    console.log(userSockets)
 
     socket.on('disconnect', () => {
-        userSockets.delete(username)
+        if (!userSockets.delete(username)) {
+            trainerSockets.delete(username)
+        }
         console.log('[WS] ' + username + ' disconnected')
-        console.log(userSockets)
     })
 
     socket.on('event', (msg) => {
@@ -144,4 +153,4 @@ io.on('connection', async (socket) => {
     })
 })
 
-watcher.watch(mongoose, io, userSockets)
+watcher.watch(mongoose, io, userSockets, trainerSockets)
