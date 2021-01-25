@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/Server.js",
+    "startNodemon": "nodemon src/Server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
