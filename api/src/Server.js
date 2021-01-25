@@ -3,7 +3,7 @@ const http = require('http');
 const https = require('https');
 
 const path = require('path')
-const privateKey  = fs.readFileSync(path.resolve(__dirname, './security/cert.key'), 'utf8');
+const privateKey = fs.readFileSync(path.resolve(__dirname, './security/cert.key'), 'utf8');
 const certificate = fs.readFileSync(path.resolve(__dirname, './security/cert.pem'), 'utf8');
 
 require('dotenv').config({path: path.resolve(__dirname, '../.env')})
@@ -23,7 +23,7 @@ const httpsServer = https.createServer(credentials, app);
 const io = require('socket.io')(httpServer, {
     cors: {
         origin: "*",
-        methods: [ "GET", "POST" ],
+        methods: ["GET", "POST"],
     }
 })
 const watcher = require('./stream/collectionWatcher')
@@ -122,7 +122,9 @@ io.on('connection', async (socket) => {
 
     const username = socket.request._query['username']
 
-    const foundUser = await User.findOne({ username: username }).exec()
+    console.log("[WS] trying to connect user " + username)
+
+    const foundUser = await User.findOne({username: username}).exec()
     if (!foundUser) {
         socket.emit('badUser', "user not found, closing connection")
         return socket.disconnect()
@@ -131,10 +133,8 @@ io.on('connection', async (socket) => {
     const role = foundUser.role
     if (role === 'user') {
         userSockets.set(username, socket.id)
-        console.log(userSockets)
     } else if (role === 'trainer') {
         trainerSockets.set(username, socket.id)
-        console.log(trainerSockets)
     }
 
     socket.emit('welcome', 'welcome to the server')

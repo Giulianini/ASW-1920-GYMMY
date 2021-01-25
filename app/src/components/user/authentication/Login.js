@@ -5,7 +5,7 @@ import SendIcon from '@material-ui/icons/Send';
 import {makeStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import {Visibility, VisibilityOff} from "@material-ui/icons";
-import {baseAxios} from "../../../Api";
+import {baseAxios, startSocket} from "../../../Api";
 import routes from "../../Routes";
 import {useSnackbar} from "notistack";
 
@@ -76,6 +76,7 @@ function Login() {
         }).then(res => {
             localStorage.setItem("jwt", res.data.accessToken)
             localStorage.setItem("username", res.data.username)
+            startSocket()
             history.push(routes.dashboard.value)
         }).catch(() => {
             enqueueSnackbar("Login failed", {

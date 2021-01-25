@@ -1,6 +1,6 @@
 import axios from "axios";
-import routes from "./components/Routes";
 import {io} from "socket.io-client";
+import routes from "./components/Routes";
 
 export const apiUrl = process.env.REACT_APP_API_URL
 
@@ -41,9 +41,13 @@ userAxios.interceptors.response.use(function (response) {
     }
 });
 
-export const socket = io(`${apiUrl}?username=${localStorage.getItem("username")}`)
+export let socket = localStorage.getItem("username") && io(`${apiUrl}?username=${localStorage.getItem("username")}`)
 
-socket.on('welcome', (msg) => {
-    console.log(`socket: ${msg}`)
-})
+export function startSocket() {
+    socket = io(`${apiUrl}?username=${localStorage.getItem("username")}`)
+    socket.on('welcome', (msg) => {
+        console.log(`socket: ${msg}`)
+    })
+}
+
 
