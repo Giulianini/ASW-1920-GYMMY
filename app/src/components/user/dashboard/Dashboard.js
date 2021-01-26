@@ -51,6 +51,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+// PLACEHOLDERS, used to test UI, do not remove until fully populated DB
 const challenges = [{
     "title": "Push-Up",
     "desc": "Complete as many push-ups reps as you can and climb the leaderboard!",
@@ -83,19 +84,21 @@ function Dashboard() {
     const classes = useStyles();
     const dialogRef = useRef({})
     const [userInfo, setUserInfo] = React.useState({
-        "username": undefined,
-        "experiencePoints": undefined
-    })
-    const [courseInfo, setCourseInfo] = React.useState({
-        "title": undefined,
-        "description": undefined,
-        "image": undefined,
-        "participants": undefined
+        "username": "",
+        "experiencePoints": ""
     })
     const [challengeInfo, setChallengeInfo] = React.useState({
-        "description": undefined,
-        "participants": undefined,
-        "expRewards": undefined
+        "title": "",
+        "image": undefined,
+        "description": "",
+        "participants": "",
+        "expRewards": ""
+    })
+    const [courseInfo, setCourseInfo] = React.useState({
+        "title": "",
+        "description": "",
+        "image": "",
+        "participants": ""
     })
 
     useEffect(() => {
@@ -116,16 +119,14 @@ function Dashboard() {
 
     function fetchCourses() {
         userAxios.get("courses").then(res => {
-            const courses = res.data.getCourses()
-            setCourseInfo(courses)
+            setCourseInfo({...res.data})
         }).catch(() => {
         })
     }
 
     function fetchChallenges() {
         userAxios.get("challenges").then(res => {
-            const challenges = res.data.getChallenges()
-            setChallengeInfo(challenges)
+            setChallengeInfo({...res.data})
         }).catch(() => {
         })
     }

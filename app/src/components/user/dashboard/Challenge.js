@@ -33,7 +33,7 @@ function Course(props) {
                     />
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="h2">
-                            Push-up challenge
+                            {props.item.title}
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
                             {props.item.description}
