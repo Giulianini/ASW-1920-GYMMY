@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
+const ImageSchema = require("./Image");
 
 const ChallengeSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
     description: {
         type: String,
         required: true
@@ -9,6 +14,10 @@ const ChallengeSchema = new mongoose.Schema({
         type: String,
         required: true
     }],
+    image: {
+        type: ImageSchema,
+        required: false
+    },
     expRewards: {
         type: new mongoose.Schema({
             firstPlace: {
