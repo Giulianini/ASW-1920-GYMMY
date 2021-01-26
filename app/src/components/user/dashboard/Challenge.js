@@ -36,7 +36,7 @@ function Course(props) {
                             Push-up challenge
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
-                            {props.item.desc}
+                            {props.item.description}
                         </Typography>
                     </CardContent>
                 </CardActionArea>
@@ -45,7 +45,7 @@ function Course(props) {
                         Accept challenge
                     </Button>
                     <Button size="small" color="primary">
-                        100 points
+                        Reward: {props.item.firstPlace}
                     </Button>
                 </CardActions>
                 <div className={classes.pushCardSize}/>
