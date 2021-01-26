@@ -35,15 +35,16 @@ services:
     restart: unless-stopped
     env_file: mongo/docker_envs/.env.production
     ports:
-       - 27018:27017
+      - 27018:27017
     networks:
-       - gymmy-network
+      - gymmy-network
     volumes:
+      - ./mongo/config/:/etc/mongo/:ro
       - ./mongo/:/docker-entrypoint-initdb.d/:ro
       # The named volume dbdata will persist the data stored in Mongo’s default data directory, /data/db.
       # This will ensure that you don’t lose data in cases where you stop or remove containers.
       - ./mongo/dbdata:/data/db
-    command: [--auth]
+    command: -f /etc/mongo/mongod.conf --auth
 networks:
   gymmy-network:
     name: gymmy-network

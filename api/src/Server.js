@@ -87,8 +87,9 @@ const dbPassword = process.env.DB_ADMIN_PWD
 console.log("connection " + dbConnection)
 console.log("name " + dbName)
 mongoose.connect(
-    dbConnection.concat(dbName).concat(dbReplicaSet),
+    dbConnection,
     {
+        dbName: dbName,
         auth: {authSource: "admin"},
         user: dbAdmin,
         pass: dbPassword,
