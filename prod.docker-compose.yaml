@@ -39,12 +39,11 @@ services:
     networks:
       - gymmy-network
     volumes:
-      - ./mongo/config/:/etc/mongo/:ro
-      - ./mongo/:/docker-entrypoint-initdb.d/:ro
+      - ./mongo/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/:ro
       # The named volume dbdata will persist the data stored in Mongo’s default data directory, /data/db.
       # This will ensure that you don’t lose data in cases where you stop or remove containers.
       - ./mongo/dbdata:/data/db
-    command: -f /etc/mongo/mongod.conf --auth
+    command: [ --replSet, rs0,--auth, --bind_ip, mongo ]
 networks:
   gymmy-network:
     name: gymmy-network
