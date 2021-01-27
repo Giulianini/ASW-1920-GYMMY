@@ -5,16 +5,16 @@ const params = require('./params')
 
 const usersController = require('../controllers/usersController')
 
-router.use(auth.authenticateJWT)
-
 /* User */
 
 router.get('/',
+    auth.authenticateJWT,
     auth.authorizeTrainer,
     usersController.getAllUsers
 )
 
 router.get(`/:${params.USERNAME_PARAM}`,
+    auth.authenticateJWT,
     auth.authorizeUserAndTrainer,
     auth.ensureUserOwnsInfo,
     usersController.getUser
@@ -25,12 +25,14 @@ router.post('/',
 )
 
 router.patch(`/:${params.USERNAME_PARAM}/measures`,
+    auth.authenticateJWT,
     auth.authorizeUserAndTrainer,
     auth.ensureUserOwnsInfo,
     usersController.updateMeasures
 )
 
 router.delete(`/:${params.USERNAME_PARAM}`,
+    auth.authenticateJWT,
     auth.authorizeUserAndTrainer,
     auth.ensureUserOwnsInfo,
     usersController.removeUser
@@ -39,18 +41,21 @@ router.delete(`/:${params.USERNAME_PARAM}`,
 /* Objective */
 
 router.get(`/:${params.USERNAME_PARAM}/${params.OBJECTIVE_ROUTE}`,
+    auth.authenticateJWT,
     auth.authorizeUserAndTrainer,
     auth.ensureUserOwnsInfo,
     usersController.getUserObjective
 )
 
 router.post(`/:${params.USERNAME_PARAM}/${params.OBJECTIVE_ROUTE}`,
+    auth.authenticateJWT,
     auth.authorizeUserAndTrainer,
     auth.ensureUserOwnsInfo,
     usersController.createUserObjective
 )
 
 router.patch(`/:${params.USERNAME_PARAM}/${params.OBJECTIVE_ROUTE}`,
+    auth.authenticateJWT,
     auth.authorizeUserAndTrainer,
     auth.ensureUserOwnsInfo,
     usersController.updateUserObjective
