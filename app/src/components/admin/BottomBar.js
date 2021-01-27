@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch} from "react-redux";
 import {useHistory, useLocation} from "react-router-dom";
-import {setAppbarHidden, setAppbarTitle} from "../../redux/ducks/user/user";
+import {setAppbarTitle} from "../../redux/ducks/user/user";
 import {BottomNavigation, BottomNavigationAction} from "@material-ui/core";
-import {BarChart, Dashboard, Person, Receipt} from "@material-ui/icons";
+import {Dashboard} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
@@ -43,8 +43,11 @@ function BottomBar(props) {
             }}
             showLabels
         >
-            <BottomNavigationAction label={props.tabs.admin.routes.dashboard.name} value={props.tabs.admin.routes.dashboard.value}
-                                    icon={<Dashboard/>}/>
+            <BottomNavigationAction
+                label={props.tabs.admin.routes.dashboard.name}
+                value={props.tabs.admin.routes.dashboard.value}
+                icon={<Dashboard/>}
+            />
         </BottomNavigation>
     );
 

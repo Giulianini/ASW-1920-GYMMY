@@ -1,6 +1,5 @@
 import React from 'react';
-import { DataGrid } from '@material-ui/data-grid';
-import {Grid, Paper, Tabs, Typography} from "@material-ui/core";
+import {Paper, Tabs} from "@material-ui/core";
 import Tab from '@material-ui/core/Tab';
 import SwipeableViews from "react-swipeable-views";
 import {makeStyles} from "@material-ui/core/styles";
@@ -18,8 +17,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 50,
         minWidth: "100%",
     },
-    tabsPaper: {
-    },
+    tabsPaper: {},
 }))
 
 function Dashboard(props) {
@@ -47,15 +45,13 @@ function Dashboard(props) {
                     centered
                     variant={"fullWidth"}
                 >
-                    <Tab label="Users" />
-                    <Tab label="Locations" />
-                    <Tab label="Cards" />
+                    <Tab label="Users"/>
+                    <Tab label="Locations"/>
                 </Tabs>
             </Paper>
             <SwipeableViews index={value} onChangeIndex={handleChangeSwipe} className={classes.swipeableView}>
                 <UsersTab/>
                 <LocationsTab/>
-                <div>3</div>
             </SwipeableViews>
         </>
     );
