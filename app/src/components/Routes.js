@@ -10,6 +10,14 @@ const routes = {
             dashboard: {
                 name: "Dashboard",
                 value: `admin/dashboard`
+            },
+            cards: {
+                name: "Cards",
+                value: `admin/cards`
+            },
+            challenges: {
+                name: "Challenges",
+                value: `admin/challenges`
             }
         }
     },

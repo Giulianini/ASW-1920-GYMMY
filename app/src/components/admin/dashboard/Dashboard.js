@@ -40,7 +40,7 @@ function Dashboard(props) {
                     indicatorColor="primary"
                     textColor="primary"
                     onChange={handleChangeTabs}
-                    aria-label="disabled tabs example"
+                    aria-label="Tabs"
                     className={classes.tabs}
                     centered
                     variant={"fullWidth"}

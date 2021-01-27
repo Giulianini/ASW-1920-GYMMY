@@ -10,6 +10,8 @@ import Dashboard from "../admin/dashboard/Dashboard";
 import BottomBar from "./BottomBar";
 import Header from "../user/Header";
 import Drawer from "../user/Drawer";
+import Cards from "./cards/Cards";
+import Challenges from "./challenges/Challenges";
 
 function Admin(props) {
     const location = useLocation()
@@ -26,6 +28,8 @@ function Admin(props) {
                     <CSSTransition key={location.key} classNames={"fade"} timeout={300}>
                         <Switch>
                             <Route path={`/${routes.admin.routes.dashboard.value}`} children={<Dashboard/>}/>
+                            <Route path={`/${routes.admin.routes.cards.value}`} children={<Cards/>}/>
+                            <Route path={`/${routes.admin.routes.challenges.value}`} children={<Challenges/>}/>
                             <Redirect from='*' to={`/${routes.admin.routes.dashboard.value}`}/>
                         </Switch>
                     </CSSTransition>

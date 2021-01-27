@@ -48,6 +48,16 @@ function BottomBar(props) {
                 value={props.tabs.admin.routes.dashboard.value}
                 icon={<Dashboard/>}
             />
+            <BottomNavigationAction
+                label={props.tabs.admin.routes.cards.name}
+                value={props.tabs.admin.routes.cards.value}
+                icon={<Dashboard/>}
+            />
+            <BottomNavigationAction
+                label={props.tabs.admin.routes.challenges.name}
+                value={props.tabs.admin.routes.challenges.value}
+                icon={<Dashboard/>}
+            />
         </BottomNavigation>
     );
 
