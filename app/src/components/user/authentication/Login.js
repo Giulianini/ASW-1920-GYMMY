@@ -78,9 +78,9 @@ function Login() {
             localStorage.setItem("username", res.data.username)
             startSocket()
             if (res.data.role === 'trainer') {
-                history.push(routes.admin.routes.dashboard.value)
+                history.push(routes.admin.routes.dashboard.value, {username: res.data.username})
             } else {
-                history.push(routes.dashboard.value)
+                history.push(routes.dashboard.value, {username: res.data.username})
             }
         }).catch(() => {
             enqueueSnackbar("Login failed", {
