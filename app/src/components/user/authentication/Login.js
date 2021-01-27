@@ -77,7 +77,11 @@ function Login() {
             localStorage.setItem("jwt", res.data.accessToken)
             localStorage.setItem("username", res.data.username)
             startSocket()
-            history.push(routes.dashboard.value)
+            if (res.data.role === 'trainer') {
+                history.push(routes.admin.routes.dashboard.value)
+            } else {
+                history.push(routes.dashboard.value)
+            }
         }).catch(() => {
             enqueueSnackbar("Login failed", {
                 variant: "error"
