@@ -5,12 +5,12 @@ const User = require('../models/User')
 const Challenge = require('../models/Challenge')
 const Statistics = require('../models/Statistics')
 
-exports.getChallenges = async function(req, res) {
+exports.getChallenges = async function (req, res) {
     const challenges = await Challenge.find().exec()
     responses.json(res)(challenges)
 }
 
-exports.createChallenge = async function(req, res) {
+exports.createChallenge = async function (req, res) {
     const description = req.body.description
     const firstPlaceReward = req.body.firstPlaceReward
     const secondPlaceReward = req.body.secondPlaceReward
@@ -36,7 +36,7 @@ exports.createChallenge = async function(req, res) {
     }
 }
 
-exports.enrollInChallenge = async function(req, res) {
+exports.enrollInChallenge = async function (req, res) {
     const challengeId = req.params[params.CHALLENGE_ID_PARAM]
     const command = req.body.command
     const username = req.body.username
@@ -73,15 +73,15 @@ exports.enrollInChallenge = async function(req, res) {
 async function assignReward(username, challenge) {
     if (username) {
         const reward = challenge.expRewards.firstPlace
-        const userId = await User.findOne({ username: username }).map(doc => doc._id).exec()
-        const statistics = await Statistics.findOne({ user: userId }).exec()
+        const userId = await User.findOne({username: username}).map(doc => doc._id).exec()
+        const statistics = await Statistics.findOne({user: userId}).exec()
         const currentExp = statistics.experiencePoints
         statistics.experiencePoints = currentExp + reward
         await statistics.save()
     }
 }
 
-exports.closeChallenge = async function(req, res) {
+exports.closeChallenge = async function (req, res) {
     const challengeId = req.params[params.CHALLENGE_ID_PARAM]
     const firstPlace = req.body.firstPlace
     const secondPlace = req.body.secondPlace
@@ -101,7 +101,45 @@ exports.closeChallenge = async function(req, res) {
         await assignReward(secondPlace, foundChallenge)
         await assignReward(thirdPlace, foundChallenge)
 
-        await Challenge.deleteOne({ _id: challengeId }).exec()
+        await Challenge.deleteOne({_id: challengeId}).exec()
+        responses.noContent(res)
+    } catch (err) {
+        responses.error(res)(err)
+    }
+}
+
+exports.getChallengeImage = async function (req, res) {
+    const challengeId = req.params[params.CHALLENGE_ID_PARAM]
+
+    const foundChallenge = await Challenge.findById(challengeId).exec()
+    if (!foundChallenge) {
+        return responses.notFound(res)('Challenge not found')
+    }
+
+    const foundImage = foundChallenge.image
+    if (!foundImage) {
+        return responses.notFound(res)('Exercise image not found')
+    }
+
+    res.contentType(foundImage.contentType).send(foundImage.data)
+}
+
+exports.createChallengeImage = async function (req, res) {
+    const challengeId = req.params[params.CHALLENGE_ID_PARAM]
+
+    const foundChallenge = await Challenge.findById(challengeId).exec()
+    if (!foundChallenge) {
+        return responses.notFound(res)('Challenge not found')
+    }
+
+    try {
+        const img = req.file.buffer
+        const contentType = req.file.mimetype
+        foundChallenge.image = {
+            data: img,
+            contentType: contentType
+        }
+        await foundChallenge.save()
         responses.noContent(res)
     } catch (err) {
         responses.error(res)(err)
