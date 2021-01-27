@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {Paper, Tabs} from "@material-ui/core";
 import Tab from '@material-ui/core/Tab';
 import SwipeableViews from "react-swipeable-views";
 import {makeStyles} from "@material-ui/core/styles";
 import UsersTab from "./UsersTab";
 import LocationsTab from "./LocationsTab";
+import {useLocation} from "react-router-dom";
+import {useSnackbar} from "notistack";
 
 const useStyles = makeStyles((theme) => ({
     tabs: {
@@ -23,6 +25,18 @@ const useStyles = makeStyles((theme) => ({
 function Dashboard(props) {
     const classes = useStyles()
     const [value, setValue] = React.useState(0);
+    const location = useLocation()
+    const {enqueueSnackbar} = useSnackbar()
+
+    const welcomeFromRegistration = useCallback(() => {
+        if (location.state && location.state.username) {
+            enqueueSnackbar(`Hi ${location.state.username} welcome to Gymmy`, {variant: "success"})
+        }
+    }, [location.state, enqueueSnackbar])
+
+    useEffect(() => {
+        welcomeFromRegistration()
+    }, [welcomeFromRegistration])
 
     const handleChangeTabs = (event, newValue) => {
         setValue(newValue);
