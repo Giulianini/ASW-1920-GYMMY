@@ -23,6 +23,7 @@
     "d3-shape": "^2.0.0",
     "devextreme": "^20.2.4",
     "local-storage": "^2.0.0",
+    "material-ui-dropzone": "^3.5.0",
     "material-ui-image": "^3.3.1",
     "notistack": "^1.0.3",
     "react": "^17.0.1",
