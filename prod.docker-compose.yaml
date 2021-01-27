@@ -45,10 +45,10 @@ services:
       # This will ensure that you don’t lose data in cases where you stop or remove containers.
       - ./mongo/dbdata:/data/db
     healthcheck:
-      test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u admin -p password --quiet) -eq 1
+      test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
       interval: 5s
       start_period: 5s
-    command: [ --replSet, rs0,--auth, --bind_ip_all ]
+    command: [ --replSet, rs0, --auth, --bind_ip_all ]
 networks:
   gymmy-network:
     name: gymmy-network
