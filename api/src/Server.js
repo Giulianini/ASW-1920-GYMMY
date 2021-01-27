@@ -36,6 +36,7 @@ const usersRoute = require('./routes/usersRoute')
 const sessionRoute = require('./routes/sessionRoute')
 const locationsRoute = require('./routes/locationsRoute')
 const exercisesRoute = require('./routes/exercisesRoute')
+const allExecutionsRoute = require('./routes/allExecutionsRoute')
 const trainingCardsRoute = require('./routes/trainingCardsRoute')
 const tagsRoute = require('./routes/tagsRoute')
 const executionRoute = require('./routes/trainingExecutionsRoute')
@@ -63,6 +64,8 @@ app.use(`/locations/:${params.LOCATION_PARAM}/${params.CAPACITY_ROUTE}`, locatio
 
 app.use('/exercises', exercisesRoute)
 
+app.use('/executions', allExecutionsRoute)
+
 app.use(`/users/:${params.USERNAME_PARAM}/${params.USER_CARDS_ROUTE}`, trainingCardsRoute)
 
 app.use(`/users/:${params.USERNAME_PARAM}/${params.EXECUTION_ROUTE}`, executionRoute)
@@ -86,6 +89,7 @@ const dbAdmin = process.env.DB_ADMIN
 const dbPassword = process.env.DB_ADMIN_PWD
 console.log("connection " + dbConnection)
 console.log("name " + dbName)
+console.log("rs " + dbReplicaSet)
 mongoose.connect(
     dbConnection.concat(dbName).concat(dbReplicaSet),
     {

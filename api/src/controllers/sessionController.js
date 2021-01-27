@@ -6,9 +6,9 @@ const responses = require('./util/responses')
 const secret = process.env.JWT_SECRET
 
 exports.createSession = async function (req, res) {
-    const { username, password } = req.body
+    const {username, password} = req.body
     try {
-        const foundUser = await User.findOne({ username: username }).exec();
+        const foundUser = await User.findOne({username: username}).exec();
         if (foundUser) {
             bcrypt.compare(password, foundUser.password, (err, result) => {
                 if (result) {
@@ -16,7 +16,7 @@ exports.createSession = async function (req, res) {
                         username: foundUser.username,
                         role: foundUser.role
                     }, secret)
-                    responses.json(res)({ username: foundUser.username, accessToken })
+                    responses.json(res)({username: foundUser.username, role: foundUser.role, accessToken})
                 } else {
                     responses.unauthorized(res)
                 }
