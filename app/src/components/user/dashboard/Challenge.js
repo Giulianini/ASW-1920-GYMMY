@@ -3,6 +3,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import {Button, Card, CardActionArea, CardActions, Grid, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import CardContent from "@material-ui/core/CardContent";
+import {baseAxios} from "../../../Api";
 
 const useStyles = makeStyles(theme => ({
     mediaPersonal: {
@@ -31,6 +32,13 @@ function Challenge(props) {
 
     function retrieveImage() {
         return `data:${props.item.image.contentType};base64,${arrayBufferToBase64(props.item.image.data.data)}`
+    }
+
+    function enrollInChallenge() {
+        baseAxios.patch("challenge" + props.item._id, {
+            username: localStorage.getItem("username"),
+            command: "enroll"
+        })
     }
 
     const classes = useStyles()
