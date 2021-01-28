@@ -28,7 +28,7 @@ const useStyles = makeStyles({
         marginTop: 20,
     },
     submitButton: {
-        marginTop: 20,
+        marginTop: 30,
     }
 })
 
@@ -86,7 +86,7 @@ function CreateChallengeTab() {
                 enqueueSnackbar("Error adding the challenge", {variant: "error"})
             })
         } else {
-            enqueueSnackbar("Some field are empty", {variant: "error"})
+            enqueueSnackbar("Some field are empty", {variant: "warning"})
         }
     }
 

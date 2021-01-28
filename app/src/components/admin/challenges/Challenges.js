@@ -5,6 +5,7 @@ import Tab from "@material-ui/core/Tab";
 import SwipeableViews from "react-swipeable-views";
 import CreateChallengeTab from "./CreateChallengeTab";
 import CloseChallengeTab from "./CloseChallengeTab";
+import {useSnackbar} from "notistack";
 
 const useStyles = makeStyles((theme) => ({
     tabs: {
@@ -22,11 +23,26 @@ const useStyles = makeStyles((theme) => ({
 
 function Challenges() {
     const classes = useStyles()
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = React.useState(0)
+    const {enqueueSnackbar} = useSnackbar()
+    const createChallengeTabNotification = "Here you can create a challenge"
+    const closeChallengeTabNotification = "Here you can close an active challenge and assign awards to participants"
+
+    const triggerMessageOnSwitch = (index) => {
+        switch (index) {
+            case 0:
+                enqueueSnackbar(createChallengeTabNotification, {variant: "info"})
+                break
+            case 1:
+                enqueueSnackbar(closeChallengeTabNotification, {variant: "info"})
+                break
+        }
+    }
 
     const handleChangeTabs = (event, newValue) => {
-        setValue(newValue);
-    };
+        setValue(newValue)
+        triggerMessageOnSwitch(newValue)
+    }
 
     const handleChangeSwipe = (index) => {
         setValue(index)

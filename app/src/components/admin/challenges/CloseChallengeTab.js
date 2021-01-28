@@ -30,6 +30,9 @@ const useStyles = makeStyles({
         marginTop: 20,
     },
     submitButton: {
+        marginTop: 30,
+    },
+    autocompleteBlock: {
         marginTop: 20,
     }
 })
@@ -39,12 +42,34 @@ function CloseChallengeTab() {
     const {enqueueSnackbar} = useSnackbar()
     const challenges = useChallenges()
     const [selectedChallenge, setSelectedChallenge] = useState(null)
-    const [selectedUser, setSelectedUser] = useState(null)
+    const [awards, setAwards] = useState({
+        firstPlace: '',
+        secondPlace: '',
+        thirdPlace: ''
+    })
 
-    const resetForm = () => {
+    const handleAwardChange = (prop, value) => {
+        setAwards({
+            ...awards,
+            [prop]: value,
+        })
     }
 
     const handleSubmit = (e) => {
+        console.log(awards)
+        if (awards.firstPlace && awards.secondPlace && awards.thirdPlace && selectedChallenge) {
+            baseAxios.delete("/challenges/" + selectedChallenge._id, {
+                data: awards
+            }).then(res => {
+                enqueueSnackbar("Challenge successfully closed", {variant: "success"})
+                console.log(res.data)
+            }).catch(reason => {
+                enqueueSnackbar("Error closing the challenge", {variant: "error"})
+                console.log(reason.response.data)
+            })
+        } else {
+            enqueueSnackbar("Some field are empty", {variant: "warning"})
+        }
         e.preventDefault()
     }
 
@@ -52,15 +77,17 @@ function CloseChallengeTab() {
         <Grid container direction={"column"} justify={"center"} alignItems={"center"} component={"form"}
               onSubmit={handleSubmit} className={classes.form}>
             <Grid item container xs={10} md={5} direction={"column"}>
-                <Grid item container direction={"column"} alignItems={"center"}>
+                <Grid item container direction={"column"} alignItems={"flex-start"}
+                      className={classes.autocompleteBlock}>
                     <Grid item>
-                        <Typography variant={"h5"} className={classes.autocompleteTitle}>Select a challenge</Typography>
+                        <Typography variant={"h6"} className={classes.autocompleteTitle}>Select a challenge</Typography>
                     </Grid>
                     <Grid item className={classes.gridItem}>
                         <Autocomplete
                             options={challenges}
                             onChange={((event, value) => {
                                 setSelectedChallenge(value)
+                                console.log(value)
                             })}
                             getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
@@ -69,21 +96,65 @@ function CloseChallengeTab() {
                         />
                     </Grid>
                 </Grid>
-                <Grid item container direction={"column"} alignItems={"center"}>
+                <Grid item container direction={"column"} alignItems={"flex-start"}
+                      className={classes.autocompleteBlock}>
                     <Grid item>
-                        <Typography variant={"h5"} className={classes.autocompleteTitle}>Select a
-                            participant</Typography>
+                        <Typography variant={"h6"} className={classes.autocompleteTitle}>
+                            Winner: {selectedChallenge ? selectedChallenge.expRewards.firstPlace : 0} points
+                        </Typography>
                     </Grid>
                     <Grid item className={classes.gridItem}>
                         <Autocomplete
                             disabled={!selectedChallenge}
-                            options={selectedChallenge && selectedChallenge.participants}
-                            onChange={((event, value) => {
-                                setSelectedUser(value)
+                            options={selectedChallenge ? selectedChallenge.participants : []}
+                            onChange={((_, value) => {
+                                handleAwardChange("firstPlace", value)
                             })}
-                            getOptionLabel={(option) => option.name}
+                            getOptionLabel={(option) => option}
                             renderInput={(params) =>
-                                <TextField {...params} label="Select a challenge..." variant="outlined"/>
+                                <TextField {...params} label="Select the winner..." variant="outlined"/>
+                            }
+                        />
+                    </Grid>
+                </Grid>
+                <Grid item container direction={"column"} alignItems={"flex-start"}
+                      className={classes.autocompleteBlock}>
+                    <Grid item>
+                        <Typography variant={"h6"} className={classes.autocompleteTitle}>
+                            Second place: {selectedChallenge ? selectedChallenge.expRewards.secondPlace : 0} points
+                        </Typography>
+                    </Grid>
+                    <Grid item className={classes.gridItem}>
+                        <Autocomplete
+                            disabled={!selectedChallenge}
+                            options={selectedChallenge ? selectedChallenge.participants : []}
+                            onChange={((_, value) => {
+                                handleAwardChange("secondPlace", value)
+                            })}
+                            getOptionLabel={(option) => option}
+                            renderInput={(params) =>
+                                <TextField {...params} label="Select 2° place..." variant="outlined"/>
+                            }
+                        />
+                    </Grid>
+                </Grid>
+                <Grid item container direction={"column"} alignItems={"flex-start"}
+                      className={classes.autocompleteBlock}>
+                    <Grid item>
+                        <Typography variant={"h6"} className={classes.autocompleteTitle}>
+                            Third place: {selectedChallenge ? selectedChallenge.expRewards.thirdPlace : 0} points
+                        </Typography>
+                    </Grid>
+                    <Grid item className={classes.gridItem}>
+                        <Autocomplete
+                            disabled={!selectedChallenge}
+                            options={selectedChallenge ? selectedChallenge.participants : []}
+                            onChange={((_, value) => {
+                                handleAwardChange("thirdPlace", value)
+                            })}
+                            getOptionLabel={(option) => option}
+                            renderInput={(params) =>
+                                <TextField {...params} label="Select 3° place..." variant="outlined"/>
                             }
                         />
                     </Grid>
@@ -107,8 +178,9 @@ function CloseChallengeTab() {
         const fetchChallenges = useCallback(() => {
             baseAxios.get("challenges").then(res => {
                 setChallenges(res.data)
-                console.log(res.data)
             }).catch(reason => {
+                console.log(reason.response.data)
+                enqueueSnackbar("Cannot fetch challenges", {variant: "error"})
             })
         }, []);
         useEffect(() => {
