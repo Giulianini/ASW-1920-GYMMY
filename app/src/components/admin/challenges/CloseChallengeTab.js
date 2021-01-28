@@ -40,13 +40,26 @@ const useStyles = makeStyles({
 function CloseChallengeTab() {
     const classes = useStyles()
     const {enqueueSnackbar} = useSnackbar()
-    const challenges = useChallenges()
     const [selectedChallenge, setSelectedChallenge] = useState(null)
+    const [challenges, setChallenges] = useState([])
     const [awards, setAwards] = useState({
         firstPlace: '',
         secondPlace: '',
         thirdPlace: ''
     })
+
+    const fetchChallenges = useCallback(() => {
+        baseAxios.get("challenges").then(res => {
+            setChallenges(res.data)
+        }).catch(reason => {
+            console.log(reason.response.data)
+            enqueueSnackbar("Cannot fetch challenges", {variant: "error"})
+        })
+    }, []);
+
+    useEffect(() => {
+        fetchChallenges()
+    }, [fetchChallenges])
 
     const handleAwardChange = (prop, value) => {
         setAwards({
@@ -59,12 +72,11 @@ function CloseChallengeTab() {
         if (awards.firstPlace && awards.secondPlace && awards.thirdPlace && selectedChallenge) {
             baseAxios.delete("/challenges/" + selectedChallenge._id, {
                 data: awards
-            }).then(res => {
+            }).then(() => {
+                fetchChallenges()
                 enqueueSnackbar("Challenge successfully closed", {variant: "success"})
-                console.log(res.data)
-            }).catch(reason => {
+            }).catch(() => {
                 enqueueSnackbar("Error closing the challenge", {variant: "error"})
-                console.log(reason.response.data)
             })
         } else {
             enqueueSnackbar("Some field are empty", {variant: "warning"})
@@ -173,23 +185,6 @@ function CloseChallengeTab() {
             </Grid>
         </Grid>
     );
-
-    function useChallenges() {
-        const [challenges, setChallenges] = useState([])
-        const fetchChallenges = useCallback(() => {
-            baseAxios.get("challenges").then(res => {
-                setChallenges(res.data)
-            }).catch(reason => {
-                console.log(reason.response.data)
-                enqueueSnackbar("Cannot fetch challenges", {variant: "error"})
-            })
-        }, []);
-        useEffect(() => {
-            fetchChallenges()
-        }, [fetchChallenges])
-
-        return challenges
-    }
 }
 
 export default CloseChallengeTab;

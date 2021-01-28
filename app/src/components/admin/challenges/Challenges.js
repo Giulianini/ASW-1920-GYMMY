@@ -46,6 +46,7 @@ function Challenges() {
 
     const handleChangeSwipe = (index) => {
         setValue(index)
+        triggerMessageOnSwitch(index)
     }
 
     return (
