@@ -51,35 +51,6 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-// PLACEHOLDERS, used to test UI, do not remove until fully populated DB
-const challenges = [{
-    "title": "Push-Up",
-    "desc": "Complete as many push-ups reps as you can and climb the leaderboard!",
-    "image": "/pushUp.jpg",
-}, {
-    "title": "Pull-Up",
-    "desc": "Complete as many pull-ups reps as you can and climb the leaderboard!",
-    "image": "/pullUp.jpg",
-}, {
-    "title": "Bench press",
-    "desc": "Complete as many benchpresses as you can and climb the leaderboard!",
-    "image": "/benchPress.jpg",
-}]
-
-const courses = [{
-    "title": "Functional training",
-    "desc": "Enroll in the functional training class. All needed equipment is provided to you.",
-    "image": "/functional.jpg",
-}, {
-    "title": "Zumba",
-    "desc": "Enroll in the zumba class. All needed equipment is provided upon subscription.",
-    "image": "/zumba.jpg",
-}, {
-    "title": "Pilates",
-    "desc": "Enroll in the pilates class. All needed equipment is provided upon subscription.",
-    "image": "/pilates.jpg",
-},]
-
 function Dashboard() {
     const classes = useStyles();
     const dialogRef = useRef({})
