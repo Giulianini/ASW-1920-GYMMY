@@ -3,7 +3,7 @@ import {Box, Fab, Grid, Slider, TextField, Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import {makeStyles} from "@material-ui/core/styles";
 import {DropzoneArea} from "material-ui-dropzone";
-import {userAxios} from "../../../Api";
+import {baseAxios} from "../../../Api";
 import {Add} from "@material-ui/icons";
 
 const useStyles = makeStyles({
@@ -36,6 +36,7 @@ function Challenges() {
     const classes = useStyles()
     const {enqueueSnackbar} = useSnackbar()
     const [values, setValues] = React.useState({
+        title: '',
         description: '',
         firstPlaceReward: 0,
         secondPlaceReward: 0,
@@ -51,10 +52,11 @@ function Challenges() {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (values.description && file[0]) {
-            userAxios.post("/challenges", values).then(() => {
+        if (values.description && values.title && file[0]) {
+            baseAxios.post("/challenges", values).then((res) => {
                 enqueueSnackbar("Success", {variant: "success"})
-            }).catch(() => {
+            }).catch((reason) => {
+                console.log(reason.response.data)
                 enqueueSnackbar("Error adding the challenge", {variant: "error"})
             })
         } else {
@@ -70,7 +72,7 @@ function Challenges() {
                     Insert challenge
                 </Typography>
             </Grid>
-            <Grid item container xs={11} direction={"column"} alignItems={"flex-start"}>
+            <Grid item container xs={10} direction={"column"} alignItems={"flex-start"}>
                 <Grid item>
                     <Typography className={classes.sliderTitle}>1° place points</Typography>
                 </Grid>
@@ -94,7 +96,7 @@ function Challenges() {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item container xs={11} direction={"column"} alignItems={"flex-start"}>
+            <Grid item container xs={10} direction={"column"} alignItems={"flex-start"}>
                 <Grid item>
                     <Typography className={classes.sliderTitle}>1° place points</Typography>
                 </Grid>
@@ -118,7 +120,7 @@ function Challenges() {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item container xs={11} direction={"column"} alignItems={"flex-start"}>
+            <Grid item container xs={10} direction={"column"} alignItems={"flex-start"}>
                 <Grid item>
                     <Typography className={classes.sliderTitle}>1° place points</Typography>
                 </Grid>
@@ -142,7 +144,18 @@ function Challenges() {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item xs={11} className={classes.gridItem}>
+            <Grid item xs={10} className={classes.gridItem}>
+                <TextField
+                    required
+                    fullWidth
+                    onChange={(event) => {
+                        handleChange("title", event.target.value)
+                    }}
+                    id="outlined-search"
+                    label="Challenge title"
+                    variant="standard"/>
+            </Grid>
+            <Grid item xs={10} className={classes.gridItem}>
                 <TextField
                     required
                     fullWidth
@@ -150,10 +163,10 @@ function Challenges() {
                         handleChange("description", event.target.value)
                     }}
                     id="outlined-search"
-                    label="Challenge name"
+                    label="Challenge description"
                     variant="standard"/>
             </Grid>
-            <Grid item xs={11} className={classes.gridItem}>
+            <Grid item xs={10} className={classes.gridItem}>
                 <Box className={classes.uploadZone}>
                     <Typography variant={"h6"} className={classes.sliderTitle}>Upload image</Typography>
                     <DropzoneArea onChange={(files) => setFile(files)}/>
