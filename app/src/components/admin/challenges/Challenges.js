@@ -42,7 +42,7 @@ function Challenges() {
         thirdPlaceReward: 0,
     })
     const [file, setFile] = useState([])
-    
+
     const handleChange = (prop, value) => {
         setValues({
             ...values,
@@ -70,64 +70,76 @@ function Challenges() {
                     Insert challenge
                 </Typography>
             </Grid>
-            <Grid item container xs={11} alignItems={"center"}>
-                <Typography className={classes.sliderTitle}>1° place points</Typography>
-                <Grid item xs={10} className={classes.gridItem}>
-                    <Slider
-                        defaultValue={30}
-                        valueLabelDisplay="auto"
-                        step={10}
-                        marks
-                        min={0}
-                        max={100}
-                        value={values.firstPlaceReward}
-                        onChange={(event, value) => {
-                            handleChange("firstPlaceReward", value)
-                        }}
-                    />
+            <Grid item container xs={11} direction={"column"} alignItems={"flex-start"}>
+                <Grid item>
+                    <Typography className={classes.sliderTitle}>1° place points</Typography>
                 </Grid>
-                <Grid item xs={2} className={classes.gridItem}>
-                    <Typography className={classes.sliderText}>{values.firstPlaceReward} pt</Typography>
-                </Grid>
-            </Grid>
-            <Grid item container xs={11} alignItems={"center"}>
-                <Typography className={classes.sliderTitle}>2° place points</Typography>
-                <Grid item xs={10} className={classes.gridItem}>
-                    <Slider
-                        defaultValue={30}
-                        valueLabelDisplay="auto"
-                        step={10}
-                        marks
-                        min={0}
-                        max={100}
-                        value={values.secondPlaceReward}
-                        onChange={(event, value) => {
-                            handleChange("secondPlaceReward", value)
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={2} className={classes.gridItem}>
-                    <Typography className={classes.sliderText}>{values.secondPlaceReward} pt</Typography>
+                <Grid container item alignItems={"center"}>
+                    <Grid item xs={11} className={classes.gridItem}>
+                        <Slider
+                            defaultValue={30}
+                            valueLabelDisplay="auto"
+                            step={10}
+                            marks
+                            min={0}
+                            max={100}
+                            value={values.firstPlaceReward}
+                            onChange={(event, value) => {
+                                handleChange("firstPlaceReward", value)
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={1} className={classes.gridItem}>
+                        <Typography className={classes.sliderText}>{values.firstPlaceReward} pt</Typography>
+                    </Grid>
                 </Grid>
             </Grid>
-            <Grid item container xs={11} alignItems={"center"}>
-                <Typography className={classes.sliderTitle}>3° place points</Typography>
-                <Grid item xs={10} className={classes.gridItem}>
-                    <Slider
-                        defaultValue={30}
-                        valueLabelDisplay="auto"
-                        step={10}
-                        marks
-                        min={0}
-                        max={100}
-                        value={values.thirdPlaceReward}
-                        onChange={(event, value) => {
-                            handleChange("thirdPlaceReward", value)
-                        }}
-                    />
+            <Grid item container xs={11} direction={"column"} alignItems={"flex-start"}>
+                <Grid item>
+                    <Typography className={classes.sliderTitle}>1° place points</Typography>
                 </Grid>
-                <Grid item xs={2} className={classes.gridItem}>
-                    <Typography className={classes.sliderText}>{values.thirdPlaceReward} pt</Typography>
+                <Grid container item alignItems={"center"}>
+                    <Grid item xs={11} className={classes.gridItem}>
+                        <Slider
+                            defaultValue={30}
+                            valueLabelDisplay="auto"
+                            step={10}
+                            marks
+                            min={0}
+                            max={100}
+                            value={values.secondPlaceReward}
+                            onChange={(event, value) => {
+                                handleChange("secondPlaceReward", value)
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={1} className={classes.gridItem}>
+                        <Typography className={classes.sliderText}>{values.secondPlaceReward} pt</Typography>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid item container xs={11} direction={"column"} alignItems={"flex-start"}>
+                <Grid item>
+                    <Typography className={classes.sliderTitle}>1° place points</Typography>
+                </Grid>
+                <Grid container item alignItems={"center"}>
+                    <Grid item xs={11} className={classes.gridItem}>
+                        <Slider
+                            defaultValue={30}
+                            valueLabelDisplay="auto"
+                            step={10}
+                            marks
+                            min={0}
+                            max={100}
+                            value={values.thirdPlaceReward}
+                            onChange={(event, value) => {
+                                handleChange("thirdPlaceReward", value)
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={1} className={classes.gridItem}>
+                        <Typography className={classes.sliderText}>{values.thirdPlaceReward} pt</Typography>
+                    </Grid>
                 </Grid>
             </Grid>
             <Grid item xs={11} className={classes.gridItem}>
