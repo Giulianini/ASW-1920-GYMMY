@@ -20,6 +20,18 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Course(props) {
+
+    function arrayBufferToBase64(buffer) {
+        var binary = '';
+        var bytes = [].slice.call(new Uint8Array(buffer));
+        bytes.forEach((b) => binary += String.fromCharCode(b));
+        return window.btoa(binary);
+    }
+
+    function retrieveImage() {
+        return `data:${props.item.image.contentType};base64,${arrayBufferToBase64(props.item.image.data.data)}`
+    }
+
     const classes = useStyles()
     return (
         <Grid item xs={12} lg={6}>
@@ -27,7 +39,7 @@ function Course(props) {
                 <CardActionArea>
                     <CardMedia
                         className={classes.mediaPersonal}
-                        image={props.item.image}
+                        image={retrieveImage()}
                         title={props.item.title}
                     />
                     <CardContent>

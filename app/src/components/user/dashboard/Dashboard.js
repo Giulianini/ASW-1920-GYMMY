@@ -11,7 +11,7 @@ import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import Course from "./Course";
 import Challenge from "./Challenge";
 import CustomStepper from "./CustomStepper"
-import {userAxios} from "../../../Api";
+import {baseAxios, userAxios} from "../../../Api";
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
@@ -94,12 +94,7 @@ function Dashboard() {
         "participants": "",
         "expRewards": ""
     })
-    const [courseInfo, setCourseInfo] = React.useState({
-        "title": "",
-        "description": "",
-        "image": "",
-        "participants": ""
-    })
+    const [courseInfo, setCourseInfo] = React.useState([])
 
     useEffect(() => {
         fetchUser()
@@ -109,7 +104,7 @@ function Dashboard() {
 
     function fetchUser() {
         let username = localStorage.getItem("username")
-        userAxios.get("statistics").then(res => {
+        baseAxios.get("statistics").then(res => {
             setUserInfo({...res.data})
             console.log(userInfo.experiencePoints)
         }).catch(reason => {
@@ -118,14 +113,14 @@ function Dashboard() {
     }
 
     function fetchCourses() {
-        userAxios.get("courses").then(res => {
-            setCourseInfo({...res.data})
+        baseAxios.get("courses").then(res => {
+            setCourseInfo(res.data)
         }).catch(() => {
         })
     }
 
     function fetchChallenges() {
-        userAxios.get("challenges").then(res => {
+        baseAxios.get("challenges").then(res => {
             setChallengeInfo({...res.data})
         }).catch(() => {
         })
@@ -184,7 +179,7 @@ function Dashboard() {
 
                     <Grid item container direction={"column"} alignItems={"center"} justify={"flex-start"}
                           className={classes.scrollablePane}>
-                        {courses.map((item, i) => <Course key={i} item={item}/>)}
+                        {courseInfo.map((item, i) => <Course key={i} item={item}/>)}
                     </Grid>
 
                 </Grid>
