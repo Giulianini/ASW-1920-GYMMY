@@ -3,6 +3,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import {Button, Card, CardActionArea, CardActions, Grid, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import CardContent from "@material-ui/core/CardContent";
+import {baseAxios} from "../../../Api";
 
 const useStyles = makeStyles(theme => ({
     mediaPersonal: {
@@ -20,6 +21,29 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Course(props) {
+
+    const [enrolled, setEnrolled] = React.useState(props.item.participants.includes(localStorage.getItem(("username"))))
+
+    function arrayBufferToBase64(buffer) {
+        var binary = '';
+        var bytes = [].slice.call(new Uint8Array(buffer));
+        bytes.forEach((b) => binary += String.fromCharCode(b));
+        return window.btoa(binary);
+    }
+
+    function retrieveImage() {
+        return `data:${props.item.image.contentType};base64,${arrayBufferToBase64(props.item.image.data.data)}`
+    }
+
+    function enrollInCourse() {
+        baseAxios.patch("courses/" + props.item._id, {
+            username: localStorage.getItem("username"),
+            command: "enroll"
+        }).then(res => {
+            setEnrolled(true)
+        })
+    }
+
     const classes = useStyles()
     return (
         <Grid item xs={12} lg={6}>
@@ -27,7 +51,7 @@ function Course(props) {
                 <CardActionArea>
                     <CardMedia
                         className={classes.mediaPersonal}
-                        image={props.item.image}
+                        image={retrieveImage()}
                         title={props.item.title}
                     />
                     <CardContent>
@@ -40,8 +64,8 @@ function Course(props) {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Button size="small" color="primary">
-                        Enroll
+                    <Button size="small" color="primary" onClick={enrollInCourse} disabled={enrolled}>
+                        {enrolled ? "Enrolled!" : "Enroll"}
                     </Button>
                 </CardActions>
                 <div className={classes.pushCardSize}/>
