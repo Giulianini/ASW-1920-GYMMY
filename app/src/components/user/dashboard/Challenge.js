@@ -23,6 +23,8 @@ const useStyles = makeStyles(theme => ({
 
 function Challenge(props) {
 
+    const [enrolled, setEnrolled] = React.useState(props.item.participants.includes(localStorage.getItem(("username"))))
+
     function arrayBufferToBase64(buffer) {
         var binary = '';
         var bytes = [].slice.call(new Uint8Array(buffer));
@@ -35,9 +37,11 @@ function Challenge(props) {
     }
 
     function enrollInChallenge() {
-        baseAxios.patch("challenge" + props.item._id, {
+        baseAxios.patch("challenges/" + props.item._id, {
             username: localStorage.getItem("username"),
             command: "enroll"
+        }).then(res => {
+            setEnrolled(true)
         })
     }
 
@@ -64,8 +68,8 @@ function Challenge(props) {
                     <Button size="small" color="primary">
                         Accept challenge
                     </Button>
-                    <Button size="small" color="primary">
-                        Reward: {props.item.firstPlace}
+                    <Button size="small" color="primary" onClick={enrollInChallenge} disabled={enrolled}>
+                        {enrolled ? "Enrolled!" : "Enroll"}
                     </Button>
                 </CardActions>
                 <div className={classes.pushCardSize}/>
