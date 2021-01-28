@@ -56,7 +56,6 @@ function CloseChallengeTab() {
     }
 
     const handleSubmit = (e) => {
-        console.log(awards)
         if (awards.firstPlace && awards.secondPlace && awards.thirdPlace && selectedChallenge) {
             baseAxios.delete("/challenges/" + selectedChallenge._id, {
                 data: awards
@@ -87,7 +86,6 @@ function CloseChallengeTab() {
                             options={challenges}
                             onChange={((event, value) => {
                                 setSelectedChallenge(value)
-                                console.log(value)
                             })}
                             getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
@@ -106,7 +104,8 @@ function CloseChallengeTab() {
                     <Grid item className={classes.gridItem}>
                         <Autocomplete
                             disabled={!selectedChallenge}
-                            options={selectedChallenge ? selectedChallenge.participants : []}
+                            options={selectedChallenge ? selectedChallenge.participants.filter(p =>
+                                p !== awards.secondPlace && p !== awards.thirdPlace) : []}
                             onChange={((_, value) => {
                                 handleAwardChange("firstPlace", value)
                             })}
@@ -127,7 +126,8 @@ function CloseChallengeTab() {
                     <Grid item className={classes.gridItem}>
                         <Autocomplete
                             disabled={!selectedChallenge}
-                            options={selectedChallenge ? selectedChallenge.participants : []}
+                            options={selectedChallenge ? selectedChallenge.participants.filter(p =>
+                                p !== awards.firstPlace && p !== awards.thirdPlace) : []}
                             onChange={((_, value) => {
                                 handleAwardChange("secondPlace", value)
                             })}
@@ -148,7 +148,8 @@ function CloseChallengeTab() {
                     <Grid item className={classes.gridItem}>
                         <Autocomplete
                             disabled={!selectedChallenge}
-                            options={selectedChallenge ? selectedChallenge.participants : []}
+                            options={selectedChallenge ? selectedChallenge.participants.filter(p =>
+                                p !== awards.firstPlace && p !== awards.secondPlace) : []}
                             onChange={((_, value) => {
                                 handleAwardChange("thirdPlace", value)
                             })}
