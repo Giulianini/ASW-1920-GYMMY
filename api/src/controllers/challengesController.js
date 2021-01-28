@@ -11,17 +11,19 @@ exports.getChallenges = async function (req, res) {
 }
 
 exports.createChallenge = async function (req, res) {
+    const title = req.body.title
     const description = req.body.description
     const firstPlaceReward = req.body.firstPlaceReward
     const secondPlaceReward = req.body.secondPlaceReward
     const thirdPlaceReward = req.body.thirdPlaceReward
 
-    if (!(description && firstPlaceReward && secondPlaceReward && thirdPlaceReward)) {
-        return responses.badRequest(res)('Specify challenge description and rewards')
+    if (!(title && description && firstPlaceReward && secondPlaceReward && thirdPlaceReward)) {
+        return responses.badRequest(res)('Specify challenge title, description and rewards')
     }
 
     try {
         const challenge = new Challenge({
+            title: title,
             description: description,
             expRewards: {
                 firstPlace: firstPlaceReward,

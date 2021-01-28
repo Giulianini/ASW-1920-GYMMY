@@ -6,15 +6,15 @@ const User = require('../models/User')
 const Statistics = require('../models/Statistics')
 
 async function getUserId(username) {
-    return User.findOne({ username: username }).map(doc => doc._id).exec()
+    return User.findOne({username: username}).map(doc => doc._id).exec()
 }
 
-exports.getAllUsers = async function(req, res) {
+exports.getAllUsers = async function (req, res) {
     try {
-        const users = await User.find().select('-password -_id -__v').exec();
+        const users = await User.find().select('-password -__v').exec();
         res.status(200).json(users)
     } catch (err) {
-        res.status(500).json({ message: err })
+        res.status(500).json({message: err})
     }
 }
 
@@ -26,7 +26,7 @@ exports.createUser = async function (req, res) {
     const password = req.body.password
     const userRole = "user"
 
-    const usernameExists = await User.exists({ username: username })
+    const usernameExists = await User.exists({username: username})
     if (usernameExists) {
         responses.conflict(res)
     } else {
@@ -62,12 +62,12 @@ exports.createUser = async function (req, res) {
 }
 
 async function findUser(username) {
-    return User.findOne({ username: username })
+    return User.findOne({username: username})
         .select('-_id')
         .exec()
 }
 
-exports.getUser = async function(req, res) {
+exports.getUser = async function (req, res) {
     const foundUser = await findUser(req.params.username)
     if (foundUser) {
         responses.json(res)(foundUser)
@@ -76,22 +76,22 @@ exports.getUser = async function(req, res) {
     }
 }
 
-exports.updateMeasures = async function(req, res) {
+exports.updateMeasures = async function (req, res) {
     const username = req.params.username
     const age = req.body.age
     const height = req.body.height
     const weight = req.body.weight
 
-    const usernameExists = await User.exists({ username: username })
+    const usernameExists = await User.exists({username: username})
     if (!usernameExists) {
         responses.notFound(res)('User not found')
     } else {
-        await User.updateOne({ username: username}, { age: age, height: height, weight: weight}).exec()
+        await User.updateOne({username: username}, {age: age, height: height, weight: weight}).exec()
         responses.noContent(res)
     }
 }
 
-exports.removeUser = async function(req, res) { //TODO remove user statistics?
+exports.removeUser = async function (req, res) { //TODO remove user statistics?
     const username = req.params.username
     const foundUser = await findUser(username)
     if (foundUser) {
@@ -105,15 +105,15 @@ exports.removeUser = async function(req, res) { //TODO remove user statistics?
     }
 }
 
-exports.getUserObjective = async function(req, res) {
+exports.getUserObjective = async function (req, res) {
     const username = req.params.username
 
-    const userExists = await User.exists({ username: username })
+    const userExists = await User.exists({username: username})
     if (!userExists) {
         return responses.notFound(res)('User not found')
     }
 
-    const foundUser = await User.findOne({ username: username, objective: { $exists: true, $ne: null }}).exec()
+    const foundUser = await User.findOne({username: username, objective: {$exists: true, $ne: null}}).exec()
     if (!foundUser) {
         return responses.notFound(res)('User not found')
     }
@@ -123,7 +123,7 @@ exports.getUserObjective = async function(req, res) {
     responses.json(res)(objective)
 }
 
-exports.createUserObjective = async function(req, res) {
+exports.createUserObjective = async function (req, res) {
     const username = req.params.username
     const description = req.body.description
     const mainGoal = req.body.mainGoal
@@ -132,12 +132,12 @@ exports.createUserObjective = async function(req, res) {
     const targetCalories = req.body.targetCalories
     const targetMinWorkouts = req.body.targetMinWorkouts
 
-    const userExists = await User.exists({ username: username })
+    const userExists = await User.exists({username: username})
     if (!userExists) {
         return responses.notFound(res)('User not found')
     }
 
-    const userObjectiveExists = await User.exists({ username: username, objective: { $exists: true, $ne: null }})
+    const userObjectiveExists = await User.exists({username: username, objective: {$exists: true, $ne: null}})
     if (userObjectiveExists) {
         return responses.conflict(res)
     }
@@ -151,7 +151,7 @@ exports.createUserObjective = async function(req, res) {
             targetCalories: targetCalories,
             targetMinWorkouts: targetMinWorkouts,
         }
-        const user = await User.findOne({ username: username }).exec()
+        const user = await User.findOne({username: username}).exec()
         user.objective = objective
         await user.save()
         responses.created(res)(objective)
@@ -160,7 +160,7 @@ exports.createUserObjective = async function(req, res) {
     }
 }
 
-exports.updateUserObjective = async function(req, res) {
+exports.updateUserObjective = async function (req, res) {
     const username = req.params.username
     // const objective = req.body.objective
     const description = req.body.description
@@ -170,12 +170,12 @@ exports.updateUserObjective = async function(req, res) {
     const targetCalories = req.body.targetCalories
     const targetMinWorkouts = req.body.targetMinWorkouts
 
-    const userExists = await User.exists({ username: username })
+    const userExists = await User.exists({username: username})
     if (!userExists) {
         return responses.notFound(res)('User not found')
     }
 
-    const userObjectiveExists = await User.exists({ username: username, objective: { $exists: true, $ne: null }})
+    const userObjectiveExists = await User.exists({username: username, objective: {$exists: true, $ne: null}})
     if (!userObjectiveExists) {
         return responses.notFound(res)('User objective not found')
     }
@@ -189,7 +189,7 @@ exports.updateUserObjective = async function(req, res) {
             targetCalories: targetCalories,
             targetMinWorkouts: targetMinWorkouts,
         }
-        await User.updateOne({ username: username }, { objective: objective }).exec()
+        await User.updateOne({username: username}, {objective: objective}).exec()
         responses.noContent(res)
     } catch (err) {
         responses.error(res)(err)
