@@ -50,6 +50,19 @@ function Challenges() {
             [prop]: value,
         })
     }
+
+    const resetForm = () => {
+        console.log("reset")
+        setValues({
+            title: '',
+            description: '',
+            firstPlaceReward: 0,
+            secondPlaceReward: 0,
+            thirdPlaceReward: 0,
+        })
+        setFile([])
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
         if (values.description && values.title && file[0]) {
@@ -62,8 +75,9 @@ function Challenges() {
                 }
                 let fd = new FormData()
                 fd.append("image", file[0])
-                baseAxios.put(`/challenges/${challengeId}/image`, fd, config).then((res) => {
+                baseAxios.put(`/challenges/${challengeId}/image`, fd, config).then(() => {
                     enqueueSnackbar("Challenge successfully added", {variant: "success"})
+                    resetForm()
                 }).catch((reason => {
                     console.log(reason.response.data)
                     enqueueSnackbar("Error adding the challenge image", {variant: "error"})
@@ -165,6 +179,7 @@ function Challenges() {
                         onChange={(event) => {
                             handleChange("title", event.target.value)
                         }}
+                        value={values.title}
                         id="outlined-search"
                         label="Challenge title"
                         variant="standard"/>
@@ -176,6 +191,7 @@ function Challenges() {
                         onChange={(event) => {
                             handleChange("description", event.target.value)
                         }}
+                        value={values.description}
                         id="outlined-search"
                         label="Challenge description"
                         variant="standard"/>

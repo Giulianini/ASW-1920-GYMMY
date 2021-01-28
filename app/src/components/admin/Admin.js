@@ -12,6 +12,7 @@ import Header from "../user/Header";
 import Drawer from "../user/Drawer";
 import Cards from "./cards/Cards";
 import Challenges from "./challenges/Challenges";
+import Courses from "./courses/Courses";
 
 function Admin(props) {
     const location = useLocation()
@@ -30,6 +31,7 @@ function Admin(props) {
                             <Route path={`/${routes.admin.routes.dashboard.value}`} children={<Dashboard/>}/>
                             <Route path={`/${routes.admin.routes.cards.value}`} children={<Cards/>}/>
                             <Route path={`/${routes.admin.routes.challenges.value}`} children={<Challenges/>}/>
+                            <Route path={`/${routes.admin.routes.courses.value}`} children={<Courses/>}/>
                             <Redirect from='*' to={`/${routes.admin.routes.dashboard.value}`}/>
                         </Switch>
                     </CSSTransition>

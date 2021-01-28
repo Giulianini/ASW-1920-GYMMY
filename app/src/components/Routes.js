@@ -18,7 +18,11 @@ const routes = {
             challenges: {
                 name: "Challenges",
                 value: `admin/challenges`
-            }
+            },
+            courses: {
+                name: "Courses",
+                value: `admin/courses`
+            },
         }
     },
     dashboard: {

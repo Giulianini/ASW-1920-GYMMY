@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {useHistory, useLocation} from "react-router-dom";
 import {setAppbarTitle} from "../../redux/ducks/user/user";
 import {BottomNavigation, BottomNavigationAction} from "@material-ui/core";
-import {Dashboard} from "@material-ui/icons";
+import {Dashboard, People, Receipt, SportsHandball} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
@@ -51,12 +51,17 @@ function BottomBar(props) {
             <BottomNavigationAction
                 label={props.tabs.admin.routes.cards.name}
                 value={props.tabs.admin.routes.cards.value}
-                icon={<Dashboard/>}
+                icon={<Receipt/>}
             />
             <BottomNavigationAction
                 label={props.tabs.admin.routes.challenges.name}
                 value={props.tabs.admin.routes.challenges.value}
-                icon={<Dashboard/>}
+                icon={<People/>}
+            />
+            <BottomNavigationAction
+                label={props.tabs.admin.routes.courses.name}
+                value={props.tabs.admin.routes.courses.value}
+                icon={<SportsHandball/>}
             />
         </BottomNavigation>
     );
