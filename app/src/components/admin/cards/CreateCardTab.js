@@ -42,62 +42,62 @@ function CreateCardTab(props) {
 
     return (
         <Grid container direction={"column"} justify={"flex-start"} alignItems={"center"} className={classes.grid}>
-            <Grid item xs={12} md={5} className={classes.userSelector}>
-                <Typography variant={"h5"} className={classes.title}>Select a user</Typography>
-                <Autocomplete
-                    options={users}
-                    onChange={((event, value) => {
-                        setSelectedUsername(value)
-                    })}
-                    getOptionLabel={(option) => option.username}
-                    // style={{width: 300}}
-                    renderInput={(params) =>
-                        <TextField {...params} label="Type a username..." variant="outlined"/>
-                    }
-                />
-            </Grid>
-            <Grid item xs={12} md={5} className={classes.userSelector}>
-                <Typography variant={"h5"} className={classes.title}>Select an exercise</Typography>
-                <Autocomplete
-                    options={exercises}
-                    onChange={((event, value) => {
-                        setSelectedExercise(value)
-                    })}
-                    getOptionLabel={(option) => option.name}
-                    // style={{width: 300}}
-                    renderInput={(params) =>
-                        <TextField {...params} label="Select an exercise..." variant="outlined"/>
-                    }
-                />
-            </Grid>
-            <Grid container item xs={12} md={5} direction={"row"} alignItems={"center"} justify={"center"}
-                  className={classes.exerciseParams}>
-                <Grid item md={4} className={classes.exerciseParam}>
-                    <TextField
-                        id="standard-number"
-                        label="Series"
-                        type="number"
-                        variant="outlined"
-                        fullWidth
+            <Grid container item xs={12} md={5}>
+                <Grid item className={classes.userSelector}>
+                    <Typography variant={"h5"} className={classes.title}>Select a user</Typography>
+                    <Autocomplete
+                        options={users}
+                        onChange={((event, value) => {
+                            setSelectedUsername(value)
+                        })}
+                        getOptionLabel={(option) => option.username}
+                        renderInput={(params) =>
+                            <TextField {...params} label="Type a username..." variant="outlined"/>
+                        }
                     />
                 </Grid>
-                <Grid item md={4} className={classes.exerciseParam}>
-                    <TextField
-                        id="standard-number"
-                        label="Reps"
-                        type="number"
-                        variant="outlined"
-                        fullWidth
+                <Grid item className={classes.userSelector}>
+                    <Typography variant={"h5"} className={classes.title}>Select an exercise</Typography>
+                    <Autocomplete
+                        options={exercises}
+                        onChange={((event, value) => {
+                            setSelectedExercise(value)
+                        })}
+                        getOptionLabel={(option) => option.name}
+                        renderInput={(params) =>
+                            <TextField {...params} label="Select an exercise..." variant="outlined"/>
+                        }
                     />
                 </Grid>
-                <Grid item md={4} className={classes.exerciseParam}>
-                    <TextField
-                        id="standard-number"
-                        label="Rest (min)"
-                        type="number"
-                        variant="outlined"
-                        fullWidth
-                    />
+                <Grid container item direction={"row"} alignItems={"center"} justify={"center"}
+                      className={classes.exerciseParams}>
+                    <Grid item md={4} className={classes.exerciseParam}>
+                        <TextField
+                            id="standard-number"
+                            label="Series"
+                            type="number"
+                            variant="outlined"
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item md={4} className={classes.exerciseParam}>
+                        <TextField
+                            id="standard-number"
+                            label="Reps"
+                            type="number"
+                            variant="outlined"
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item md={4} className={classes.exerciseParam}>
+                        <TextField
+                            id="standard-number"
+                            label="Rest (min)"
+                            type="number"
+                            variant="outlined"
+                            fullWidth
+                        />
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>

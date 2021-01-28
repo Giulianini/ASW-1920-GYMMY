@@ -54,7 +54,20 @@ function Challenges() {
         e.preventDefault()
         if (values.description && values.title && file[0]) {
             baseAxios.post("/challenges", values).then((res) => {
-                enqueueSnackbar("Success", {variant: "success"})
+                const challengeId = res.data._id
+                const config = {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                }
+                let fd = new FormData()
+                fd.append("image", file[0])
+                baseAxios.put(`/challenges/${challengeId}/image`, fd, config).then((res) => {
+                    enqueueSnackbar("Challenge successfully added", {variant: "success"})
+                }).catch((reason => {
+                    console.log(reason.response.data)
+                    enqueueSnackbar("Error adding the challenge image", {variant: "error"})
+                }))
             }).catch((reason) => {
                 console.log(reason.response.data)
                 enqueueSnackbar("Error adding the challenge", {variant: "error"})

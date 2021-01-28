@@ -2,13 +2,13 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Grid, Typography} from "@material-ui/core";
 import {DataGrid} from "@material-ui/data-grid";
 import {makeStyles} from "@material-ui/core/styles";
-import {socket, baseAxios} from "../../../Api";
+import {baseAxios, socket} from "../../../Api";
 
 const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'location', headerName: 'Location', width: 130},
-    { field: 'available', headerName: 'Available', width: 130, type: 'number'},
-    { field: 'capacity', headerName: 'Capacity', width: 130, type: 'number'},
+    {field: 'id', headerName: 'ID', width: 70},
+    {field: 'location', headerName: 'Location', width: 130},
+    {field: 'available', headerName: 'Available', width: 130, type: 'number'},
+    {field: 'capacity', headerName: 'Capacity', width: 130, type: 'number'},
 ]
 
 const useStyles = makeStyles((theme) => ({
@@ -56,7 +56,6 @@ function LocationsTab(props) {
                         capacity: obj.location.defaultCapacity
                     }
                 })
-                console.log(rows)
                 setLocations(rows)
             }).catch(reason => {
             })
