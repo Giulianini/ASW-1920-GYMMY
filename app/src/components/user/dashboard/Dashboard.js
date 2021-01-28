@@ -87,13 +87,7 @@ function Dashboard() {
         "username": "",
         "experiencePoints": ""
     })
-    const [challengeInfo, setChallengeInfo] = React.useState({
-        "title": "",
-        "image": undefined,
-        "description": "",
-        "participants": "",
-        "expRewards": ""
-    })
+    const [challengeInfo, setChallengeInfo] = React.useState([])
     const [courseInfo, setCourseInfo] = React.useState([])
 
     useEffect(() => {
@@ -121,7 +115,7 @@ function Dashboard() {
 
     function fetchChallenges() {
         baseAxios.get("challenges").then(res => {
-            setChallengeInfo({...res.data})
+            setChallengeInfo(res.data)
         }).catch(() => {
         })
     }
@@ -168,7 +162,7 @@ function Dashboard() {
 
                     <Grid item container direction={"column"} alignItems={"center"} justify={"flex-start"}
                           className={classes.scrollablePane}>
-                        {challenges.map((item, i) => <Challenge key={i} item={item}/>)}
+                        {challengeInfo.map((item, i) => <Challenge key={i} item={item}/>)}
                     </Grid>
 
                     <Grid item className={classes.vSpace}>
