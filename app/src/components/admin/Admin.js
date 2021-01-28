@@ -11,10 +11,10 @@ import BottomBar from "./BottomBar";
 import Header from "../user/Header";
 import Drawer from "../user/Drawer";
 import Cards from "./cards/Cards";
-import Challenges from "./challenges/Challenges";
 import Courses from "./courses/Courses";
+import Challenges from "./challenges/Challenges";
 
-function Admin(props) {
+function Admin() {
     const location = useLocation()
     const [drawerIsOpen, setDrawerIsOpen] = useState(false)
     const darkMode = useSelector(state => state.userRedux.darkMode)
