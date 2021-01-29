@@ -36,6 +36,9 @@ function Challenges() {
             case 1:
                 enqueueSnackbar(closeCourseTabNotification, {variant: "info"})
                 break
+            default:
+                enqueueSnackbar(closeCourseTabNotification, {variant: "info"})
+                break
         }
     }
 
