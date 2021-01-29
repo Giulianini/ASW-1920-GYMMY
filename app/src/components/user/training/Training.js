@@ -4,9 +4,9 @@ import {makeStyles, ThemeProvider} from "@material-ui/core/styles";
 import {useSelector} from "react-redux";
 import {trainDarkTheme, trainLightTheme} from "./trainTheme"
 import {socket, userAxios} from "../../../Api";
-import ExerciseCard from "./Exercise/ExerciseCard";
+import ExerciseCard from "./exercise/ExerciseCard";
 import TrainingBar from "./header/TrainingBar";
-import ExerciseDialog from "./Exercise/ExerciseDialog";
+import ExerciseDialog from "./exercise/ExerciseDialog";
 import ChooseExerciseBackdrop from "./utils/ChooseExerciseBackdrop";
 import FinishedBackdrop from "./utils/FinishedBackdrop";
 import LoadingBackdrop from "./utils/LoadingBackdrop";
@@ -89,7 +89,6 @@ function Training() {
             exerciseIndex: index,
             command: "startExercise"
         }).then(() => {
-            setCurrentExercise(index)
             fetchExecutionStatus()
         }).catch((reason) => {
             if (reason.response.status === 404) {
