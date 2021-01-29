@@ -51,7 +51,7 @@ function ExerciseCard(props) {
     }
 
     function retrieveImage() {
-        return `data:${props.exercise.exercise.image.contentType};base64,${arrayBufferToBase64(props.exercise.exercise.image.data.data)}`
+        return `data:${props.exercise && props.exercise.exercise.image.contentType};base64,${arrayBufferToBase64(props.exercise && props.exercise.exercise.image.data.data)}`
     }
 
     return (
