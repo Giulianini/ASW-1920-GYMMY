@@ -42,6 +42,17 @@ function ExerciseCard(props) {
             props.handleStartExercise(props.index)
         }
     }
+
+    function arrayBufferToBase64(buffer) {
+        var binary = '';
+        var bytes = [].slice.call(new Uint8Array(buffer));
+        bytes.forEach((b) => binary += String.fromCharCode(b));
+        return window.btoa(binary);
+    }
+
+    function retrieveImage() {
+        return `data:${props.exercise.exercise.image.contentType};base64,${arrayBufferToBase64(props.exercise.exercise.image.data.data)}`
+    }
     
     return (
         <Grid item xs={11} lg={6}>
@@ -49,7 +60,7 @@ function ExerciseCard(props) {
                 <CardActionArea onClick={() => props.handleExerciseOpen(props.exercise)}>
                     <CardMedia
                         className={classes.cardMedia}
-                        image={"/pushUp.jpg"}
+                        image={'/pushUp.jpg'} //retrieveImage()
                         title={props.exercise.exercise.name}
                     />
                     <CardContent>
