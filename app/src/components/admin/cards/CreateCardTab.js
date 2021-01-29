@@ -151,7 +151,7 @@ function CreateCardTab(props) {
                         })}
                         getOptionLabel={(option) => option.username}
                         renderInput={(params) =>
-                            <TextField {...params} label="Type a username..." variant="standard"/>
+                            <TextField {...params} label="Select a username..." variant="standard"/>
                         }
                         value={selectedUsername}
                     />
@@ -308,13 +308,16 @@ function CreateCardTab(props) {
                 <Grid item className={classes.dataGrid}>
                     <DataGrid rows={cardEntries} columns={columns}/>
                 </Grid>
-                <Grid item container justify={"center"} xs={12} className={classes.gridItem}>
+                <Grid item container justify={"center"} xs={12} className={classes.gridItem} component={"form"}
+                      onSubmit={handleCardSubmit}>
                     <Fab color={"primary"}
                          onSubmit={handleCardSubmit}
                          className={classes.submitButton}
                          type={"submit"}
                          size={"large"}
-                         variant={"round"}>
+                         variant={"round"}
+                         disabled={selectedTitle === '' || selectedUsername === null || workoutDuration === '' || cardEntries.length === 0}
+                    >
                         <Done/>
                     </Fab>
                 </Grid>

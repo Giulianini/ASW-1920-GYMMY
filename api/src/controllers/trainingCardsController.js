@@ -1,4 +1,5 @@
 const responses = require('./util/responses')
+const params = require('../routes/params')
 
 const User = require('../models/User')
 const Exercise = require('../models/Exercise')
@@ -141,6 +142,28 @@ exports.getUserCard = async function (req, res) {
     }
 
     responses.json(res)(userCards[cardIndex])
+}
+
+exports.removeUserCard = async function (req, res) {
+    const username = req.params[params.USERNAME_PARAM]
+    const cardId = req.params[params.CARD_ID_PARAM]
+
+    const usernameExists = await User.exists({username: username})
+    if (!usernameExists) {
+        return responses.notFound(res)('User not found')
+    }
+
+    const foundCard = await TrainingCard.findById(cardId).exec()
+    if (!foundCard) {
+        return responses.notFound(res)('Card not found')
+    }
+
+    try {
+        await TrainingCard.deleteOne({_id: cardId}).exec()
+        responses.ok(res)
+    } catch (err) {
+        responses.error(res)(err)
+    }
 }
 
 exports.getUserCards = async function (req, res) {

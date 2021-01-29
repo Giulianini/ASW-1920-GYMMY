@@ -19,6 +19,11 @@ router.get(`/:${params.CARD_INDEX_PARAM}`,
     trainingCardsController.getUserCard
 )
 
+router.delete(`/:${params.CARD_ID_PARAM}`,
+    auth.authorizeTrainer,
+    trainingCardsController.removeUserCard
+)
+
 router.post(`/`,
     auth.authorizeTrainer,
     trainingCardsController.createTrainingCard
