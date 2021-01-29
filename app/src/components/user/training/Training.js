@@ -4,9 +4,9 @@ import {makeStyles, ThemeProvider} from "@material-ui/core/styles";
 import {useSelector} from "react-redux";
 import {trainDarkTheme, trainLightTheme} from "./trainTheme"
 import {socket, userAxios} from "../../../Api";
-import ExerciseCard from "./Exercise/ExerciseCard";
+import ExerciseCard from "./exercise/ExerciseCard";
 import TrainingBar from "./header/TrainingBar";
-import ExerciseDialog from "./Exercise/ExerciseDialog";
+import ExerciseDialog from "./exercise/ExerciseDialog";
 import ChooseExerciseBackdrop from "./utils/ChooseExerciseBackdrop";
 import FinishedBackdrop from "./utils/FinishedBackdrop";
 import LoadingBackdrop from "./utils/LoadingBackdrop";
@@ -52,14 +52,16 @@ function Training() {
     const [completion, setCompletion] = useState(null)
     const [startTime, setStartTime] = useState(null)
     const [capacities, setCapacities] = useCapacities()
+    const fetchExecutionStatus = useExecutionStatus()
 
     // ----------- REF HANDLERS -------------
-    const handleExerciseOpen = (exercise) => {
-        try {
-            exerciseDialogRef.current.handleClickDialogOpen(exercise)
-        } catch (error) {
+    const
+        handleExerciseOpen = (exercise) => {
+            try {
+                exerciseDialogRef.current.handleClickDialogOpen(exercise)
+            } catch (error) {
+            }
         }
-    }
 
     // ----------- HANDLERS: CARD/START EX/COMPLETE EX -------------
     const handleStartCard = () => {
@@ -87,7 +89,7 @@ function Training() {
             exerciseIndex: index,
             command: "startExercise"
         }).then(() => {
-            setCurrentExercise(index)
+            fetchExecutionStatus()
         }).catch((reason) => {
             if (reason.response.status === 404) {
                 console.log("No workouts in progress")
@@ -122,26 +124,6 @@ function Training() {
             }
         })
     }
-
-    // ----------- FETCHING DATA -------------
-    const fetchExecutionStatus = useCallback(() => {
-        userAxios.get("execution").then(res => {
-            setCurrentExercise(res.data.currentExercise)
-            setCompletion(res.data.completion)
-            setStartTime(res.data.startTime)
-            setStarted(true)
-            setFinished(false)
-            setCapacities(res.data.completion.map(c => c.locationCapacity.capacity))
-        }).catch(() => {
-            setStarted(false)
-            setBackDrop(true)
-        })
-    }, [setCapacities])
-
-    useEffect(() => {
-        fetchExecutionStatus()
-    }, [fetchExecutionStatus, currentExercise])
-
 
     // #################### RENDER #####################
     if (loading) {
@@ -218,6 +200,28 @@ function Training() {
             }
         }, [])
         return [capacities, setCapacities]
+    }
+
+    function useExecutionStatus() {
+        // ----------- FETCHING DATA -------------
+        const fetchExecutionStatus = useCallback(() => {
+            userAxios.get("execution").then(res => {
+                setCurrentExercise(res.data.currentExercise)
+                setCompletion(res.data.completion)
+                setStartTime(res.data.startTime)
+                setStarted(true)
+                setFinished(false)
+                setCapacities(res.data.completion.map(c => c.locationCapacity.capacity))
+            }).catch(() => {
+                setStarted(false)
+                setBackDrop(true)
+            })
+        }, [])
+
+        useEffect(() => {
+            fetchExecutionStatus()
+        }, [fetchExecutionStatus])
+        return fetchExecutionStatus
     }
 }
 

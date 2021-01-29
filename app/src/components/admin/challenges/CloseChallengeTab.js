@@ -41,25 +41,12 @@ function CloseChallengeTab() {
     const classes = useStyles()
     const {enqueueSnackbar} = useSnackbar()
     const [selectedChallenge, setSelectedChallenge] = useState(null)
-    const [challenges, setChallenges] = useState([])
+    const [challenges, fetchChallenges] = useChallenges()
     const [awards, setAwards] = useState({
         firstPlace: '',
         secondPlace: '',
         thirdPlace: ''
     })
-
-    const fetchChallenges = useCallback(() => {
-        baseAxios.get("challenges").then(res => {
-            setChallenges(res.data)
-        }).catch(reason => {
-            console.log(reason.response.data)
-            enqueueSnackbar("Cannot fetch challenges", {variant: "error"})
-        })
-    }, []);
-
-    useEffect(() => {
-        fetchChallenges()
-    }, [fetchChallenges])
 
     const handleAwardChange = (prop, value) => {
         setAwards({
@@ -122,7 +109,7 @@ function CloseChallengeTab() {
                             onChange={((_, value) => {
                                 handleAwardChange("firstPlace", value)
                             })}
-                            getOptionLabel={(option) => option}
+                            getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
                                 <TextField {...params} label="Select the winner..." variant="outlined"/>
                             }
@@ -144,7 +131,7 @@ function CloseChallengeTab() {
                             onChange={((_, value) => {
                                 handleAwardChange("secondPlace", value)
                             })}
-                            getOptionLabel={(option) => option}
+                            getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
                                 <TextField {...params}
                                            label="Select 2° place..." variant="outlined"/>
@@ -167,7 +154,7 @@ function CloseChallengeTab() {
                             onChange={((_, value) => {
                                 handleAwardChange("thirdPlace", value)
                             })}
-                            getOptionLabel={(option) => option}
+                            getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
                                 <TextField {...params} label="Select 3° place..." variant="outlined"/>
                             }
@@ -187,6 +174,22 @@ function CloseChallengeTab() {
             </Grid>
         </Grid>
     );
+
+    function useChallenges() {
+        const [challenges, setChallenges] = useState([])
+        const fetchChallenges = useCallback(() => {
+            baseAxios.get("challenges").then(res => {
+                setChallenges(res.data)
+            }).catch(reason => {
+                console.log(reason.response.data)
+                enqueueSnackbar("Cannot fetch challenges", {variant: "error"})
+            })
+        }, []);
+        useEffect(() => {
+            fetchChallenges()
+        }, [fetchChallenges])
+        return [challenges, fetchChallenges]
+    }
 }
 
 export default CloseChallengeTab;

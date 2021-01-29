@@ -108,7 +108,7 @@ function CreateChallengeTab() {
                         <Typography className={classes.sliderTitle}>1° place points</Typography>
                     </Grid>
                     <Grid container item alignItems={"center"}>
-                        <Grid item xs={11} className={classes.gridItem}>
+                        <Grid item xs={10} className={classes.gridItem}>
                             <Slider
                                 defaultValue={30}
                                 valueLabelDisplay="auto"
@@ -122,7 +122,7 @@ function CreateChallengeTab() {
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={1} className={classes.gridItem}>
+                        <Grid item xs={2} className={classes.gridItem}>
                             <Typography className={classes.sliderText}>{values.firstPlaceReward} pt</Typography>
                         </Grid>
                     </Grid>
@@ -132,7 +132,7 @@ function CreateChallengeTab() {
                         <Typography className={classes.sliderTitle}>2° place points</Typography>
                     </Grid>
                     <Grid container item alignItems={"center"}>
-                        <Grid item xs={11} className={classes.gridItem}>
+                        <Grid item xs={10} className={classes.gridItem}>
                             <Slider
                                 defaultValue={30}
                                 valueLabelDisplay="auto"
@@ -146,7 +146,7 @@ function CreateChallengeTab() {
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={1} className={classes.gridItem}>
+                        <Grid item xs={2} className={classes.gridItem}>
                             <Typography className={classes.sliderText}>{values.secondPlaceReward} pt</Typography>
                         </Grid>
                     </Grid>
@@ -156,7 +156,7 @@ function CreateChallengeTab() {
                         <Typography className={classes.sliderTitle}>3° place points</Typography>
                     </Grid>
                     <Grid container item alignItems={"center"}>
-                        <Grid item xs={11} className={classes.gridItem}>
+                        <Grid item xs={10} className={classes.gridItem}>
                             <Slider
                                 defaultValue={30}
                                 valueLabelDisplay="auto"
@@ -170,7 +170,7 @@ function CreateChallengeTab() {
                                 }}
                             />
                         </Grid>
-                        <Grid item xs={1} className={classes.gridItem}>
+                        <Grid item xs={2} className={classes.gridItem}>
                             <Typography className={classes.sliderText}>{values.thirdPlaceReward} pt</Typography>
                         </Grid>
                     </Grid>
