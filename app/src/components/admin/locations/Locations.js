@@ -150,7 +150,7 @@ function Locations() {
                                 marks
                                 min={0}
                                 max={20}
-                                value={values.secondPlaceReward}
+                                value={values.defaultCapacity}
                                 onChange={(event, value) => {
                                     handleChange("defaultCapacity", value)
                                 }}
