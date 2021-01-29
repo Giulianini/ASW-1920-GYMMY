@@ -3,6 +3,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import {Button, Card, CardActionArea, CardActions, Grid, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import CardContent from "@material-ui/core/CardContent";
+import {baseAxios} from "../../../Api";
 
 const useStyles = makeStyles(theme => ({
     mediaPersonal: {
@@ -20,7 +21,30 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-function Course(props) {
+function Challenge(props) {
+
+    const [accept, setAccepted] = React.useState(props.item.participants.includes(localStorage.getItem(("username"))))
+
+    function arrayBufferToBase64(buffer) {
+        var binary = '';
+        var bytes = [].slice.call(new Uint8Array(buffer));
+        bytes.forEach((b) => binary += String.fromCharCode(b));
+        return window.btoa(binary);
+    }
+
+    function retrieveImage() {
+        return `data:${props.item.image.contentType};base64,${arrayBufferToBase64(props.item.image.data.data)}`
+    }
+
+    function acceptChallenge() {
+        baseAxios.patch("challenges/" + props.item._id, {
+            username: localStorage.getItem("username"),
+            command: "enroll"
+        }).then(res => {
+            setAccepted(true)
+        })
+    }
+
     const classes = useStyles()
     return (
         <Grid item xs={12} lg={6}>
@@ -28,7 +52,7 @@ function Course(props) {
                 <CardActionArea>
                     <CardMedia
                         className={classes.mediaPersonal}
-                        image={props.item.image}
+                        image={retrieveImage()}
                         title={props.item.title}
                     />
                     <CardContent>
@@ -41,11 +65,8 @@ function Course(props) {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Button size="small" color="primary">
-                        Accept challenge
-                    </Button>
-                    <Button size="small" color="primary">
-                        Reward: {props.item.firstPlace}
+                    <Button size="small" color="primary" onClick={acceptChallenge} disabled={accept}>
+                        {accept ? "Accepted!" : "Accept"} ({props.item.firstPlace} points)
                     </Button>
                 </CardActions>
                 <div className={classes.pushCardSize}/>
@@ -54,4 +75,4 @@ function Course(props) {
     );
 }
 
-export default Course;
+export default Challenge;

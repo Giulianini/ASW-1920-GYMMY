@@ -11,7 +11,7 @@ import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import Course from "./Course";
 import Challenge from "./Challenge";
 import CustomStepper from "./CustomStepper"
-import {userAxios} from "../../../Api";
+import {baseAxios, userAxios} from "../../../Api";
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
@@ -51,35 +51,6 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-// PLACEHOLDERS, used to test UI, do not remove until fully populated DB
-const challenges = [{
-    "title": "Push-Up",
-    "desc": "Complete as many push-ups reps as you can and climb the leaderboard!",
-    "image": "/pushUp.jpg",
-}, {
-    "title": "Pull-Up",
-    "desc": "Complete as many pull-ups reps as you can and climb the leaderboard!",
-    "image": "/pullUp.jpg",
-}, {
-    "title": "Bench press",
-    "desc": "Complete as many benchpresses as you can and climb the leaderboard!",
-    "image": "/benchPress.jpg",
-}]
-
-const courses = [{
-    "title": "Functional training",
-    "desc": "Enroll in the functional training class. All needed equipment is provided to you.",
-    "image": "/functional.jpg",
-}, {
-    "title": "Zumba",
-    "desc": "Enroll in the zumba class. All needed equipment is provided upon subscription.",
-    "image": "/zumba.jpg",
-}, {
-    "title": "Pilates",
-    "desc": "Enroll in the pilates class. All needed equipment is provided upon subscription.",
-    "image": "/pilates.jpg",
-},]
-
 function Dashboard() {
     const classes = useStyles();
     const dialogRef = useRef({})
@@ -87,19 +58,8 @@ function Dashboard() {
         "username": "",
         "experiencePoints": ""
     })
-    const [challengeInfo, setChallengeInfo] = React.useState({
-        "title": "",
-        "image": undefined,
-        "description": "",
-        "participants": "",
-        "expRewards": ""
-    })
-    const [courseInfo, setCourseInfo] = React.useState({
-        "title": "",
-        "description": "",
-        "image": "",
-        "participants": ""
-    })
+    const [challengeInfo, setChallengeInfo] = React.useState([])
+    const [courseInfo, setCourseInfo] = React.useState([])
 
     useEffect(() => {
         fetchUser()
@@ -109,7 +69,7 @@ function Dashboard() {
 
     function fetchUser() {
         let username = localStorage.getItem("username")
-        userAxios.get("statistics").then(res => {
+        baseAxios.get("statistics").then(res => {
             setUserInfo({...res.data})
             console.log(userInfo.experiencePoints)
         }).catch(reason => {
@@ -118,15 +78,15 @@ function Dashboard() {
     }
 
     function fetchCourses() {
-        userAxios.get("courses").then(res => {
-            setCourseInfo({...res.data})
+        baseAxios.get("courses").then(res => {
+            setCourseInfo(res.data)
         }).catch(() => {
         })
     }
 
     function fetchChallenges() {
-        userAxios.get("challenges").then(res => {
-            setChallengeInfo({...res.data})
+        baseAxios.get("challenges").then(res => {
+            setChallengeInfo(res.data)
         }).catch(() => {
         })
     }
@@ -173,7 +133,7 @@ function Dashboard() {
 
                     <Grid item container direction={"column"} alignItems={"center"} justify={"flex-start"}
                           className={classes.scrollablePane}>
-                        {challenges.map((item, i) => <Challenge key={i} item={item}/>)}
+                        {challengeInfo.map((item, i) => <Challenge key={i} item={item}/>)}
                     </Grid>
 
                     <Grid item className={classes.vSpace}>
@@ -184,7 +144,7 @@ function Dashboard() {
 
                     <Grid item container direction={"column"} alignItems={"center"} justify={"flex-start"}
                           className={classes.scrollablePane}>
-                        {courses.map((item, i) => <Course key={i} item={item}/>)}
+                        {courseInfo.map((item, i) => <Course key={i} item={item}/>)}
                     </Grid>
 
                 </Grid>

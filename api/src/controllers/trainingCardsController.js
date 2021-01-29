@@ -12,7 +12,7 @@ async function getExerciseIds(exercises, res) {
     //     .select('_id')
     //     .exec()
     const exerciseDocs = await Promise.all(exercises.map(async (exercise) => {
-        const foundExercise = await Exercise.findOne({ name: exercise }).exec()
+        const foundExercise = await Exercise.findOne({name: exercise}).exec()
         return foundExercise._id
     }))
     return exerciseDocs.map(doc => doc._id)
@@ -28,12 +28,12 @@ async function getTagIds(tags, res) {
 }
 
 async function getUserId(username) {
-    return User.findOne({ username: username }).map(doc => doc._id).exec()
+    return User.findOne({username: username}).map(doc => doc._id).exec()
 }
 
-exports.createTrainingCard = async function(req, res) {
+exports.createTrainingCard = async function (req, res) {
     const user = req.params.username
-
+    console.log(req.body)
     const title = req.body.title
     const trainer = req.body.trainer
     const exercises = req.body.exercises
@@ -41,12 +41,12 @@ exports.createTrainingCard = async function(req, res) {
     const tagSet = [...new Set(tags)]
     const minutes = req.body.minutes
 
-    const userExists = await User.exists({ username: user })
+    const userExists = await User.exists({username: user})
     if (!userExists) {
         return responses.notFound(res)('User not found')
     }
 
-    const trainerExists = await User.exists({ username: trainer })
+    const trainerExists = await User.exists({username: trainer})
     if (!trainerExists) {
         return responses.badRequest(res)('Trainer does not exist')
     }
@@ -62,10 +62,10 @@ exports.createTrainingCard = async function(req, res) {
         return responses.badRequest(res)('Some tags do not exist')
     }
 
-    const userId = await User.findOne({ username: user }).map(doc => doc._id).exec();
-    const trainerId = await User.findOne({ username: user }).map(doc => doc._id).exec();
+    const userId = await User.findOne({username: user}).map(doc => doc._id).exec();
+    const trainerId = await User.findOne({username: user}).map(doc => doc._id).exec();
     const exercisesWithIds = await Promise.all(exercises.map(async obj => {
-        obj.exercise = await Exercise.findOne({ name: obj.exercise })
+        obj.exercise = await Exercise.findOne({name: obj.exercise})
             .map(doc => doc._id)
             .exec()
         return obj
@@ -90,16 +90,16 @@ exports.createTrainingCard = async function(req, res) {
     try {
         const savedTrainingCard = await trainingCard.save()
         responses.created(res)(savedTrainingCard)
-    } catch(err) {
+    } catch (err) {
         responses.error(res)(err)
     }
 }
 
-exports.getUserCard = async function (req, res){
+exports.getUserCard = async function (req, res) {
     const username = req.params.username
     const cardIndex = req.params.cardIndex
 
-    const usernameExists = await User.exists({ username: username })
+    const usernameExists = await User.exists({username: username})
     if (!usernameExists) {
         return responses.notFound(res)('User not found')
     }
@@ -109,7 +109,7 @@ exports.getUserCard = async function (req, res){
     }
 
     const userId = await getUserId(username)
-    const userCards = await TrainingCard.find({ user: userId })
+    const userCards = await TrainingCard.find({user: userId})
         .populate({
             path: 'tags',
             model: Tag
@@ -143,13 +143,13 @@ exports.getUserCard = async function (req, res){
     responses.json(res)(userCards[cardIndex])
 }
 
-exports.getUserCards = async function(req, res) {
+exports.getUserCards = async function (req, res) {
     const username = req.params.username
 
-    const usernameExists = await User.exists({ username: username })
+    const usernameExists = await User.exists({username: username})
     if (usernameExists) {
         const userId = await getUserId(username)
-        const userCards = await TrainingCard.find({ user: userId })
+        const userCards = await TrainingCard.find({user: userId})
             .populate({
                 path: 'tags',
                 model: Tag
