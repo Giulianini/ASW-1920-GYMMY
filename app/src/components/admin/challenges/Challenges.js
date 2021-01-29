@@ -20,13 +20,13 @@ const useStyles = makeStyles((theme) => ({
     },
     tabsPaper: {},
 }))
+export const createChallengeTabNotification = "Here you can create a challenge. Give it a title, set the price points and don't forget to insert an image 😊"
+export const closeChallengeTabNotification = "Here you can close an active challenge and assign awards to participants 🏅"
 
 function Challenges() {
     const classes = useStyles()
     const [value, setValue] = React.useState(0)
     const {enqueueSnackbar} = useSnackbar()
-    const createChallengeTabNotification = "Here you can create a challenge"
-    const closeChallengeTabNotification = "Here you can close an active challenge and assign awards to participants"
 
     const triggerMessageOnSwitch = (index) => {
         switch (index) {

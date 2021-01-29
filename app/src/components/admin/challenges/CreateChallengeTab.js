@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Fab, Grid, Slider, TextField, Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import {makeStyles} from "@material-ui/core/styles";
 import {DropzoneArea} from "material-ui-dropzone";
 import {baseAxios} from "../../../Api";
 import {Add} from "@material-ui/icons";
+import {createChallengeTabNotification} from "./Challenges";
 
 const useStyles = makeStyles({
     form: {
@@ -61,6 +62,10 @@ function CreateChallengeTab() {
         })
         setFile([])
     }
+
+    useEffect(() => {
+        enqueueSnackbar(createChallengeTabNotification, {variant: "info"})
+    }, [enqueueSnackbar])
 
     const handleSubmit = (e) => {
         e.preventDefault()

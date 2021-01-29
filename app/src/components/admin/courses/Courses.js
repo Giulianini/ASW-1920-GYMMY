@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Fab, Grid, TextField, Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import {makeStyles} from "@material-ui/core/styles";
@@ -34,6 +34,7 @@ const useStyles = makeStyles({
 
 function Courses() {
     const classes = useStyles()
+    const createCourseNotification = "Here you can create a course for your pupils 🧘"
     const {enqueueSnackbar} = useSnackbar()
     const [values, setValues] = React.useState({
         title: '',
@@ -55,6 +56,10 @@ function Courses() {
         })
         setFile([])
     }
+
+    useEffect(() => {
+        enqueueSnackbar(createCourseNotification, {variant: "info"})
+    }, [enqueueSnackbar])
 
     const handleSubmit = (e) => {
         e.preventDefault()

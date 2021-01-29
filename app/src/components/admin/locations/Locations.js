@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Fab, Grid, Popover, Slider, TextField, Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import {makeStyles} from "@material-ui/core/styles";
@@ -37,6 +37,7 @@ const useStyles = makeStyles({
 
 function Locations() {
     const classes = useStyles()
+    const createLocationNotification = "Here you can create a location 📌"
     const {enqueueSnackbar} = useSnackbar()
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -68,6 +69,11 @@ function Locations() {
             description: '',
         })
     }
+
+    useEffect(() => {
+        enqueueSnackbar(createLocationNotification, {variant: "info"})
+    }, [enqueueSnackbar])
+
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -111,7 +117,7 @@ function Locations() {
             >
                 <Typography className={classes.typography}>
                     A location is considered as a place, a room or a machine where a single or more users can train.
-                    Example of location are: Chest-Press machine, Stretching Area or Zumba Room.
+                    Example of location are: Chest-Press machine, Stretching Area and Body-Weight Room.
                 </Typography>
             </Popover>
             <Grid item container xs={10} md={5} direction={"column"}>
@@ -139,7 +145,7 @@ function Locations() {
                                 step={1}
                                 marks
                                 min={0}
-                                max={100}
+                                max={20}
                                 value={values.secondPlaceReward}
                                 onChange={(event, value) => {
                                     handleChange("defaultCapacity", value)
