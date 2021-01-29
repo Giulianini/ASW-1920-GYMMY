@@ -88,7 +88,11 @@ function CreateChallengeTab() {
                 }))
             }).catch((reason) => {
                 console.log(reason.response.data)
-                enqueueSnackbar("Error adding the challenge", {variant: "error"})
+                if (reason.response.status === 409) {
+                    enqueueSnackbar("Challenge already present", {variant: "error"})
+                } else {
+                    enqueueSnackbar("Error adding the challenge", {variant: "error"})
+                }
             })
         } else {
             enqueueSnackbar("Some field are empty", {variant: "warning"})

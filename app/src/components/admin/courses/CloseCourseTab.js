@@ -5,7 +5,6 @@ import {makeStyles} from "@material-ui/core/styles";
 import {baseAxios} from "../../../Api";
 import {Delete} from "@material-ui/icons";
 import {Autocomplete} from "@material-ui/lab";
-import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles({
     form: {
@@ -91,12 +90,11 @@ function CloseChallengeTab() {
                             })}
                             getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
-                                <TextField {...params} label="Select a course..." variant="outlined"/>
+                                <TextField {...params}
+                                           onClick={fetchCourses} label="Select a course..." variant="outlined"
+                                />
                             }
                         />
-                        <IconButton>
-                            
-                        </IconButton>
                     </Grid>
                 </Grid>
             </Grid>

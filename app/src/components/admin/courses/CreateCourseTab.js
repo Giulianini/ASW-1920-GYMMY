@@ -82,7 +82,11 @@ function CreateCourseTab() {
                 }))
             }).catch((reason) => {
                 console.log(reason.response.data)
-                enqueueSnackbar("Error adding the course", {variant: "error"})
+                if (reason.response.status === 409) {
+                    enqueueSnackbar("Course already present", {variant: "error"})
+                } else {
+                    enqueueSnackbar("Error adding the course", {variant: "error"})
+                }
             })
         } else {
             enqueueSnackbar("Some field are empty", {variant: "error"})

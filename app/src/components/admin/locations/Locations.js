@@ -83,7 +83,11 @@ function Locations() {
                 resetForm()
             }).catch((reason => {
                 console.log(reason.response.data)
-                enqueueSnackbar("Error adding the location", {variant: "error"})
+                if (reason.response.status === 409) {
+                    enqueueSnackbar("Location already present", {variant: "error"})
+                } else {
+                    enqueueSnackbar("Error adding the location", {variant: "error"})
+                }
             }))
         } else {
             enqueueSnackbar("Some field are empty", {variant: "warning"})

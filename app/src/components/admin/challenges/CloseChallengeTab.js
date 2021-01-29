@@ -101,7 +101,8 @@ function CloseChallengeTab() {
                             })}
                             getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
-                                <TextField {...params} label="Select a challenge..." variant="outlined"/>
+                                <TextField {...params} onClick={fetchChallenges}
+                                           label="Select a challenge..." variant="outlined"/>
                             }
                         />
                     </Grid>
@@ -145,7 +146,8 @@ function CloseChallengeTab() {
                             })}
                             getOptionLabel={(option) => option}
                             renderInput={(params) =>
-                                <TextField {...params} label="Select 2° place..." variant="outlined"/>
+                                <TextField {...params}
+                                           label="Select 2° place..." variant="outlined"/>
                             }
                         />
                     </Grid>
