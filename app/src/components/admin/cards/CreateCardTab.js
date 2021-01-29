@@ -5,6 +5,7 @@ import {Autocomplete} from "@material-ui/lab";
 import {baseAxios} from "../../../Api";
 import {DataGrid} from "@material-ui/data-grid";
 import {Done} from "@material-ui/icons";
+import {useSnackbar} from "notistack";
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -68,6 +69,7 @@ const columns = [
 
 function CreateCardTab(props) {
     const classes = useStyles()
+    const {enqueueSnackbar} = useSnackbar()
 
     const users = useUsers()
     const exercises = useExercises()
@@ -123,6 +125,7 @@ function CreateCardTab(props) {
                 }
             })
         }).then(res => {
+            enqueueSnackbar("Card successfully added", {variant: "success"})
             setSelectedUsername(null)
             setSelectedTitle('')
             setSelectedTags([])
@@ -132,6 +135,8 @@ function CreateCardTab(props) {
             setReps(0)
             setRest(0)
             setCardEntries([])
+        }).catch(reason => {
+            enqueueSnackbar("Error while creating card", {variant: "error"})
         })
     }
 

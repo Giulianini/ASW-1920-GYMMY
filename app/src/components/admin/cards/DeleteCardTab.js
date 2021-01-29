@@ -4,6 +4,7 @@ import {Fab, Grid, TextField} from "@material-ui/core";
 import {Autocomplete} from "@material-ui/lab";
 import {makeStyles} from "@material-ui/core/styles";
 import {Delete} from "@material-ui/icons";
+import {useSnackbar} from "notistack";
 
 const useStyles = makeStyles((theme) => ({
     userSelector: {
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 function DeleteCardTab(props) {
     const classes = useStyles()
+    const {enqueueSnackbar} = useSnackbar()
 
     const users = useUsers()
     const [cards, fetchCards] = useCards()
@@ -34,9 +36,11 @@ function DeleteCardTab(props) {
     const handleCardDelete = (e) => {
         e.preventDefault()
         baseAxios.delete(`users/${selectedUser.username}/cards/${selectedCard._id}`).then((res) => {
+            enqueueSnackbar("Card successfully deleted", {variant: "success"})
             setSelectedUser(null)
             setSelectedCard(null)
         }).catch((reason => {
+            enqueueSnackbar("Error while deleting card", {variant: "error"})
         }))
     }
 

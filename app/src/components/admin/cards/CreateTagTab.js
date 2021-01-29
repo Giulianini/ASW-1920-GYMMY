@@ -3,6 +3,7 @@ import {Fab, Grid, TextField} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {Done} from "@material-ui/icons";
 import {baseAxios} from "../../../Api";
+import {useSnackbar} from "notistack";
 
 const useStyles = makeStyles((theme) => ({
     userSelector: {
@@ -26,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 function CreateTagTab(props) {
     const classes = useStyles()
+    const {enqueueSnackbar} = useSnackbar()
 
     const [tagName, setTagName] = useState('')
 
@@ -34,8 +36,10 @@ function CreateTagTab(props) {
         baseAxios.post('tags', {
             name: tagName
         }).then(res => {
+            enqueueSnackbar("Tag successfully created", {variant: "success"})
             setTagName('')
         }).catch(reason => {
+            enqueueSnackbar("Error while creating tag", {variant: "error"})
         })
     }
 
