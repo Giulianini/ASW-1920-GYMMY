@@ -4,7 +4,7 @@ import {useSnackbar} from "notistack";
 import {makeStyles} from "@material-ui/core/styles";
 import {DropzoneArea} from "material-ui-dropzone";
 import {baseAxios} from "../../../Api";
-import {Add} from "@material-ui/icons";
+import {Done} from "@material-ui/icons";
 import {createCourseTabNotification} from "./Courses";
 
 const useStyles = makeStyles({
@@ -135,7 +135,7 @@ function CreateCourseTab() {
                      type={"submit"}
                      size={"large"}
                      variant={"round"}>
-                    <Add/>
+                    <Done/>
                 </Fab>
             </Grid>
         </Grid>
