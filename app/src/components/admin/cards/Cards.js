@@ -5,6 +5,7 @@ import SwipeableViews from "react-swipeable-views";
 import {makeStyles} from "@material-ui/core/styles";
 import CreateCardTab from "./CreateCardTab";
 import DeleteCardTab from "./DeleteCardTab";
+import CreateTagTab from "./CreateTagTab";
 
 const useStyles = makeStyles((theme) => ({
     tabs: {
@@ -47,11 +48,13 @@ function Cards(props) {
                 >
                     <Tab label="Create card"/>
                     <Tab label="Delete card"/>
+                    <Tab label="Add tag"/>
                 </Tabs>
             </Paper>
             <SwipeableViews index={value} onChangeIndex={handleChangeSwipe} className={classes.swipeableView}>
                 <CreateCardTab/>
                 <DeleteCardTab/>
+                <CreateTagTab/>
             </SwipeableViews>
         </>
     );

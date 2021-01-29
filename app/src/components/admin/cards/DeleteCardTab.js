@@ -14,6 +14,12 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 30,
         marginBottom: 30,
     },
+    grid: {
+        minHeight: "100vh",
+        paddingLeft: 24,
+        paddingRight: 24,
+        paddingTop: 10
+    },
 }))
 
 function DeleteCardTab(props) {
