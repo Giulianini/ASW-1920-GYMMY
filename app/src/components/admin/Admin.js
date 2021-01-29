@@ -13,6 +13,7 @@ import Drawer from "../user/Drawer";
 import Cards from "./cards/Cards";
 import Courses from "./courses/Courses";
 import Challenges from "./challenges/Challenges";
+import Locations from "./locations/Locations";
 
 function Admin() {
     const location = useLocation()
@@ -32,6 +33,7 @@ function Admin() {
                             <Route path={`/${routes.admin.routes.cards.value}`} children={<Cards/>}/>
                             <Route path={`/${routes.admin.routes.challenges.value}`} children={<Challenges/>}/>
                             <Route path={`/${routes.admin.routes.courses.value}`} children={<Courses/>}/>
+                            <Route path={`/${routes.admin.routes.locations.value}`} children={<Locations/>}/>
                             <Redirect from='*' to={`/${routes.admin.routes.dashboard.value}`}/>
                         </Switch>
                     </CSSTransition>

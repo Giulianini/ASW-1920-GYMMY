@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {useHistory, useLocation} from "react-router-dom";
 import {setAppbarTitle} from "../../redux/ducks/user/user";
 import {BottomNavigation, BottomNavigationAction} from "@material-ui/core";
-import {Dashboard, People, Receipt, SportsHandball} from "@material-ui/icons";
+import {AirlineSeatReclineExtra, Dashboard, People, Receipt, SportsHandball} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
@@ -36,7 +36,6 @@ function BottomBar(props) {
             onChange={(e, newRoot) => {
                 if (newRoot !== value) {
                     dispatch(setAppbarTitle(newRoot.toString().split("/")[1].capitalize()))
-                    // hideTrainingAppbar(newRoot)
                     setValue(newRoot)
                     history.push(`/${newRoot}`)
                 }
@@ -62,6 +61,11 @@ function BottomBar(props) {
                 label={props.tabs.admin.routes.courses.name}
                 value={props.tabs.admin.routes.courses.value}
                 icon={<SportsHandball/>}
+            />
+            <BottomNavigationAction
+                label={props.tabs.admin.routes.locations.name}
+                value={props.tabs.admin.routes.locations.value}
+                icon={<AirlineSeatReclineExtra/>}
             />
         </BottomNavigation>
     );

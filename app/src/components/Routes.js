@@ -23,6 +23,10 @@ const routes = {
                 name: "Courses",
                 value: `admin/courses`
             },
+            locations: {
+                name: "Locations",
+                value: `admin/locations`
+            }
         }
     },
     dashboard: {
