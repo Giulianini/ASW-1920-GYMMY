@@ -4,7 +4,7 @@ import {useSnackbar} from "notistack";
 import {makeStyles} from "@material-ui/core/styles";
 import {DropzoneArea} from "material-ui-dropzone";
 import {baseAxios} from "../../../Api";
-import {Add} from "@material-ui/icons";
+import {Done} from "@material-ui/icons";
 import {createChallengeTabNotification} from "./Challenges";
 
 const useStyles = makeStyles({
@@ -129,7 +129,7 @@ function CreateChallengeTab() {
                 </Grid>
                 <Grid item container direction={"column"} alignItems={"flex-start"}>
                     <Grid item>
-                        <Typography className={classes.sliderTitle}>1° place points</Typography>
+                        <Typography className={classes.sliderTitle}>2° place points</Typography>
                     </Grid>
                     <Grid container item alignItems={"center"}>
                         <Grid item xs={11} className={classes.gridItem}>
@@ -153,7 +153,7 @@ function CreateChallengeTab() {
                 </Grid>
                 <Grid item container direction={"column"} alignItems={"flex-start"}>
                     <Grid item>
-                        <Typography className={classes.sliderTitle}>1° place points</Typography>
+                        <Typography className={classes.sliderTitle}>3° place points</Typography>
                     </Grid>
                     <Grid container item alignItems={"center"}>
                         <Grid item xs={11} className={classes.gridItem}>
@@ -213,7 +213,7 @@ function CreateChallengeTab() {
                      type={"submit"}
                      size={"large"}
                      variant={"round"}>
-                    <Add/>
+                    <Done/>
                 </Fab>
             </Grid>
         </Grid>

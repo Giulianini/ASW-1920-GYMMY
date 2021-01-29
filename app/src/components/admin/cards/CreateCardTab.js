@@ -1,14 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Button, ButtonGroup, Grid, TextField, Typography} from "@material-ui/core";
+import {Button, Fab, Grid, Slider, TextField, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {Autocomplete} from "@material-ui/lab";
 import {baseAxios} from "../../../Api";
 import {DataGrid} from "@material-ui/data-grid";
+import {Done} from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
     title: {
         fontWeight: 100,
-        paddingBottom: 10,
+        paddingBottom: 0,
         // textAlign: "center"
     },
     grid: {
@@ -17,6 +18,18 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 24,
         paddingTop: 10
     },
+    gridItem: {
+        width: "100%"
+    },
+    sliderGrid: {},
+    sliderText: {
+        fontWeight: 100,
+        textAlign: "center"
+    },
+    sliderTitle: {
+        fontWeight: 300,
+        textAlign: "center",
+    },
     userSelector: {
         width: "100%",
         paddingTop: 14,
@@ -24,8 +37,7 @@ const useStyles = makeStyles((theme) => ({
     },
     exerciseParams: {
         width: "100%",
-        // paddingTop: 14,
-        // minHeight: 400,
+        marginTop: 15
     },
     exerciseParam: {
         paddingTop: 14,
@@ -39,6 +51,10 @@ const useStyles = makeStyles((theme) => ({
     submitButtons: {
         paddingTop: 14,
         paddingBottom: 14,
+    },
+    submitButton: {
+        marginTop: 30,
+        marginBottom: 30,
     }
 }))
 
@@ -55,7 +71,7 @@ function CreateCardTab(props) {
 
     const users = useUsers()
     const exercises = useExercises()
-    const tags = useTags()
+    const [tags, fetchTags] = useTags()
 
     const [selectedTitle, setSelectedTitle] = useState('')
     const [selectedUsername, setSelectedUsername] = useState(null)
@@ -63,9 +79,9 @@ function CreateCardTab(props) {
     const [selectedTags, setSelectedTags] = useState([])
 
     const [workoutDuration, setWorkoutDuration] = useState('')
-    const [series, setSeries] = useState('')
-    const [reps, setReps] = useState('')
-    const [rest, setRest] = useState('')
+    const [series, setSeries] = useState(0)
+    const [reps, setReps] = useState(0)
+    const [rest, setRest] = useState(0)
 
     const [cardEntries, setCardEntries] = useState([])
 
@@ -83,9 +99,9 @@ function CreateCardTab(props) {
             }
         ])
         setSelectedExercise(null)
-        setSeries('')
-        setReps('')
-        setRest('')
+        setSeries(0)
+        setReps(0)
+        setRest(0)
     }
 
     const handleCardSubmit = e => {
@@ -98,11 +114,11 @@ function CreateCardTab(props) {
             exercises: cardEntries.map(entry => {
                 return {
                     exercise: entry.exerciseName,
-                    series: parseInt(entry.series),
-                    reps: parseInt(entry.reps),
+                    series: entry.series,
+                    reps: entry.reps,
                     rest: {
-                        minutes: parseInt(entry.rest),
-                        seconds: 0
+                        minutes: Math.floor(entry.rest / 60),
+                        seconds: entry.rest % 60
                     }
                 }
             })
@@ -112,9 +128,9 @@ function CreateCardTab(props) {
             setSelectedTags([])
             setWorkoutDuration('')
             setSelectedExercise(null)
-            setSeries('')
-            setReps('')
-            setRest('')
+            setSeries(0)
+            setReps(0)
+            setRest(0)
             setCardEntries([])
         })
     }
@@ -127,7 +143,7 @@ function CreateCardTab(props) {
         <Grid container direction={"column"} justify={"flex-start"} alignItems={"center"} className={classes.grid}>
             <Grid container item xs={12} md={5}>
                 <Grid item className={classes.userSelector}>
-                    <Typography variant={"h6"} className={classes.title}>Select a user</Typography>
+                    {/*<Typography variant={"h6"} className={classes.title}>Select a user</Typography>*/}
                     <Autocomplete
                         options={users}
                         onChange={((event, value) => {
@@ -135,17 +151,17 @@ function CreateCardTab(props) {
                         })}
                         getOptionLabel={(option) => option.username}
                         renderInput={(params) =>
-                            <TextField {...params} label="Type a username..." variant="outlined"/>
+                            <TextField {...params} label="Type a username..." variant="standard"/>
                         }
                         value={selectedUsername}
                     />
                 </Grid>
                 <Grid item className={classes.userSelector}>
-                    <Typography variant={"h6"} className={classes.title}>Insert card title</Typography>
+                    {/*<Typography variant={"h6"} className={classes.title}>Insert card title</Typography>*/}
                     <TextField
                         id="card-title-insertion"
                         label="Card title"
-                        variant="outlined"
+                        variant="standard"
                         fullWidth
                         onChange={e => setSelectedTitle(e.target.value)}
                         value={selectedTitle}
@@ -154,7 +170,7 @@ function CreateCardTab(props) {
                     />
                 </Grid>
                 <Grid item className={classes.userSelector}>
-                    <Typography variant={"h6"} className={classes.title}>Select tags</Typography>
+                    {/*<Typography variant={"h6"} className={classes.title}>Select tags</Typography>*/}
                     <Autocomplete
                         multiple
                         filterSelectedOptions
@@ -164,25 +180,26 @@ function CreateCardTab(props) {
                         })}
                         getOptionLabel={(option) => option.name}
                         renderInput={(params) =>
-                            <TextField {...params} label="Select tags..." variant="outlined"/>
+                            <TextField {...params} label="Select tags..." variant="standard"
+                                       onClick={fetchTags}/>
                         }
                         value={selectedTags}
                     />
                 </Grid>
                 <Grid item className={classes.userSelector}>
-                    <Typography variant={"h6"} className={classes.title}>Insert workout duration</Typography>
+                    {/*<Typography variant={"h6"} className={classes.title}>Insert workout duration</Typography>*/}
                     <TextField
                         id="series-selector"
                         label="Duration (min)"
                         type="number"
-                        variant="outlined"
+                        variant="standard"
                         fullWidth
                         onChange={e => setWorkoutDuration(e.target.value)}
                         value={workoutDuration}
                     />
                 </Grid>
                 <Grid item className={classes.userSelector}>
-                    <Typography variant={"h6"} className={classes.title}>Select an exercise</Typography>
+                    {/*<Typography variant={"h6"} className={classes.title}>Select an exercise</Typography>*/}
                     <Autocomplete
                         options={exercises}
                         onChange={((event, value) => {
@@ -190,75 +207,116 @@ function CreateCardTab(props) {
                         })}
                         getOptionLabel={(option) => option.name}
                         renderInput={(params) =>
-                            <TextField {...params} label="Select an exercise..." variant="outlined"/>
+                            <TextField {...params} label="Select an exercise..." variant="standard"/>
                         }
                         value={selectedExercise}
                     />
                 </Grid>
                 <Grid container item direction={"column"} alignItems={"center"} justify={"center"}
                       className={classes.exerciseParams} component={"form"} onSubmit={handleExerciseSubmit}>
-                    <Grid container direction={"row"} alignItems={"center"} justify={"center"}
-                          className={classes.exerciseParams}>
-                        <Grid item md={4} className={classes.exerciseParam}>
-                            <TextField
-                                id="series-selector"
-                                label="Series"
-                                type="number"
-                                variant="outlined"
-                                fullWidth
-                                onChange={e => setSeries(e.target.value)}
-                                value={series}
-                                error={!isPositive(series)}
-                                helperText={'Insert a positive value'}
-                            />
+                    <Grid container direction={"column"} alignItems={"center"} justify={"center"}>
+                        <Grid item container direction={"column"} alignItems={"flex-start"}
+                              className={classes.sliderGrid}>
+                            <Grid item>
+                                <Typography className={classes.sliderTitle}>Series</Typography>
+                            </Grid>
+                            <Grid container item alignItems={"center"}>
+                                <Grid item xs={11} className={classes.gridItem}>
+                                    <Slider
+                                        defaultValue={0}
+                                        valueLabelDisplay="auto"
+                                        step={1}
+                                        marks
+                                        min={0}
+                                        max={10}
+                                        value={series}
+                                        onChange={(event, value) => {
+                                            setSeries(value)
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item xs={1} className={classes.gridItem}>
+                                    <Typography
+                                        className={classes.sliderText}>{series}</Typography>
+                                </Grid>
+                            </Grid>
                         </Grid>
-                        <Grid item md={4} className={classes.exerciseParam}>
-                            <TextField
-                                id="reps-selector"
-                                label="Reps"
-                                type="number"
-                                variant="outlined"
-                                fullWidth
-                                onChange={e => setReps(e.target.value)}
-                                value={reps}
-                                error={!isPositive(reps)}
-                                helperText={'Insert a positive value'}
-                            />
+                        <Grid item container direction={"column"} alignItems={"flex-start"}
+                              className={classes.sliderGrid}>
+                            <Grid item>
+                                <Typography className={classes.sliderTitle}>Reps</Typography>
+                            </Grid>
+                            <Grid container item alignItems={"center"}>
+                                <Grid item xs={11} className={classes.gridItem}>
+                                    <Slider
+                                        defaultValue={0}
+                                        valueLabelDisplay="auto"
+                                        step={1}
+                                        marks
+                                        min={0}
+                                        max={30}
+                                        value={reps}
+                                        onChange={(event, value) => {
+                                            setReps(value)
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item xs={1} className={classes.gridItem}>
+                                    <Typography
+                                        className={classes.sliderText}>{reps}</Typography>
+                                </Grid>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    <Grid item md={4} className={classes.exerciseParam}>
-                        <TextField
-                            id="rest-selector"
-                            label="Rest (min)"
-                            type="number"
-                            variant="outlined"
-                            fullWidth
-                            onChange={e => setRest(e.target.value)}
-                            value={rest}
-                            error={!isPositive(rest)}
-                            helperText={'Insert a positive value'}
-                        />
+                        <Grid item container direction={"column"} alignItems={"flex-start"}
+                              className={classes.sliderGrid}>
+                            <Grid item>
+                                <Typography className={classes.sliderTitle}>Rest (sec)</Typography>
+                            </Grid>
+                            <Grid container item alignItems={"center"}>
+                                <Grid item xs={10} className={classes.gridItem}>
+                                    <Slider
+                                        defaultValue={0}
+                                        valueLabelDisplay="auto"
+                                        step={30}
+                                        marks
+                                        min={0}
+                                        max={5 * 30}
+                                        value={rest}
+                                        onChange={(event, value) => {
+                                            setRest(value)
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item xs={2} className={classes.gridItem}>
+                                    <Typography
+                                        className={classes.sliderText}>{`${Math.floor(rest / 60)}' ${rest % 60}''`}</Typography>
+                                </Grid>
+                            </Grid>
+                        </Grid>
                     </Grid>
                     <Grid item className={classes.submitButtons}>
-                        <ButtonGroup color="primary" aria-label="outlined primary button group">
-                            <Button
-                                onClick={handleExerciseSubmit}
-                                disabled={!selectedExercise || !isPositive(series) || !isPositive(reps) || !isPositive(rest)}>
-                                Add exercise
-                            </Button>
-                            <Button
-                                onClick={handleCardSubmit}
-                                disabled={
-                                    selectedTitle === '' || !selectedUsername || !workoutDuration || cardEntries.length === 0
-                                }
-                            >
-                                Submit card
-                            </Button>
-                        </ButtonGroup>
+                        <Button
+                            onClick={handleExerciseSubmit}
+                            disabled={!selectedExercise || !isPositive(series) || !isPositive(reps) || !isPositive(rest)}
+                            variant={"contained"}
+                            color={"primary"}
+                        >
+                            Add exercise
+                        </Button>
                     </Grid>
                 </Grid>
                 <Grid item className={classes.dataGrid}>
-                    <DataGrid rows={cardEntries} columns={columns} pageSize={8} autoHeight/>
+                    <DataGrid rows={cardEntries} columns={columns}/>
+                </Grid>
+                <Grid item container justify={"center"} xs={12} className={classes.gridItem}>
+                    <Fab color={"primary"}
+                         onSubmit={handleCardSubmit}
+                         className={classes.submitButton}
+                         type={"submit"}
+                         size={"large"}
+                         variant={"round"}>
+                        <Done/>
+                    </Fab>
                 </Grid>
             </Grid>
         </Grid>
@@ -293,7 +351,7 @@ function CreateCardTab(props) {
             fetchTags()
         }, [fetchTags])
 
-        return tags
+        return [tags, fetchTags]
     }
 
     function useExercises() {

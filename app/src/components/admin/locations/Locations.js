@@ -3,7 +3,7 @@ import {Fab, Grid, Popover, Slider, TextField, Typography} from "@material-ui/co
 import {useSnackbar} from "notistack";
 import {makeStyles} from "@material-ui/core/styles";
 import {baseAxios} from "../../../Api";
-import {Add, Info} from "@material-ui/icons";
+import {Done, Info} from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles({
@@ -169,7 +169,7 @@ function Locations() {
                      type={"submit"}
                      size={"large"}
                      variant={"round"}>
-                    <Add/>
+                    <Done/>
                 </Fab>
             </Grid>
         </Grid>
