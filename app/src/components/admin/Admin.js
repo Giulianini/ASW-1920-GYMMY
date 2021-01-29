@@ -11,9 +11,9 @@ import BottomBar from "./BottomBar";
 import Header from "../user/Header";
 import Drawer from "../user/Drawer";
 import Cards from "./cards/Cards";
-import Courses from "./courses/Courses";
 import Challenges from "./challenges/Challenges";
 import Locations from "./locations/Locations";
+import Courses from "./courses/Courses";
 
 function Admin() {
     const location = useLocation()
