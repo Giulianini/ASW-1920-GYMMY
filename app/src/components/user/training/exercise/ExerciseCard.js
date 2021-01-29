@@ -53,14 +53,14 @@ function ExerciseCard(props) {
     function retrieveImage() {
         return `data:${props.exercise.exercise.image.contentType};base64,${arrayBufferToBase64(props.exercise.exercise.image.data.data)}`
     }
-    
+
     return (
         <Grid item xs={11} lg={6}>
             <Card className={classes.card}>
                 <CardActionArea onClick={() => props.handleExerciseOpen(props.exercise)}>
                     <CardMedia
                         className={classes.cardMedia}
-                        image={'/pushUp.jpg'} //retrieveImage()
+                        image={retrieveImage()} //retrieveImage()
                         title={props.exercise.exercise.name}
                     />
                     <CardContent>

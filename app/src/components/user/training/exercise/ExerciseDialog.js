@@ -69,11 +69,22 @@ const ExerciseDialog = forwardRef((props, ref) => {
             };
         });
 
+        function arrayBufferToBase64(buffer) {
+            var binary = '';
+            var bytes = [].slice.call(new Uint8Array(buffer));
+            bytes.forEach((b) => binary += String.fromCharCode(b));
+            return window.btoa(binary);
+        }
+
+        function retrieveImage() {
+            return `data:${exercise && exercise.exercise.image.contentType};base64,${arrayBufferToBase64(exercise && exercise.exercise.image.data.data)}`
+        }
+
         return (
             <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
                 <AppBar elevation={0} className={classes.appBar}>
                     <Image
-                        src={"/pushUp.jpg"}
+                        src={retrieveImage()}
                         aspectRatio={(16 / 9)}
                         disableSpinner
                         className={classes.image}

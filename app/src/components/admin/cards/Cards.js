@@ -6,6 +6,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import CreateCardTab from "./CreateCardTab";
 import DeleteCardTab from "./DeleteCardTab";
 import CreateTagTab from "./CreateTagTab";
+import CreateExerciseTab from "./CreateExerciseTab";
 
 const useStyles = makeStyles((theme) => ({
     tabs: {
@@ -48,12 +49,14 @@ function Cards(props) {
                 >
                     <Tab label="Create card"/>
                     <Tab label="Delete card"/>
+                    <Tab label="Create exercise"/>
                     <Tab label="Add tag"/>
                 </Tabs>
             </Paper>
             <SwipeableViews index={value} onChangeIndex={handleChangeSwipe} className={classes.swipeableView}>
                 <CreateCardTab/>
                 <DeleteCardTab/>
+                <CreateExerciseTab/>
                 <CreateTagTab/>
             </SwipeableViews>
         </>
