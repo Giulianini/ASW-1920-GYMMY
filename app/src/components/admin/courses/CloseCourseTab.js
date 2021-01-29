@@ -41,21 +41,7 @@ function CloseChallengeTab() {
     const classes = useStyles()
     const {enqueueSnackbar} = useSnackbar()
     const [selectedCourse, setSelectedCourse] = useState(null)
-    const [courses, setCourses] = useState([])
-
-    const fetchCourses = useCallback(() => {
-        baseAxios.get("courses").then(res => {
-            setCourses(res.data)
-        }).catch(reason => {
-            console.log(reason.response.data)
-            enqueueSnackbar("Cannot fetch courses", {variant: "error"})
-        })
-    }, []);
-
-    useEffect(() => {
-        fetchCourses()
-    }, [fetchCourses])
-
+    const [courses, fetchCourses] = useCourses()
 
     const handleSubmit = (e) => {
         if (selectedCourse) {
@@ -110,6 +96,23 @@ function CloseChallengeTab() {
             </Grid>
         </Grid>
     );
+
+    function useCourses() {
+        const [courses, setCourses] = useState([])
+        const fetchCourses = useCallback(() => {
+            baseAxios.get("courses").then(res => {
+                setCourses(res.data)
+            }).catch(reason => {
+                console.log(reason.response.data)
+                enqueueSnackbar("Cannot fetch courses", {variant: "error"})
+            })
+        }, []);
+
+        useEffect(() => {
+            fetchCourses()
+        }, [fetchCourses])
+        return [courses, fetchCourses]
+    }
 }
 
 export default CloseChallengeTab;
