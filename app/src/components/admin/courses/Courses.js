@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     tabsPaper: {},
 }))
 export const createCourseTabNotification = "Here you can create a course for your pupils 🧘"
-export const closeCourseTabNotification = "Here you can close an active challenge and assign awards to participants 🏅"
+export const closeCourseTabNotification = "Here you can close a course"
 
 function Challenges() {
     const classes = useStyles()

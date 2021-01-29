@@ -96,11 +96,6 @@ function CreateCourseTab() {
     return (
         <Grid container direction={"column"} justify={"center"} alignItems={"center"} component={"form"}
               onSubmit={handleSubmit} className={classes.form}>
-            <Grid item>
-                <Typography variant={"h5"} className={classes.title}>
-                    Insert course
-                </Typography>
-            </Grid>
             <Grid item container xs={10} md={5} direction={"column"}>
                 <Grid item className={classes.gridItem}>
                     <TextField
