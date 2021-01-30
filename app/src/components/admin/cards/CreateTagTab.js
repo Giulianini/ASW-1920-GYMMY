@@ -39,7 +39,12 @@ function CreateTagTab(props) {
             enqueueSnackbar("Tag successfully created", {variant: "success"})
             setTagName('')
         }).catch(reason => {
-            enqueueSnackbar("Error while creating tag", {variant: "error"})
+            console.log(reason.response.data)
+            if (reason.response.status === 409) {
+                enqueueSnackbar("Tag already present", {variant: "error"})
+            } else {
+                enqueueSnackbar("Error adding the tag", {variant: "error"})
+            }
         })
     }
 

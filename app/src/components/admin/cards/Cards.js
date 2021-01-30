@@ -7,6 +7,7 @@ import CreateCardTab from "./CreateCardTab";
 import DeleteCardTab from "./DeleteCardTab";
 import CreateTagTab from "./CreateTagTab";
 import CreateExerciseTab from "./CreateExerciseTab";
+import {useSnackbar} from "notistack";
 
 const useStyles = makeStyles((theme) => ({
     tabs: {
@@ -22,16 +23,41 @@ const useStyles = makeStyles((theme) => ({
     tabsPaper: {},
 }))
 
+const createCardInfo = "Here you can create a new training card. Select a user and a title, add the exercises and submit 💪"
+const deleteCardInfo = "Here you can remove a card from a user."
+const createExerciseInfo = "Here you can create a brand new exercise. Don't forget to upload an image! 😉"
+const addTagInfo = "Here you can create a new tag to be used in training cards."
+
 function Cards(props) {
     const classes = useStyles()
     const [value, setValue] = React.useState(0);
+    const {enqueueSnackbar} = useSnackbar()
+
+    const triggerMessageOnSwitch = index => {
+        switch (index) {
+            case 0:
+                enqueueSnackbar(createCardInfo, {variant: "info"})
+                break
+            case 1:
+                enqueueSnackbar(deleteCardInfo, {variant: "info"})
+                break
+            case 2:
+                enqueueSnackbar(createExerciseInfo, {variant: "info"})
+                break
+            case 3:
+                enqueueSnackbar(addTagInfo, {variant: "info"})
+                break
+        }
+    }
 
     const handleChangeTabs = (event, newValue) => {
         setValue(newValue);
+        triggerMessageOnSwitch(newValue)
     };
 
     const handleChangeSwipe = (index) => {
         setValue(index)
+        triggerMessageOnSwitch(index)
     }
 
     return (
