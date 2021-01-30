@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
         maxWidth: theme.breakpoints.values.md
     },
     pushCardSize: {
-        minWidth: theme.breakpoints.values.md / 2
+        minWidth: theme.breakpoints.values.md / 1.5
     }
 }))
 
