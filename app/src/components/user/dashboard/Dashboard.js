@@ -72,9 +72,8 @@ function Dashboard() {
         })
     }
 
-    // TODO sync with api parameters ({stepperInfo.map((item, i) => <CustomStepper key={i} item={item}/>)})
     function fetchStepperExpPoints() {
-        baseAxios.get("stepper").then(res => {
+        baseAxios.get("progressThreshold").then(res => {
             setStepperInfo(res.data)
         }).catch(() => {
         })
@@ -114,7 +113,7 @@ function Dashboard() {
                     </Grid>
                     <Grid item className={classes.vSpace}>
                         <div className={classes.centered}>
-                            <CustomStepper />
+                            <CustomStepper stepperInfo={stepperInfo} experiencePoints={userInfo.experiencePoints}/>
                         </div>
                     </Grid>
                     <Divider className={classes.divider}/>

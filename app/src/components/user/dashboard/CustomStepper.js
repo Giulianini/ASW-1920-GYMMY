@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {makeStyles, withStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -173,23 +173,18 @@ const StepperStyle = makeStyles({
 })
 
 export default function CustomizedSteppers(props) {
-    const [activeStep, setActiveStep] = React.useState();  // 0 = beginner, 1 = intermediate, 2 = advanced
+    const [activeStep, setActiveStep] = React.useState(0);  // 0 = beginner, 1 = intermediate, 2 = advanced
     const classes = StepperStyle()
 
-    // Level increase
-    const handleNext = () => {
-        setActiveStep((prevLevel) => prevLevel + 1);
-    };
-
-    // Level decrease (perchè? boh. magari ti spacchi una gamba)
-    const handleBack = () => {
-        setActiveStep((prevLevel) => prevLevel - 1);
-    };
-
-    // Level reset to 0 (perchè? boh. magari ti spacchi pure l'altra)
-    const handleReset = () => {
-        setActiveStep(0);
-    };
+    useEffect(() => {
+        if (props.experiencePoints < props.stepperInfo.intermediate) {
+            setActiveStep(0)
+        } else if (props.experiencePoints < props.stepperInfo.advanced) {
+            setActiveStep(1)
+        } else {
+            setActiveStep(2)
+        }
+    }, [])
 
     return (
         <Stepper alternativeLabel className={classes.root} activeStep={activeStep} connector={<SteppingConnector/>}>
