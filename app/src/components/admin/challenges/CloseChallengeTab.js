@@ -10,8 +10,11 @@ const useStyles = makeStyles({
     form: {
         paddingTop: 10,
     },
+    challengeBlock: {
+      marginBottom: 20,
+    },
     autocompleteTitle: {
-        fontWeight: 100,
+        fontWeight: 300,
         textAlign: "center"
     },
     gridItem: {
@@ -32,7 +35,7 @@ const useStyles = makeStyles({
         marginTop: 30,
     },
     autocompleteBlock: {
-        marginTop: 10,
+        marginTop: 25,
     }
 })
 
@@ -75,7 +78,7 @@ function CloseChallengeTab() {
               onSubmit={handleSubmit} className={classes.form}>
             <Grid item container xs={10} md={5} direction={"column"}>
                 <Grid item container direction={"column"} alignItems={"flex-start"}
-                      className={classes.autocompleteBlock}>
+                      className={classes.challengeBlock}>
                     <Grid item>
                         <Typography variant={"h6"} className={classes.autocompleteTitle}>Select a challenge</Typography>
                     </Grid>
