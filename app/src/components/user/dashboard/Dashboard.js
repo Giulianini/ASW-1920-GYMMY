@@ -23,9 +23,6 @@ const useStyles = makeStyles(theme => ({
     divider: {
         width: '100%'
     },
-    centered: {
-        margin: "auto"
-    },
     vSpace: {
         paddingTop: 5,
         paddingBottom: 5,
@@ -44,11 +41,6 @@ const useStyles = makeStyles(theme => ({
     scrollablePane: {
         maxHeight: 450,
         overflow: 'auto'
-    },
-    icons: {
-        marginLeft: 4,
-        marginRight: 4,
-        fontSize: '310%'
     }
 }));
 
@@ -109,17 +101,6 @@ function Dashboard() {
                 <Grid item container direction={"column"}>
                     <Grid item>
                         <List component="nav" aria-label="icons-list">
-                            <ListItem>
-                                <div className={classes.centered}>
-                                    <SpeedIcon className={classes.icons}/>
-                                    <BarChartIcon className={classes.icons}/>
-                                    <AccountBalanceIcon className={classes.icons}/>
-                                    <GpsFixedIcon className={classes.icons}/>
-                                    <BeenhereIcon className={classes.icons}/>
-                                    <EmojiEventsIcon className={classes.icons}/>
-                                </div>
-                            </ListItem>
-                            <Divider className={classes.divider}/>
                             <ListItem>
                                 <Typography variant={"h4"} className={classes.score}>
                                     {userInfo.experiencePoints} points
