@@ -45,6 +45,7 @@ const locationCapacitiesRoute = require('./routes/locationCapacitiesRoute')
 const statisticsRoute = require('./routes/statisticsRoute')
 const challengesRoute = require('./routes/challengesRoute')
 const coursesRoute = require('./routes/coursesRoute')
+const thresholdRoute = require('./routes/progressThresholdsRoute')
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -77,6 +78,8 @@ app.use('/tags', tagsRoute)
 app.use('/challenges', challengesRoute)
 
 app.use('/courses', coursesRoute)
+
+app.use('/progressThreshold', thresholdRoute)
 
 app.get("/", (req, res) => {
     res.send("Gymmy API")
