@@ -3,10 +3,11 @@ import {Box, Fab, Grid, Slider, TextField, Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import {makeStyles} from "@material-ui/core/styles";
 import {baseAxios} from "../../../Api";
-import {Done} from "@material-ui/icons";
+import {Done, Info} from "@material-ui/icons";
 import {Autocomplete} from "@material-ui/lab";
+import IconButton from "@material-ui/core/IconButton";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     form: {
         paddingTop: 10,
     },
@@ -35,8 +36,11 @@ const useStyles = makeStyles({
     },
     userSelector: {
         marginBottom: 20,
+    },
+    slider: {
+        zIndex: theme.zIndex.drawer + 1,
     }
-})
+}))
 
 function CreateGoalTab() {
     const classes = useStyles()
@@ -113,6 +117,7 @@ function CreateGoalTab() {
                                 min={0}
                                 max={1000}
                                 value={values.beginner}
+                                className={classes.slider}
                                 onChange={(event, value) => {
                                     handleChange("beginner", value)
                                 }}
@@ -137,6 +142,7 @@ function CreateGoalTab() {
                                 min={0}
                                 max={1000}
                                 value={values.intermediate}
+                                className={classes.slider}
                                 onChange={(event, value) => {
                                     handleChange("intermediate", value)
                                 }}
@@ -161,6 +167,7 @@ function CreateGoalTab() {
                                 min={0}
                                 max={1000}
                                 value={values.advanced}
+                                className={classes.slider}
                                 onChange={(event, value) => {
                                     handleChange("advanced", value)
                                 }}
@@ -204,7 +211,6 @@ function CreateGoalTab() {
         }, [fetchProgress])
         return [values,setValues]
     }
-
 }
 
 export default CreateGoalTab;
