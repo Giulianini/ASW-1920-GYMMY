@@ -1,24 +1,5 @@
 const mongoose = require('mongoose')
 
-const ExecutionHistorySchema = new mongoose.Schema({
-    date: {
-        type: Date,
-        required: true
-    },
-    completedAmount: {
-        type: Number,
-        required: true
-    },
-    workoutMinutes: {
-        type: Number,
-        required: true
-    },
-    exercises: [{
-        type: mongoose.Schema.ObjectId,
-        required: true
-    }]
-})
-
 const WorkoutMinutesSchema = new mongoose.Schema({
     month: {
         type: Number,
@@ -58,10 +39,6 @@ const StatisticsSchema = new mongoose.Schema({
     experiencePoints: {
         type: Number,
         default: 0
-    },
-    executionHistory: {
-        type: [ExecutionHistorySchema],
-        required: true
     },
     workoutMinutesByMonth: {
         type: [WorkoutMinutesSchema],

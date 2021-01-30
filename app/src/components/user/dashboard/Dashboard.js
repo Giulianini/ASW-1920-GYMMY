@@ -2,17 +2,10 @@ import React, {useEffect, useRef} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {Container, Divider, Grid, LinearProgress, List, ListItem, Typography,} from "@material-ui/core";
 import EditPersonalDialog from "../personal/EditPersonalDialog";
-import SpeedIcon from '@material-ui/icons/Speed';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import GpsFixedIcon from '@material-ui/icons/GpsFixed';
-import BeenhereIcon from '@material-ui/icons/Beenhere';
-import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import Course from "./Course";
 import Challenge from "./Challenge";
 import CustomStepper from "./CustomStepper"
 import {baseAxios, userAxios} from "../../../Api";
-import step from "d3-shape/src/curve/step";
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
@@ -22,9 +15,6 @@ const useStyles = makeStyles(theme => ({
     },
     divider: {
         width: '100%'
-    },
-    centered: {
-        margin: "auto"
     },
     vSpace: {
         paddingTop: 5,
@@ -44,11 +34,6 @@ const useStyles = makeStyles(theme => ({
     scrollablePane: {
         maxHeight: 450,
         overflow: 'auto'
-    },
-    icons: {
-        marginLeft: 4,
-        marginRight: 4,
-        fontSize: '310%'
     }
 }));
 
@@ -59,7 +44,7 @@ function Dashboard() {
         "username": "",
         "experiencePoints": ""
     })
-    const [stepperInfo, setStepperInfo] = React.useState([])
+    const [stepperInfo, setStepperInfo] = React.useState(null)
     const [challengeInfo, setChallengeInfo] = React.useState([])
     const [courseInfo, setCourseInfo] = React.useState([])
 
@@ -72,7 +57,7 @@ function Dashboard() {
 
     function fetchUser() {
         let username = localStorage.getItem("username")
-        baseAxios.get("statistics").then(res => {
+        userAxios.get("statistics").then(res => {
             setUserInfo({...res.data})
             console.log(userInfo.experiencePoints)
         }).catch(reason => {
@@ -80,9 +65,8 @@ function Dashboard() {
         })
     }
 
-    // TODO sync with api parameters ({stepperInfo.map((item, i) => <CustomStepper key={i} item={item}/>)})
     function fetchStepperExpPoints() {
-        baseAxios.get("stepper").then(res => {
+        baseAxios.get("progressThreshold").then(res => {
             setStepperInfo(res.data)
         }).catch(() => {
         })
@@ -110,19 +94,8 @@ function Dashboard() {
                     <Grid item>
                         <List component="nav" aria-label="icons-list">
                             <ListItem>
-                                <div className={classes.centered}>
-                                    <SpeedIcon className={classes.icons}/>
-                                    <BarChartIcon className={classes.icons}/>
-                                    <AccountBalanceIcon className={classes.icons}/>
-                                    <GpsFixedIcon className={classes.icons}/>
-                                    <BeenhereIcon className={classes.icons}/>
-                                    <EmojiEventsIcon className={classes.icons}/>
-                                </div>
-                            </ListItem>
-                            <Divider className={classes.divider}/>
-                            <ListItem>
                                 <Typography variant={"h4"} className={classes.score}>
-                                    {userInfo.experiencePoints}/3000 pts
+                                    {userInfo.experiencePoints} points
                                 </Typography>
                             </ListItem>
                             <Divider className={classes.divider}/>
@@ -133,9 +106,10 @@ function Dashboard() {
                     </Grid>
                     <Grid item className={classes.vSpace}>
                         <div className={classes.centered}>
-                            <CustomStepper />
+                            <CustomStepper stepperInfo={stepperInfo} experiencePoints={userInfo.experiencePoints}/>
                         </div>
                     </Grid>
+                    <Divider className={classes.divider}/>
                     <Grid item className={classes.vSpace}>
                         <Typography className={classes.otherText}>
                             Challenges
@@ -147,6 +121,7 @@ function Dashboard() {
                         {challengeInfo.map((item, i) => <Challenge key={i} item={item}/>)}
                     </Grid>
 
+                    <Divider className={classes.divider}/>
                     <Grid item className={classes.vSpace}>
                         <Typography className={classes.otherText}>
                             Courses
@@ -157,7 +132,6 @@ function Dashboard() {
                           className={classes.scrollablePane}>
                         {courseInfo.map((item, i) => <Course key={i} item={item}/>)}
                     </Grid>
-
                 </Grid>
             </Grid>
         </Container>

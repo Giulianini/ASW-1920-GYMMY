@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
         maxWidth: theme.breakpoints.values.md
     },
     pushCardSize: {
-        minWidth: theme.breakpoints.values.md / 2
+        minWidth: theme.breakpoints.values.md / 1.5
     }
 }))
 
@@ -66,7 +66,7 @@ function Challenge(props) {
                 </CardActionArea>
                 <CardActions>
                     <Button size="small" color="primary" onClick={acceptChallenge} disabled={accept}>
-                        {accept ? "Accepted!" : "Accept"} ({props.item.firstPlace} points)
+                        {accept ? "Accepted!" : "Accept"} ({props.item.expRewards.firstPlace} points)
                     </Button>
                 </CardActions>
                 <div className={classes.pushCardSize}/>

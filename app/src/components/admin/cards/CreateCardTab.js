@@ -156,7 +156,7 @@ function CreateCardTab(props) {
                         })}
                         getOptionLabel={(option) => option.username}
                         renderInput={(params) =>
-                            <TextField {...params} label="Select a username..." variant="standard"/>
+                            <TextField required {...params} label="Select a username..." variant="standard"/>
                         }
                         value={selectedUsername}
                     />
@@ -164,6 +164,7 @@ function CreateCardTab(props) {
                 <Grid item className={classes.userSelector}>
                     {/*<Typography variant={"h6"} className={classes.title}>Insert card title</Typography>*/}
                     <TextField
+                        required
                         label="Card title"
                         variant="standard"
                         fullWidth
@@ -192,6 +193,7 @@ function CreateCardTab(props) {
                 <Grid item className={classes.userSelector}>
                     {/*<Typography variant={"h6"} className={classes.title}>Insert workout duration</Typography>*/}
                     <TextField
+                        required
                         label="Duration (min)"
                         type="number"
                         variant="standard"
