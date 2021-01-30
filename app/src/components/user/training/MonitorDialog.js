@@ -1,4 +1,4 @@
-import React, {forwardRef, useCallback, useEffect, useImperativeHandle, useState} from 'react';
+import React, {forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState} from 'react';
 import {Dialog, DialogContent, FormControl, Grid, InputLabel, Select, Slide} from "@material-ui/core";
 import {ArgumentAxis, Chart, Title, ValueAxis,} from '@devexpress/dx-react-chart-material-ui';
 import {Animation, ArgumentScale, LineSeries} from '@devexpress/dx-react-chart';
@@ -48,6 +48,7 @@ const MonitorDialog = forwardRef((props, ref) => {
             sampling: 2,
             seriesLength: 10,
         })
+        const isMountedVal = useRef(false)
         // ----------- INTERACTION -------------
         const [open, setOpen] = React.useState(false)
         const [timerId, setTimerId] = useState(0)
@@ -60,12 +61,14 @@ const MonitorDialog = forwardRef((props, ref) => {
         const spo2BasePercentage = 97
         const spo2Randomness = 3
 
+        useEffect(() => {
+            isMountedVal.current = true
+            return () => {isMountedVal.current = false}
+        })
 
         const handleClickDialogOpen = () => {
-            clearTimeout(timerId)
             setHeartData([{seconds: 0, rate: 0}])
             setSpo2Data([{seconds: 0, saturation: 0}])
-            triggerTimeout()
             setOpen(true)
         }
 
@@ -161,7 +164,7 @@ const MonitorDialog = forwardRef((props, ref) => {
 
         const triggerTimeout = useCallback(() => {
             const id = setTimeout(() => {
-                if (open) {
+                if (isMountedVal.current) {
                     updateHearthData()
                     updateSaturationData()
                 }
