@@ -47,7 +47,7 @@ router.get(`/:${params.USERNAME_PARAM}/${params.OBJECTIVE_ROUTE}`,
     usersController.getUserObjective
 )
 
-router.post(`/:${params.USERNAME_PARAM}/${params.OBJECTIVE_ROUTE}`,
+router.put(`/:${params.USERNAME_PARAM}/${params.OBJECTIVE_ROUTE}`,
     auth.authenticateJWT,
     auth.authorizeUserAndTrainer,
     auth.ensureUserOwnsInfo,
