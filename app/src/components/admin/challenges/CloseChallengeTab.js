@@ -57,8 +57,12 @@ function CloseChallengeTab() {
         })
     }
 
+    const canSubmit = () => {
+        return awards.firstPlace && awards.secondPlace && awards.thirdPlace && selectedChallenge
+    }
+
     const handleSubmit = (e) => {
-        if (awards.firstPlace && awards.secondPlace && awards.thirdPlace && selectedChallenge) {
+        if (canSubmit()) {
             baseAxios.delete("/challenges/" + selectedChallenge._id, {
                 data: awards
             }).then(() => {
@@ -164,7 +168,8 @@ function CloseChallengeTab() {
                 </Grid>
             </Grid>
             <Grid item container justify={"center"} xs={11} className={classes.gridItem}>
-                <Fab color={"primary"}
+                <Fab disabled={!canSubmit()}
+                     color={"primary"}
                      onSubmit={handleSubmit}
                      className={classes.submitButton}
                      type={"submit"}
