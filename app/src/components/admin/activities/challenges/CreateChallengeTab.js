@@ -7,7 +7,7 @@ import {baseAxios} from "../../../../Api";
 import {Done} from "@material-ui/icons";
 import {createChallengeTabNotification} from "../Activities";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     form: {
         paddingTop: 10,
     },
@@ -16,6 +16,9 @@ const useStyles = makeStyles({
     },
     gridItem: {
         width: "100%",
+    },
+    slider: {
+        zIndex: theme.zIndex.drawer + 1,
     },
     sliderText: {
         fontWeight: 100,
@@ -31,7 +34,7 @@ const useStyles = makeStyles({
     submitButton: {
         marginTop: 30,
     }
-})
+}))
 
 function CreateChallengeTab() {
     const classes = useStyles()
@@ -133,6 +136,7 @@ function CreateChallengeTab() {
                                 onChange={(event, value) => {
                                     handleChange("firstPlaceReward", value)
                                 }}
+                                className={classes.slider}
                             />
                         </Grid>
                         <Grid item xs={2} className={classes.gridItem}>
@@ -157,6 +161,7 @@ function CreateChallengeTab() {
                                 onChange={(event, value) => {
                                     handleChange("secondPlaceReward", value)
                                 }}
+                                className={classes.slider}
                             />
                         </Grid>
                         <Grid item xs={2} className={classes.gridItem}>
@@ -181,6 +186,7 @@ function CreateChallengeTab() {
                                 onChange={(event, value) => {
                                     handleChange("thirdPlaceReward", value)
                                 }}
+                                className={classes.slider}
                             />
                         </Grid>
                         <Grid item xs={2} className={classes.gridItem}>

@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
     gridItem: {
         width: "100%"
     },
+    slider: {
+        zIndex: theme.zIndex.drawer + 1,
+    },
     sliderGrid: {},
     sliderText: {
         fontWeight: 100,
@@ -56,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     submitButton: {
         marginTop: 30,
         marginBottom: 30,
-    }
+    },
 }))
 
 const columns = [
@@ -237,6 +240,7 @@ function CreateCardTab(props) {
                                         onChange={(event, value) => {
                                             setSeries(value)
                                         }}
+                                        className={classes.slider}
                                     />
                                 </Grid>
                                 <Grid item xs={1} className={classes.gridItem}>
@@ -263,6 +267,7 @@ function CreateCardTab(props) {
                                         onChange={(event, value) => {
                                             setReps(value)
                                         }}
+                                        className={classes.slider}
                                     />
                                 </Grid>
                                 <Grid item xs={1} className={classes.gridItem}>
@@ -289,6 +294,7 @@ function CreateCardTab(props) {
                                         onChange={(event, value) => {
                                             setRest(value)
                                         }}
+                                        className={classes.slider}
                                     />
                                 </Grid>
                                 <Grid item xs={2} className={classes.gridItem}>
