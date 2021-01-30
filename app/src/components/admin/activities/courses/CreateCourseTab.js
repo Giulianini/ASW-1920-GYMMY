@@ -88,7 +88,7 @@ function CreateCourseTab() {
                 }
             })
         } else {
-            enqueueSnackbar("Some field are empty", {variant: "error"})
+            enqueueSnackbar("Some field are empty", {variant: "warning"})
         }
     }
 
