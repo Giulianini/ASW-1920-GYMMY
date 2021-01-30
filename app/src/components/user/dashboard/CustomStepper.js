@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {makeStyles, withStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -176,26 +176,38 @@ export default function CustomizedSteppers(props) {
     const [activeStep, setActiveStep] = React.useState(0);  // 0 = beginner, 1 = intermediate, 2 = advanced
     const classes = StepperStyle()
 
+    const [beginner, setBeginner] = useState(0)
+    const [intermediate, setIntermediate] = useState(0)
+    const [advanced, setAdvanced] = useState(0)
+
     useEffect(() => {
-        if (props.experiencePoints < props.stepperInfo.intermediate) {
-            setActiveStep(0)
-        } else if (props.experiencePoints < props.stepperInfo.advanced) {
-            setActiveStep(1)
-        } else {
-            setActiveStep(2)
+        if (props.stepperInfo) {
+            setBeginner(props.stepperInfo.beginner)
+            setIntermediate(props.stepperInfo.intermediate)
+            setAdvanced(props.stepperInfo.advanced)
+            if (props.experiencePoints < intermediate) {
+                setActiveStep(0)
+            } else if (props.experiencePoints < advanced) {
+                setActiveStep(1)
+            } else {
+                setActiveStep(2)
+            }
         }
-    }, [])
+    }, [props.stepperInfo, beginner, intermediate, advanced])
 
     return (
         <Stepper alternativeLabel className={classes.root} activeStep={activeStep} connector={<SteppingConnector/>}>
             <Step key={"Beginner"}>
-                <StepLabel StepIconComponent={StepIconFilling}>{"Beginner (0-100 points)"}</StepLabel>
+                <StepLabel
+                    StepIconComponent={StepIconFilling}>{`Beginner (${beginner}-${intermediate} points)`}</StepLabel>
             </Step>
             <Step key={"Average"}>
-                <StepLabel StepIconComponent={StepIconFilling}>{"Average (100-500 points)"}</StepLabel>
+                <StepLabel
+                    StepIconComponent={StepIconFilling}>{`Average (${intermediate + 1}-${advanced} points)`}</StepLabel>
             </Step>
             <Step key={"Advanced"}>
-                <StepLabel StepIconComponent={StepIconFilling}>{"Advanced (500+ points)"}</StepLabel>
+                <StepLabel
+                    StepIconComponent={StepIconFilling}>{`Advanced (${advanced}+ points)`}</StepLabel>
             </Step>
         </Stepper>
     );

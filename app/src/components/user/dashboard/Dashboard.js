@@ -2,17 +2,10 @@ import React, {useEffect, useRef} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {Container, Divider, Grid, LinearProgress, List, ListItem, Typography,} from "@material-ui/core";
 import EditPersonalDialog from "../personal/EditPersonalDialog";
-import SpeedIcon from '@material-ui/icons/Speed';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import GpsFixedIcon from '@material-ui/icons/GpsFixed';
-import BeenhereIcon from '@material-ui/icons/Beenhere';
-import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import Course from "./Course";
 import Challenge from "./Challenge";
 import CustomStepper from "./CustomStepper"
 import {baseAxios, userAxios} from "../../../Api";
-import step from "d3-shape/src/curve/step";
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
@@ -51,7 +44,7 @@ function Dashboard() {
         "username": "",
         "experiencePoints": ""
     })
-    const [stepperInfo, setStepperInfo] = React.useState([])
+    const [stepperInfo, setStepperInfo] = React.useState(null)
     const [challengeInfo, setChallengeInfo] = React.useState([])
     const [courseInfo, setCourseInfo] = React.useState([])
 
