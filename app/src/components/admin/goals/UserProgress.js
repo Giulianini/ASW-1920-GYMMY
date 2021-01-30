@@ -67,7 +67,7 @@ function CreateGoalTab() {
             if (values.beginner < values.intermediate && values.intermediate < values.advanced) {
                 return true
             } else {
-                enqueueSnackbar("Check values order", {variant: "warning"})
+                enqueueSnackbar("Check threshold values order", {variant: "warning"})
                 return false
             }
         } else {

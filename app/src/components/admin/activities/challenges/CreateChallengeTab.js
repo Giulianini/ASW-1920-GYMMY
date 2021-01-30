@@ -54,7 +54,7 @@ function CreateChallengeTab() {
 
     const resetForm = () => {
         setValues({
-            mainGoal: '',
+            title: '',
             description: '',
             firstPlaceReward: 0,
             secondPlaceReward: 0,
@@ -68,7 +68,16 @@ function CreateChallengeTab() {
     }, [enqueueSnackbar])
 
     const canSubmit = () => {
-        return values.description && values.title && file[0]
+        if (values.title && values.description && values.firstPlaceReward && values.secondPlaceReward && values.thirdPlaceReward && file[0]) {
+            if (values.firstPlaceReward < values.secondPlaceReward && values.secondPlaceReward < values.thirdPlaceReward) {
+                return true
+            } else {
+                enqueueSnackbar("Check price order", {variant: "warning"})
+                return false
+            }
+        } else {
+            return false
+        }
     }
 
     const handleSubmit = (e) => {
