@@ -41,11 +41,7 @@ const useStyles = makeStyles({
 function CreateGoalTab() {
     const classes = useStyles()
     const {enqueueSnackbar} = useSnackbar()
-    const [values, setValues] = React.useState({
-        beginner: 0,
-        intermediate: 0,
-        advanced: 0,
-    })
+    const [values, setValues] = useProgress()
 
     const handleChange = (prop, value) => {
         setValues({
@@ -63,7 +59,7 @@ function CreateGoalTab() {
     }
 
     const canSubmit = () => {
-        if (values.beginner && values.intermediate && values.advanced) {
+        if (values.intermediate && values.advanced) {
             if (values.beginner < values.intermediate && values.intermediate < values.advanced) {
                 return true
             } else {
@@ -189,6 +185,26 @@ function CreateGoalTab() {
             </Grid>
         </Grid>
     );
+
+    function useProgress() {
+        const [values, setValues] = React.useState({
+            beginner: 0,
+            intermediate: 0,
+            advanced: 0,
+        })
+        const fetchProgress = useCallback(() => {
+            baseAxios.get("/progressThreshold").then((res) => {
+                setValues(res.data)
+            }).catch((reason) => {
+                console.log(reason.response.data)
+            })
+        }, [])
+        useEffect(() => {
+            fetchProgress()
+        }, [fetchProgress])
+        return [values,setValues]
+    }
+
 }
 
 export default CreateGoalTab;
