@@ -11,17 +11,17 @@ const routes = {
                 name: "Dashboard",
                 value: `admin/dashboard`
             },
+            goals: {
+                name: "Goals",
+                value: `admin/goals`
+            },
             cards: {
                 name: "Cards",
                 value: `admin/cards`
             },
-            challenges: {
-                name: "Challenges",
-                value: `admin/challenges`
-            },
-            courses: {
-                name: "Courses",
-                value: `admin/courses`
+            activities: {
+                name: "Activities",
+                value: `admin/activities`
             },
             locations: {
                 name: "Locations",

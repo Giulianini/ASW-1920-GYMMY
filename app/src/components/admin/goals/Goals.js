@@ -3,9 +3,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import {Paper, Tabs} from "@material-ui/core";
 import Tab from "@material-ui/core/Tab";
 import SwipeableViews from "react-swipeable-views";
-import CreateChallengeTab from "./CreateChallengeTab";
-import CloseChallengeTab from "./CloseChallengeTab";
 import {useSnackbar} from "notistack";
+import CreateGoalTab from "./CreateGoalTab";
 
 const useStyles = makeStyles((theme) => ({
     tabs: {
@@ -20,10 +19,10 @@ const useStyles = makeStyles((theme) => ({
     },
     tabsPaper: {},
 }))
-export const createChallengeTabNotification = "Here you can create a challenge. Give it a title, set the price points and don't forget to insert an image 😊"
-export const closeChallengeTabNotification = "Here you can close an active challenge and assign awards to participants 🏅"
+export const createGoalsTabNotification = "Here you can manage your pupils goals 🧘"
+export const stepperTabNotification = "Here you can set the stepper thresholds"
 
-function Challenges() {
+function Goals() {
     const classes = useStyles()
     const [value, setValue] = React.useState(0)
     const {enqueueSnackbar} = useSnackbar()
@@ -31,13 +30,13 @@ function Challenges() {
     const triggerMessageOnSwitch = (index) => {
         switch (index) {
             case 0:
-                enqueueSnackbar(createChallengeTabNotification, {variant: "info"})
+                enqueueSnackbar(createGoalsTabNotification, {variant: "info"})
                 break
             case 1:
-                enqueueSnackbar(closeChallengeTabNotification, {variant: "info"})
+                enqueueSnackbar(stepperTabNotification, {variant: "info"})
                 break
             default:
-                enqueueSnackbar(createChallengeTabNotification, {variant: "info"})
+                enqueueSnackbar(createGoalsTabNotification, {variant: "info"})
                 break
         }
     }
@@ -70,12 +69,11 @@ function Challenges() {
                 </Tabs>
             </Paper>
             <SwipeableViews index={value} onChangeIndex={handleChangeSwipe} className={classes.swipeableView}>
-                <CreateChallengeTab/>
-                <CloseChallengeTab/>
+                <CreateGoalTab/>
             </SwipeableViews>
         </>
     )
 
 }
 
-export default Challenges;
+export default Goals;

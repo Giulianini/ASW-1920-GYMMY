@@ -3,9 +3,9 @@ import {Box, Fab, Grid, Slider, TextField, Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import {makeStyles} from "@material-ui/core/styles";
 import {DropzoneArea} from "material-ui-dropzone";
-import {baseAxios} from "../../../Api";
+import {baseAxios} from "../../../../Api";
 import {Done} from "@material-ui/icons";
-import {createChallengeTabNotification} from "./Challenges";
+import {createChallengeTabNotification} from "../Activities";
 
 const useStyles = makeStyles({
     form: {
@@ -187,7 +187,6 @@ function CreateChallengeTab() {
                             handleChange("title", event.target.value)
                         }}
                         value={values.title}
-                        id="outlined-search"
                         label="Challenge title"
                         variant="standard"/>
                 </Grid>
@@ -199,7 +198,6 @@ function CreateChallengeTab() {
                             handleChange("description", event.target.value)
                         }}
                         value={values.description}
-                        id="outlined-search"
                         label="Challenge description"
                         variant="standard"/>
                 </Grid>

@@ -3,9 +3,8 @@ import {Box, Fab, Grid, TextField, Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import {makeStyles} from "@material-ui/core/styles";
 import {DropzoneArea} from "material-ui-dropzone";
-import {baseAxios} from "../../../Api";
+import {baseAxios} from "../../../../Api";
 import {Done} from "@material-ui/icons";
-import {createCourseTabNotification} from "./Courses";
 
 const useStyles = makeStyles({
     form: {
@@ -57,10 +56,6 @@ function CreateCourseTab() {
         setFile([])
     }
 
-    useEffect(() => {
-        enqueueSnackbar(createCourseTabNotification, {variant: "info"})
-    }, [enqueueSnackbar])
-
     const canSubmit = () => {
         return values.description && values.title && file[0]
     }
@@ -109,7 +104,6 @@ function CreateCourseTab() {
                             handleChange("title", event.target.value)
                         }}
                         value={values.title}
-                        id="outlined-search"
                         label="Course title"
                         variant="standard"/>
                 </Grid>
@@ -121,7 +115,6 @@ function CreateCourseTab() {
                             handleChange("description", event.target.value)
                         }}
                         value={values.description}
-                        id="outlined-search"
                         label="Course description"
                         variant="standard"/>
                 </Grid>

@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {useHistory, useLocation} from "react-router-dom";
 import {setAppbarTitle} from "../../redux/ducks/user/user";
 import {BottomNavigation, BottomNavigationAction} from "@material-ui/core";
-import {AirlineSeatReclineExtra, Dashboard, People, Receipt, SportsHandball} from "@material-ui/icons";
+import {AirlineSeatReclineExtra, Dashboard, People, Person, Receipt, SportsHandball} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
@@ -48,18 +48,18 @@ function BottomBar(props) {
                 icon={<Dashboard/>}
             />
             <BottomNavigationAction
+                label={props.tabs.admin.routes.goals.name}
+                value={props.tabs.admin.routes.goals.value}
+                icon={<Person/>}
+            />
+            <BottomNavigationAction
                 label={props.tabs.admin.routes.cards.name}
                 value={props.tabs.admin.routes.cards.value}
                 icon={<Receipt/>}
             />
             <BottomNavigationAction
-                label={props.tabs.admin.routes.challenges.name}
-                value={props.tabs.admin.routes.challenges.value}
-                icon={<People/>}
-            />
-            <BottomNavigationAction
-                label={props.tabs.admin.routes.courses.name}
-                value={props.tabs.admin.routes.courses.value}
+                label={props.tabs.admin.routes.activities.name}
+                value={props.tabs.admin.routes.activities.value}
                 icon={<SportsHandball/>}
             />
             <BottomNavigationAction
