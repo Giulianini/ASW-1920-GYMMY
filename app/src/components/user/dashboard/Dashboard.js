@@ -117,6 +117,7 @@ function Dashboard() {
                             <CustomStepper />
                         </div>
                     </Grid>
+                    <Divider className={classes.divider}/>
                     <Grid item className={classes.vSpace}>
                         <Typography className={classes.otherText}>
                             Challenges
@@ -128,6 +129,7 @@ function Dashboard() {
                         {challengeInfo.map((item, i) => <Challenge key={i} item={item}/>)}
                     </Grid>
 
+                    <Divider className={classes.divider}/>
                     <Grid item className={classes.vSpace}>
                         <Typography className={classes.otherText}>
                             Courses
