@@ -7,7 +7,7 @@ import {baseAxios} from "../../../../Api";
 import {Done} from "@material-ui/icons";
 import {createChallengeTabNotification} from "../Activities";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
     form: {
         paddingTop: 10,
     },
@@ -16,9 +16,6 @@ const useStyles = makeStyles((theme) => ({
     },
     gridItem: {
         width: "100%",
-    },
-    slider: {
-        zIndex: theme.zIndex.drawer + 1,
     },
     sliderText: {
         fontWeight: 100,
@@ -33,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
     },
     submitButton: {
         marginTop: 30,
+    },
+    slider: {
+        zIndex: theme.zIndex.drawer + 1,
     }
 }))
 
@@ -133,10 +133,10 @@ function CreateChallengeTab() {
                                 min={0}
                                 max={100}
                                 value={values.firstPlaceReward}
+                                className={classes.slider}
                                 onChange={(event, value) => {
                                     handleChange("firstPlaceReward", value)
                                 }}
-                                className={classes.slider}
                             />
                         </Grid>
                         <Grid item xs={2} className={classes.gridItem}>
@@ -158,10 +158,10 @@ function CreateChallengeTab() {
                                 min={0}
                                 max={100}
                                 value={values.secondPlaceReward}
+                                className={classes.slider}
                                 onChange={(event, value) => {
                                     handleChange("secondPlaceReward", value)
                                 }}
-                                className={classes.slider}
                             />
                         </Grid>
                         <Grid item xs={2} className={classes.gridItem}>
@@ -183,10 +183,10 @@ function CreateChallengeTab() {
                                 min={0}
                                 max={100}
                                 value={values.thirdPlaceReward}
+                                className={classes.slider}
                                 onChange={(event, value) => {
                                     handleChange("thirdPlaceReward", value)
                                 }}
-                                className={classes.slider}
                             />
                         </Grid>
                         <Grid item xs={2} className={classes.gridItem}>

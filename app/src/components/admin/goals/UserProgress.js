@@ -1,12 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Box, Fab, Grid, Slider, TextField, Typography} from "@material-ui/core";
+import React, {useCallback, useEffect} from 'react';
+import {Fab, Grid, Slider, Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import {makeStyles} from "@material-ui/core/styles";
 import {baseAxios} from "../../../Api";
 import {Done} from "@material-ui/icons";
-import {Autocomplete} from "@material-ui/lab";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     form: {
         paddingTop: 10,
     },
@@ -35,17 +34,16 @@ const useStyles = makeStyles({
     },
     userSelector: {
         marginBottom: 20,
+    },
+    slider: {
+        zIndex: theme.zIndex.drawer + 1,
     }
-})
+}))
 
 function CreateGoalTab() {
     const classes = useStyles()
     const {enqueueSnackbar} = useSnackbar()
-    const [values, setValues] = React.useState({
-        beginner: 0,
-        intermediate: 0,
-        advanced: 0,
-    })
+    const [values, setValues] = useProgress()
 
     const handleChange = (prop, value) => {
         setValues({
@@ -63,7 +61,7 @@ function CreateGoalTab() {
     }
 
     const canSubmit = () => {
-        if (values.beginner && values.intermediate && values.advanced) {
+        if (values.intermediate && values.advanced) {
             if (values.beginner < values.intermediate && values.intermediate < values.advanced) {
                 return true
             } else {
@@ -117,6 +115,7 @@ function CreateGoalTab() {
                                 min={0}
                                 max={1000}
                                 value={values.beginner}
+                                className={classes.slider}
                                 onChange={(event, value) => {
                                     handleChange("beginner", value)
                                 }}
@@ -141,6 +140,7 @@ function CreateGoalTab() {
                                 min={0}
                                 max={1000}
                                 value={values.intermediate}
+                                className={classes.slider}
                                 onChange={(event, value) => {
                                     handleChange("intermediate", value)
                                 }}
@@ -165,6 +165,7 @@ function CreateGoalTab() {
                                 min={0}
                                 max={1000}
                                 value={values.advanced}
+                                className={classes.slider}
                                 onChange={(event, value) => {
                                     handleChange("advanced", value)
                                 }}
@@ -189,6 +190,25 @@ function CreateGoalTab() {
             </Grid>
         </Grid>
     );
+
+    function useProgress() {
+        const [values, setValues] = React.useState({
+            beginner: 0,
+            intermediate: 0,
+            advanced: 0,
+        })
+        const fetchProgress = useCallback(() => {
+            baseAxios.get("/progressThreshold").then((res) => {
+                setValues(res.data)
+            }).catch((reason) => {
+                console.log(reason.response.data)
+            })
+        }, [])
+        useEffect(() => {
+            fetchProgress()
+        }, [fetchProgress])
+        return [values, setValues]
+    }
 }
 
 export default CreateGoalTab;

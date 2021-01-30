@@ -7,7 +7,7 @@ import {Done} from "@material-ui/icons";
 import {Autocomplete} from "@material-ui/lab";
 import {createGoalsTabNotification} from "./Goals";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme =>({
     form: {
         paddingTop: 10,
     },
@@ -36,8 +36,11 @@ const useStyles = makeStyles({
     },
     userSelector: {
         marginBottom: 20,
+    },
+    slider: {
+        zIndex: theme.zIndex.drawer + 1,
     }
-})
+}))
 
 function CreateGoalTab() {
     const classes = useStyles()
@@ -69,6 +72,19 @@ function CreateGoalTab() {
             targetCalories: 0,
             targetMinWorkouts: 0
         })
+    }
+
+    const fetchObjectives = (usernameData) => {
+
+        if (usernameData) {
+            baseAxios.get(`users/${usernameData.username}/objective`).then((res) => {
+                setValues(res.data)
+            }).catch((reason) => {
+                console.log(reason.response.data)
+            })
+        } else {
+            resetForm()
+        }
     }
 
     useEffect(() => {
@@ -115,6 +131,7 @@ function CreateGoalTab() {
                         options={users}
                         onChange={((event, value) => {
                             setSelectedUsername(value)
+                            fetchObjectives(value)
                         })}
                         getOptionLabel={(option) => option.username}
                         renderInput={(params) =>
@@ -161,6 +178,7 @@ function CreateGoalTab() {
                                     min={30}
                                     max={150}
                                     value={values.targetWeight}
+                                    className={classes.slider}
                                     onChange={(event, value) => {
                                         handleChange("targetWeight", value)
                                     }}
@@ -185,6 +203,7 @@ function CreateGoalTab() {
                                     min={0}
                                     max={50}
                                     value={values.targetBMI}
+                                    className={classes.slider}
                                     onChange={(event, value) => {
                                         handleChange("targetBMI", value)
                                     }}
@@ -207,8 +226,9 @@ function CreateGoalTab() {
                                     step={100}
                                     marks
                                     min={0}
-                                    max={3000}
+                                    max={3500}
                                     value={values.targetCalories}
+                                    className={classes.slider}
                                     onChange={(event, value) => {
                                         handleChange("targetCalories", value)
                                     }}
@@ -233,6 +253,7 @@ function CreateGoalTab() {
                                     min={0}
                                     max={7}
                                     value={values.targetMinWorkouts}
+                                    className={classes.slider}
                                     onChange={(event, value) => {
                                         handleChange("targetMinWorkouts", value)
                                     }}
@@ -271,7 +292,6 @@ function CreateGoalTab() {
         useEffect(() => {
             fetchUsers()
         }, [fetchUsers])
-
         return users
     }
 }
