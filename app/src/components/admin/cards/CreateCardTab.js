@@ -71,14 +71,14 @@ function CreateCardTab(props) {
     const classes = useStyles()
     const {enqueueSnackbar} = useSnackbar()
 
-    const users = useUsers()
-    const exercises = useExercises()
-    const [tags, fetchTags] = useTags()
-
     const [selectedTitle, setSelectedTitle] = useState('')
     const [selectedUsername, setSelectedUsername] = useState(null)
     const [selectedExercise, setSelectedExercise] = useState(null)
     const [selectedTags, setSelectedTags] = useState([])
+
+    const users = useUsers()
+    const exercises = useExercises()
+    const [tags, fetchTags] = useTags()
 
     const [workoutDuration, setWorkoutDuration] = useState('')
     const [series, setSeries] = useState(0)
@@ -175,15 +175,15 @@ function CreateCardTab(props) {
                     />
                 </Grid>
                 <Grid item className={classes.userSelector}>
-                    {/*<Typography variant={"h6"} className={classes.title}>Select tags</Typography>*/}
                     <Autocomplete
                         multiple
                         filterSelectedOptions
-                        options={tags}
+                        options={tags.filter(tag => !selectedTags.map(t => t.name).includes(tag.name))}
                         onChange={((event, values) => {
                             setSelectedTags(values)
                         })}
                         getOptionLabel={(option) => option.name}
+                        getOptionSelected={(option, value) => option.name === value.name}
                         renderInput={(params) =>
                             <TextField {...params} label="Select tags..." variant="standard" onClick={fetchTags}/>
                         }
@@ -353,7 +353,7 @@ function CreateCardTab(props) {
                 setTags(foundTags)
             }).catch(reason => {
             })
-        }, []);
+        }, [selectedTags]);
         useEffect(() => {
             fetchTags()
         }, [fetchTags])
