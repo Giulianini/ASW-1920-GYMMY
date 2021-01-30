@@ -122,7 +122,7 @@ function Dashboard() {
                             <Divider className={classes.divider}/>
                             <ListItem>
                                 <Typography variant={"h4"} className={classes.score}>
-                                    {userInfo.experiencePoints}
+                                    {userInfo.experiencePoints} points
                                 </Typography>
                             </ListItem>
                             <Divider className={classes.divider}/>
