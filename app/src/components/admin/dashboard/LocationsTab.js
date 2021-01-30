@@ -3,6 +3,7 @@ import {Grid, Typography} from "@material-ui/core";
 import {DataGrid} from "@material-ui/data-grid";
 import {makeStyles} from "@material-ui/core/styles";
 import {baseAxios, socket} from "../../../Api";
+import "../styles.css";
 
 const columns = [
     {field: 'id', headerName: 'ID', width: 70},
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function LocationsTab(props) {
+function LocationsTab() {
     const classes = useStyles()
 
     const locations = useLocations()
@@ -37,7 +38,7 @@ function LocationsTab(props) {
         <Grid container direction={"column"} justify={"flex-start"} alignItems={"center"} className={classes.grid}>
             <Typography variant={"h5"} className={classes.tableTitle}>Locations usage</Typography>
             <Grid item xs={12} md={8} className={classes.gridItem}>
-                <DataGrid rows={locations} columns={columns} pageSize={8} autoHeight/>
+                <DataGrid className={classes.tableRows} rows={locations} columns={columns} pageSize={8} autoHeight/>
             </Grid>
         </Grid>
     );

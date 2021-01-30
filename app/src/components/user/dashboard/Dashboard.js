@@ -12,6 +12,7 @@ import Course from "./Course";
 import Challenge from "./Challenge";
 import CustomStepper from "./CustomStepper"
 import {baseAxios, userAxios} from "../../../Api";
+import step from "d3-shape/src/curve/step";
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
@@ -58,11 +59,13 @@ function Dashboard() {
         "username": "",
         "experiencePoints": ""
     })
+    const [stepperInfo, setStepperInfo] = React.useState([])
     const [challengeInfo, setChallengeInfo] = React.useState([])
     const [courseInfo, setCourseInfo] = React.useState([])
 
     useEffect(() => {
         fetchUser()
+        fetchStepperExpPoints()
         fetchCourses()
         fetchChallenges()
     }, [])
@@ -74,6 +77,14 @@ function Dashboard() {
             console.log(userInfo.experiencePoints)
         }).catch(reason => {
             console.log(reason)
+        })
+    }
+
+    // TODO sync with api parameters ({stepperInfo.map((item, i) => <CustomStepper key={i} item={item}/>)})
+    function fetchStepperExpPoints() {
+        baseAxios.get("stepper").then(res => {
+            setStepperInfo(res.data)
+        }).catch(() => {
         })
     }
 
@@ -122,7 +133,7 @@ function Dashboard() {
                     </Grid>
                     <Grid item className={classes.vSpace}>
                         <div className={classes.centered}>
-                            <CustomStepper/>
+                            <CustomStepper />
                         </div>
                     </Grid>
                     <Grid item className={classes.vSpace}>
