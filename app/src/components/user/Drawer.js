@@ -29,6 +29,12 @@ function Drawer(props) {
     const darkMode = useSelector(state => state.userRedux.darkMode)
     const dispatch = useDispatch()
 
+    const logoutUser = () => {
+        dispatch(resetUser())
+        localStorage.clear()
+        socket.close()
+    }
+
     return (
         <SwipeableDrawer
             anchor={'left'}
@@ -54,13 +60,19 @@ function Drawer(props) {
                         />
                     </ListItemSecondaryAction>
                 </ListItem>
-                <ListItem button divider={true} onClick={() => history.push(`/${routes.signup.value}`)}>
+                <ListItem button divider={true} onClick={() => {
+                    logoutUser()
+                    history.push(`/${routes.signup.value}`)
+                }}>
                     <ListItemIcon>
                         <PersonAdd/>
                     </ListItemIcon>
                     <ListItemText id="signup" primary="Signup"/>
                 </ListItem>
-                <ListItem button divider={true} onClick={() => history.push(`/${routes.login.value}`)}>
+                <ListItem button divider={true} onClick={() => {
+                    logoutUser()
+                    history.push(`/${routes.login.value}`)
+                }}>
                     <ListItemIcon>
                         <LockOpen/>
                     </ListItemIcon>
@@ -71,9 +83,7 @@ function Drawer(props) {
                         <Lock/>
                     </ListItemIcon>
                     <ListItemText id="logout" primary="Logout" onClick={() => {
-                        dispatch(resetUser())
-                        localStorage.clear()
-                        socket.close()
+                        logoutUser()
                         history.push(`/${routes.login.value}`)
                     }}/>
                 </ListItem>

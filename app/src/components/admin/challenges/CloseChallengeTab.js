@@ -10,9 +10,11 @@ const useStyles = makeStyles({
     form: {
         paddingTop: 10,
     },
+    challengeBlock: {
+      marginBottom: 20,
+    },
     autocompleteTitle: {
-        fontWeight: 100,
-        paddingBottom: 10,
+        fontWeight: 300,
         textAlign: "center"
     },
     gridItem: {
@@ -33,7 +35,7 @@ const useStyles = makeStyles({
         marginTop: 30,
     },
     autocompleteBlock: {
-        marginTop: 20,
+        marginTop: 25,
     }
 })
 
@@ -55,8 +57,12 @@ function CloseChallengeTab() {
         })
     }
 
+    const canSubmit = () => {
+        return awards.firstPlace && awards.secondPlace && awards.thirdPlace && selectedChallenge
+    }
+
     const handleSubmit = (e) => {
-        if (awards.firstPlace && awards.secondPlace && awards.thirdPlace && selectedChallenge) {
+        if (canSubmit()) {
             baseAxios.delete("/challenges/" + selectedChallenge._id, {
                 data: awards
             }).then(() => {
@@ -76,7 +82,7 @@ function CloseChallengeTab() {
               onSubmit={handleSubmit} className={classes.form}>
             <Grid item container xs={10} md={5} direction={"column"}>
                 <Grid item container direction={"column"} alignItems={"flex-start"}
-                      className={classes.autocompleteBlock}>
+                      className={classes.challengeBlock}>
                     <Grid item>
                         <Typography variant={"h6"} className={classes.autocompleteTitle}>Select a challenge</Typography>
                     </Grid>
@@ -89,7 +95,7 @@ function CloseChallengeTab() {
                             getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
                                 <TextField {...params} onClick={fetchChallenges}
-                                           label="Select a challenge..." variant="outlined"/>
+                                           label="Select a challenge..." variant="standard"/>
                             }
                         />
                     </Grid>
@@ -111,7 +117,7 @@ function CloseChallengeTab() {
                             })}
                             getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
-                                <TextField {...params} label="Select the winner..." variant="outlined"/>
+                                <TextField {...params} label="Select the winner..." variant="standard"/>
                             }
                         />
                     </Grid>
@@ -133,8 +139,7 @@ function CloseChallengeTab() {
                             })}
                             getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
-                                <TextField {...params}
-                                           label="Select 2° place..." variant="outlined"/>
+                                <TextField {...params} label="Select 2° place..." variant="standard"/>
                             }
                         />
                     </Grid>
@@ -156,14 +161,15 @@ function CloseChallengeTab() {
                             })}
                             getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
-                                <TextField {...params} label="Select 3° place..." variant="outlined"/>
+                                <TextField {...params} label="Select 3° place..." variant="standard"/>
                             }
                         />
                     </Grid>
                 </Grid>
             </Grid>
             <Grid item container justify={"center"} xs={11} className={classes.gridItem}>
-                <Fab color={"primary"}
+                <Fab disabled={!canSubmit()}
+                     color={"primary"}
                      onSubmit={handleSubmit}
                      className={classes.submitButton}
                      type={"submit"}

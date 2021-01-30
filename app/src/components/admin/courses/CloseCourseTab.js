@@ -37,14 +37,18 @@ const useStyles = makeStyles({
     }
 })
 
-function CloseChallengeTab() {
+function CloseCourseTab() {
     const classes = useStyles()
     const {enqueueSnackbar} = useSnackbar()
     const [selectedCourse, setSelectedCourse] = useState(null)
     const [courses, fetchCourses] = useCourses()
 
+    const canSubmit = () => {
+        return selectedCourse
+    }
+
     const handleSubmit = (e) => {
-        if (selectedCourse) {
+        if (canSubmit()) {
             baseAxios.delete("/courses/" + selectedCourse._id, {}).then(() => {
                 setSelectedCourse(null)
                 fetchCourses()
@@ -64,9 +68,6 @@ function CloseChallengeTab() {
             <Grid item container xs={10} md={5} direction={"column"}>
                 <Grid item container direction={"column"} alignItems={"flex-start"}
                       className={classes.autocompleteBlock}>
-                    <Grid item>
-                        <Typography variant={"h6"} className={classes.autocompleteTitle}>Select a course</Typography>
-                    </Grid>
                     <Grid item className={classes.gridItem}>
                         <Autocomplete
                             value={selectedCourse}
@@ -77,7 +78,7 @@ function CloseChallengeTab() {
                             getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
                                 <TextField {...params}
-                                           onClick={fetchCourses} label="Select a course..." variant="outlined"
+                                           onClick={fetchCourses} label="Select a course..." variant="standard"
                                 />
                             }
                         />
@@ -85,7 +86,8 @@ function CloseChallengeTab() {
                 </Grid>
             </Grid>
             <Grid item container justify={"center"} xs={11} className={classes.gridItem}>
-                <Fab color={"primary"}
+                <Fab disabled={!canSubmit()}
+                     color={"primary"}
                      onSubmit={handleSubmit}
                      className={classes.submitButton}
                      type={"submit"}
@@ -115,4 +117,4 @@ function CloseChallengeTab() {
     }
 }
 
-export default CloseChallengeTab;
+export default CloseCourseTab;

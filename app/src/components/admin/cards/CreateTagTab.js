@@ -54,7 +54,6 @@ function CreateTagTab(props) {
                             setTagName(event.target.value)
                         }}
                         value={tagName}
-                        id="outlined-search"
                         label="Tag name"
                         variant="standard"/>
                 </Grid>

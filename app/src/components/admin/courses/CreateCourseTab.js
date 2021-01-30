@@ -61,9 +61,13 @@ function CreateCourseTab() {
         enqueueSnackbar(createCourseTabNotification, {variant: "info"})
     }, [enqueueSnackbar])
 
+    const canSubmit = () => {
+        return values.description && values.title && file[0]
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (values.description && values.title && file[0]) {
+        if (canSubmit()) {
             baseAxios.post("/courses", values).then((res) => {
                 const challengeId = res.data._id
                 const config = {
@@ -129,7 +133,8 @@ function CreateCourseTab() {
                 </Grid>
             </Grid>
             <Grid item container justify={"center"} xs={11} className={classes.gridItem}>
-                <Fab color={"primary"}
+                <Fab disabled={!canSubmit()}
+                     color={"primary"}
                      onSubmit={handleSubmit}
                      className={classes.submitButton}
                      type={"submit"}
