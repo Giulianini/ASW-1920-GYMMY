@@ -60,7 +60,7 @@ function ExerciseCard(props) {
                 <CardActionArea onClick={() => props.handleExerciseOpen(props.exercise)}>
                     <CardMedia
                         className={classes.cardMedia}
-                        image={retrieveImage()} //retrieveImage()
+                        image={retrieveImage()}
                         title={props.exercise.exercise.name}
                     />
                     <CardContent>

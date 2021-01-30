@@ -12,7 +12,6 @@ const useStyles = makeStyles({
     },
     autocompleteTitle: {
         fontWeight: 100,
-        paddingBottom: 10,
         textAlign: "center"
     },
     gridItem: {
@@ -33,7 +32,7 @@ const useStyles = makeStyles({
         marginTop: 30,
     },
     autocompleteBlock: {
-        marginTop: 20,
+        marginTop: 10,
     }
 })
 
@@ -89,7 +88,7 @@ function CloseChallengeTab() {
                             getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
                                 <TextField {...params} onClick={fetchChallenges}
-                                           label="Select a challenge..." variant="outlined"/>
+                                           label="Select a challenge..." variant="standard"/>
                             }
                         />
                     </Grid>
@@ -111,7 +110,7 @@ function CloseChallengeTab() {
                             })}
                             getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
-                                <TextField {...params} label="Select the winner..." variant="outlined"/>
+                                <TextField {...params} label="Select the winner..." variant="standard"/>
                             }
                         />
                     </Grid>
@@ -133,8 +132,7 @@ function CloseChallengeTab() {
                             })}
                             getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
-                                <TextField {...params}
-                                           label="Select 2° place..." variant="outlined"/>
+                                <TextField {...params} label="Select 2° place..." variant="standard"/>
                             }
                         />
                     </Grid>
@@ -156,7 +154,7 @@ function CloseChallengeTab() {
                             })}
                             getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
-                                <TextField {...params} label="Select 3° place..." variant="outlined"/>
+                                <TextField {...params} label="Select 3° place..." variant="standard"/>
                             }
                         />
                     </Grid>

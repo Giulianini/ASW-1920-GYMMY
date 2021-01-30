@@ -164,7 +164,6 @@ function CreateCardTab(props) {
                 <Grid item className={classes.userSelector}>
                     {/*<Typography variant={"h6"} className={classes.title}>Insert card title</Typography>*/}
                     <TextField
-                        id="card-title-insertion"
                         label="Card title"
                         variant="standard"
                         fullWidth
@@ -185,8 +184,7 @@ function CreateCardTab(props) {
                         })}
                         getOptionLabel={(option) => option.name}
                         renderInput={(params) =>
-                            <TextField {...params} label="Select tags..." variant="standard"
-                                       onClick={fetchTags}/>
+                            <TextField {...params} label="Select tags..." variant="standard" onClick={fetchTags}/>
                         }
                         value={selectedTags}
                     />
@@ -194,7 +192,6 @@ function CreateCardTab(props) {
                 <Grid item className={classes.userSelector}>
                     {/*<Typography variant={"h6"} className={classes.title}>Insert workout duration</Typography>*/}
                     <TextField
-                        id="series-selector"
                         label="Duration (min)"
                         type="number"
                         variant="standard"

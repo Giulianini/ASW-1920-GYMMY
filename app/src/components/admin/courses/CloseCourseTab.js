@@ -77,7 +77,7 @@ function CloseChallengeTab() {
                             getOptionLabel={(option) => option.title}
                             renderInput={(params) =>
                                 <TextField {...params}
-                                           onClick={fetchCourses} label="Select a course..." variant="outlined"
+                                           onClick={fetchCourses} label="Select a course..." variant="standard"
                                 />
                             }
                         />

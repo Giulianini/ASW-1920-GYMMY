@@ -90,7 +90,6 @@ function CreateExerciseTab(props) {
                             setExerciseName(event.target.value)
                         }}
                         value={exerciseName}
-                        id="outlined-search"
                         label="Exercise name"
                         variant="standard"/>
                 </Grid>
@@ -102,7 +101,6 @@ function CreateExerciseTab(props) {
                             setExerciseDescription(event.target.value)
                         }}
                         value={exerciseDescription}
-                        id="outlined-search"
                         label="Description"
                         variant="standard"/>
                 </Grid>
