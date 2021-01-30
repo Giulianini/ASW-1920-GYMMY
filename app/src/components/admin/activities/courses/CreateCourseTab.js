@@ -50,14 +50,14 @@ function CreateCourseTab() {
 
     const resetForm = () => {
         setValues({
-            title: '',
+            mainGoal: '',
             description: '',
         })
         setFile([])
     }
 
     const canSubmit = () => {
-        return values.description && values.title && file[0]
+        return values.description && values.mainGoal && file[0]
     }
 
     const handleSubmit = (e) => {
@@ -103,7 +103,7 @@ function CreateCourseTab() {
                         onChange={(event) => {
                             handleChange("title", event.target.value)
                         }}
-                        value={values.title}
+                        value={values.mainGoal}
                         label="Course title"
                         variant="standard"/>
                 </Grid>

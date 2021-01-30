@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {Box, Fab, Grid, TextField, Typography} from "@material-ui/core";
+import React, {useCallback, useEffect, useState} from 'react';
+import {Box, Fab, Grid, Slider, TextField, Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import {makeStyles} from "@material-ui/core/styles";
-import {DropzoneArea} from "material-ui-dropzone";
 import {baseAxios} from "../../../Api";
 import {Done} from "@material-ui/icons";
+import {Autocomplete} from "@material-ui/lab";
 
 const useStyles = makeStyles({
     form: {
@@ -29,17 +29,28 @@ const useStyles = makeStyles({
     },
     submitButton: {
         marginTop: 20,
+    },
+    slidersGrid: {
+        marginTop: 40,
+    },
+    userSelector: {
+        marginBottom: 20,
     }
 })
 
 function CreateGoalTab() {
     const classes = useStyles()
     const {enqueueSnackbar} = useSnackbar()
+    const users = useUsers()
+    const [selectedUsername, setSelectedUsername] = useState(null)
     const [values, setValues] = React.useState({
-        title: '',
+        mainGoal: '',
         description: '',
+        targetWeight: 0,
+        targetBMI: 0,
+        targetCalories: 0,
+        targetMinWorkouts: 0,
     })
-    const [file, setFile] = useState([])
 
     const handleChange = (prop, value) => {
         setValues({
@@ -50,10 +61,13 @@ function CreateGoalTab() {
 
     const resetForm = () => {
         setValues({
-            title: '',
+            mainGoal: '',
             description: '',
+            targetWeight: 0,
+            targetBMI: 0,
+            targetCalories: 0,
+            targetMinWorkouts: 0
         })
-        setFile([])
     }
 
     useEffect(() => {
@@ -61,38 +75,31 @@ function CreateGoalTab() {
     }, [enqueueSnackbar])
 
     const canSubmit = () => {
-        return values.description && values.title && file[0]
+        return selectedUsername && values.description && values.mainGoal && values.targetBMI && values.targetWeight && values.targetCalories && values.targetMinWorkouts
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
         if (canSubmit()) {
-            baseAxios.post("/courses", values).then((res) => {
-                const challengeId = res.data._id
-                const config = {
-                    headers: {
-                        "Content-Type": "multipart/form-data"
-                    }
-                }
-                let fd = new FormData()
-                fd.append("image", file[0])
-                baseAxios.put(`/courses/${challengeId}/image`, fd, config).then(() => {
-                    enqueueSnackbar("Course successfully added", {variant: "success"})
-                    resetForm()
-                }).catch((reason => {
-                    console.log(reason.response.data)
-                    enqueueSnackbar("Error adding the course image", {variant: "error"})
-                }))
+            baseAxios.patch(`users/${selectedUsername.username}/objective`, values).then((res) => {
+                enqueueSnackbar("Goal successfully updated", {variant: "success"})
             }).catch((reason) => {
-                console.log(reason.response.data)
-                if (reason.response.status === 409) {
-                    enqueueSnackbar("Course already present", {variant: "error"})
+                if (reason.response.status === 404) {
+                    enqueueSnackbar("Creating goals for the first time ", {variant: "warning"})
+                    baseAxios.put(`users/${selectedUsername.username}/objective`, values).then((res) => {
+                        enqueueSnackbar("Goal successfully created", {variant: "success"})
+                    }).catch((reason) => {
+                        console.log(reason.response)
+                        enqueueSnackbar("Error adding the goals", {variant: "error"})
+                    })
+                } else if (reason.response.status === 409) {
+                    enqueueSnackbar("User already present", {variant: "error"})
                 } else {
-                    enqueueSnackbar("Error adding the course", {variant: "error"})
+                    enqueueSnackbar("Error updating the goals", {variant: "error"})
                 }
             })
         } else {
-            enqueueSnackbar("Some field are empty", {variant: "error"})
+            enqueueSnackbar("Some field are empty", {variant: "warning"})
         }
     }
 
@@ -100,16 +107,28 @@ function CreateGoalTab() {
         <Grid container direction={"column"} justify={"center"} alignItems={"center"} component={"form"}
               onSubmit={handleSubmit} className={classes.form}>
             <Grid item container xs={10} md={5} direction={"column"}>
+                <Grid item className={classes.userSelector}>
+                    <Autocomplete
+                        options={users}
+                        onChange={((event, value) => {
+                            setSelectedUsername(value)
+                        })}
+                        getOptionLabel={(option) => option.username}
+                        renderInput={(params) =>
+                            <TextField {...params} label="Select a username..." variant="standard"/>
+                        }
+                        value={selectedUsername}
+                    />
+                </Grid>
                 <Grid item className={classes.gridItem}>
                     <TextField
                         required
                         fullWidth
                         onChange={(event) => {
-                            handleChange("title", event.target.value)
+                            handleChange("mainGoal", event.target.value)
                         }}
-                        value={values.title}
-                        id="outlined-search"
-                        label="Course title"
+                        value={values.mainGoal}
+                        label="Main goal"
                         variant="standard"/>
                 </Grid>
                 <Grid item className={classes.gridItem}>
@@ -121,14 +140,106 @@ function CreateGoalTab() {
                         }}
                         value={values.description}
                         id="outlined-search"
-                        label="Course description"
+                        label="Goal description"
                         variant="standard"/>
                 </Grid>
-                <Grid item className={classes.gridItem}>
-                    <Box className={classes.uploadZone}>
-                        <Typography variant={"h6"} className={classes.sliderTitle}>Upload image</Typography>
-                        <DropzoneArea onChange={(files) => setFile(files)}/>
-                    </Box>
+                <Grid item container direction={"column"} alignItems={"center"} className={classes.slidersGrid}>
+                    <Grid item container direction={"column"} alignItems={"flex-start"}>
+                        <Grid item>
+                            <Typography className={classes.sliderTitle}>Target weight</Typography>
+                        </Grid>
+                        <Grid container item alignItems={"center"}>
+                            <Grid item xs={10} className={classes.gridItem}>
+                                <Slider
+                                    defaultValue={0}
+                                    valueLabelDisplay="auto"
+                                    step={1}
+                                    marks
+                                    min={30}
+                                    max={150}
+                                    value={values.targetWeight}
+                                    onChange={(event, value) => {
+                                        handleChange("targetWeight", value)
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={2} className={classes.gridItem}>
+                                <Typography className={classes.sliderText}>{values.targetWeight} kg</Typography>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item container direction={"column"} alignItems={"flex-start"}>
+                        <Grid item>
+                            <Typography className={classes.sliderTitle}>Target BMI</Typography>
+                        </Grid>
+                        <Grid container item alignItems={"center"}>
+                            <Grid item xs={10} className={classes.gridItem}>
+                                <Slider
+                                    defaultValue={0}
+                                    valueLabelDisplay="auto"
+                                    step={1}
+                                    marks
+                                    min={0}
+                                    max={50}
+                                    value={values.targetBMI}
+                                    onChange={(event, value) => {
+                                        handleChange("targetBMI", value)
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={2} className={classes.gridItem}>
+                                <Typography className={classes.sliderText}>{values.targetBMI} %</Typography>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item container direction={"column"} alignItems={"flex-start"}>
+                        <Grid item>
+                            <Typography className={classes.sliderTitle}>Target calories</Typography>
+                        </Grid>
+                        <Grid container item alignItems={"center"}>
+                            <Grid item xs={10} className={classes.gridItem}>
+                                <Slider
+                                    defaultValue={0}
+                                    valueLabelDisplay="auto"
+                                    step={100}
+                                    marks
+                                    min={0}
+                                    max={3000}
+                                    value={values.targetCalories}
+                                    onChange={(event, value) => {
+                                        handleChange("targetCalories", value)
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={2} className={classes.gridItem}>
+                                <Typography className={classes.sliderText}>{values.targetCalories} kcal</Typography>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item container direction={"column"} alignItems={"flex-start"}>
+                        <Grid item>
+                            <Typography className={classes.sliderTitle}>Target workout frequency (week)</Typography>
+                        </Grid>
+                        <Grid container item alignItems={"center"}>
+                            <Grid item xs={10} className={classes.gridItem}>
+                                <Slider
+                                    defaultValue={0}
+                                    valueLabelDisplay="auto"
+                                    step={1}
+                                    marks
+                                    min={0}
+                                    max={7}
+                                    value={values.targetMinWorkouts}
+                                    onChange={(event, value) => {
+                                        handleChange("targetMinWorkouts", value)
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={2} className={classes.gridItem}>
+                                <Typography className={classes.sliderText}>{values.targetMinWorkouts} days</Typography>
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
             <Grid item container justify={"center"} xs={11} className={classes.gridItem}>
@@ -144,6 +255,23 @@ function CreateGoalTab() {
             </Grid>
         </Grid>
     );
+
+    function useUsers() {
+        const [users, setUsers] = useState([])
+        const fetchUsers = useCallback(() => {
+            baseAxios.get("users").then(res => {
+                const foundUsers = res.data.filter(obj => obj.role !== "trainer")
+                setUsers(foundUsers)
+                console.log(foundUsers)
+            }).catch(reason => {
+            })
+        }, []);
+        useEffect(() => {
+            fetchUsers()
+        }, [fetchUsers])
+
+        return users
+    }
 }
 
 export default CreateGoalTab;

@@ -54,7 +54,7 @@ function CreateChallengeTab() {
 
     const resetForm = () => {
         setValues({
-            title: '',
+            mainGoal: '',
             description: '',
             firstPlaceReward: 0,
             secondPlaceReward: 0,

@@ -12,6 +12,8 @@ import Header from "../user/Header";
 import Drawer from "../user/Drawer";
 import Cards from "./cards/Cards";
 import Activities from "./activities/Activities";
+import Goals from "./goals/Goals";
+import Locations from "./locations/Locations";
 
 function Admin() {
     const location = useLocation()
@@ -28,8 +30,10 @@ function Admin() {
                     <CSSTransition key={location.key} classNames={"fade"} timeout={300}>
                         <Switch>
                             <Route path={`/${routes.admin.routes.dashboard.value}`} children={<Dashboard/>}/>
+                            <Route path={`/${routes.admin.routes.goals.value}`} children={<Goals/>}/>
                             <Route path={`/${routes.admin.routes.cards.value}`} children={<Cards/>}/>
                             <Route path={`/${routes.admin.routes.activities.value}`} children={<Activities/>}/>
+                            <Route path={`/${routes.admin.routes.locations.value}`} children={<Locations/>}/>
                             <Redirect from='*' to={`/${routes.admin.routes.dashboard.value}`}/>
                         </Switch>
                     </CSSTransition>
