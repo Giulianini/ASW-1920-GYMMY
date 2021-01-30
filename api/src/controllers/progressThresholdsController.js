@@ -47,7 +47,7 @@ exports.modifyThreshold = async function (req, res) {
 
     const foundThreshold = await ProgressThreshold.findOne().exec()
     if (!foundThreshold) {
-        return responses.conflict(res)
+        return responses.notFound(res)("Threshold not found")
     }
 
     if (beginner !== undefined) {

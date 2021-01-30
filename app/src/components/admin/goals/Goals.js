@@ -5,6 +5,7 @@ import Tab from "@material-ui/core/Tab";
 import SwipeableViews from "react-swipeable-views";
 import {useSnackbar} from "notistack";
 import CreateGoalTab from "./CreateGoalTab";
+import UserProgress from "./UserProgress";
 
 const useStyles = makeStyles((theme) => ({
     tabs: {
@@ -64,12 +65,13 @@ function Goals() {
                     centered
                     variant={"fullWidth"}
                 >
-                    <Tab label="Create"/>
-                    <Tab label="Close"/>
+                    <Tab label="Create Objectives"/>
+                    <Tab label="User Progress"/>
                 </Tabs>
             </Paper>
             <SwipeableViews index={value} onChangeIndex={handleChangeSwipe} className={classes.swipeableView}>
                 <CreateGoalTab/>
+                <UserProgress/>
             </SwipeableViews>
         </>
     )

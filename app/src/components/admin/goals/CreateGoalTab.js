@@ -5,6 +5,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import {baseAxios} from "../../../Api";
 import {Done} from "@material-ui/icons";
 import {Autocomplete} from "@material-ui/lab";
+import {createGoalsTabNotification} from "./Goals";
 
 const useStyles = makeStyles({
     form: {
@@ -71,7 +72,7 @@ function CreateGoalTab() {
     }
 
     useEffect(() => {
-        //enqueueSnackbar(createCourseTabNotification, {variant: "info"})
+        enqueueSnackbar(createGoalsTabNotification, {variant: "info"})
     }, [enqueueSnackbar])
 
     const canSubmit = () => {
@@ -83,11 +84,13 @@ function CreateGoalTab() {
         if (canSubmit()) {
             baseAxios.patch(`users/${selectedUsername.username}/objective`, values).then((res) => {
                 enqueueSnackbar("Goal successfully updated", {variant: "success"})
+                resetForm()
             }).catch((reason) => {
                 if (reason.response.status === 404) {
                     enqueueSnackbar("Creating goals for the first time ", {variant: "warning"})
                     baseAxios.put(`users/${selectedUsername.username}/objective`, values).then((res) => {
                         enqueueSnackbar("Goal successfully created", {variant: "success"})
+                        resetForm()
                     }).catch((reason) => {
                         console.log(reason.response)
                         enqueueSnackbar("Error adding the goals", {variant: "error"})
@@ -262,7 +265,6 @@ function CreateGoalTab() {
             baseAxios.get("users").then(res => {
                 const foundUsers = res.data.filter(obj => obj.role !== "trainer")
                 setUsers(foundUsers)
-                console.log(foundUsers)
             }).catch(reason => {
             })
         }, []);
