@@ -122,7 +122,7 @@ function Dashboard() {
                             <Divider className={classes.divider}/>
                             <ListItem>
                                 <Typography variant={"h4"} className={classes.score}>
-                                    {userInfo.experiencePoints}/3000 pts
+                                    {userInfo.experiencePoints}
                                 </Typography>
                             </ListItem>
                             <Divider className={classes.divider}/>
@@ -157,7 +157,6 @@ function Dashboard() {
                           className={classes.scrollablePane}>
                         {courseInfo.map((item, i) => <Course key={i} item={item}/>)}
                     </Grid>
-
                 </Grid>
             </Grid>
         </Container>
