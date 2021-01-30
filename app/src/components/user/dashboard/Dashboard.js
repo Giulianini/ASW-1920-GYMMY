@@ -72,7 +72,7 @@ function Dashboard() {
 
     function fetchUser() {
         let username = localStorage.getItem("username")
-        baseAxios.get("statistics").then(res => {
+        userAxios.get("statistics").then(res => {
             setUserInfo({...res.data})
             console.log(userInfo.experiencePoints)
         }).catch(reason => {

@@ -117,15 +117,9 @@ exports.createExecution = async function (req, res) {
 
 async function saveStatistics(userId, foundExecution, completedExercisesLength) {
     const now = new Date()
-    const statistics = await Statistics.findOne({ user: userId }).exec()
+    const statistics = await Statistics.findOne({user: userId}).exec()
     const currentExp = statistics.experiencePoints
     const minutes = Math.floor((now - foundExecution.startTime) / (1000 * 60));
-    const history = {
-        date: now,
-        completedAmount: completedExercisesLength,
-        workoutMinutes: minutes,
-        exercises: foundExecution.completion.map(obj => obj.exercise)
-    }
 
     const month = now.getMonth()
     const year = now.getFullYear()
@@ -157,7 +151,6 @@ async function saveStatistics(userId, foundExecution, completedExercisesLength) 
     }
 
     statistics.experiencePoints = currentExp + (completedExercisesLength * 1)
-    statistics.executionHistory.push(history)
     await statistics.save()
 }
 

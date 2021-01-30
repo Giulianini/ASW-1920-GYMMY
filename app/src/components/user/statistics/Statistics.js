@@ -6,9 +6,7 @@ import {Animation, BarSeries} from '@devexpress/dx-react-chart';
 import {userAxios} from "../../../Api";
 
 const useStyles = makeStyles(theme => ({
-    rootGrid: {
-
-    }
+    rootGrid: {}
 }));
 
 const chartRootStyles = {
@@ -61,13 +59,13 @@ function Statistics() {
     useEffect(() => {
         fetchCompletedExStats()
         fetchWorkoutMinsStats()
-    },[])
+    }, [])
 
     function fetchCompletedExStats() {
         userAxios.get("statistics").then(res => {
             const exercisesByMonth = res.data.exercisesByMonth
-            const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+            const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
             const exercisesLastYear = exercisesByMonth.slice(-12)
                 .map(obj => {
                     return {
@@ -76,15 +74,8 @@ function Statistics() {
                     }
                 })
             setActivityData(exercisesLastYear)
-        }).catch(() => {
-        })
-    }
 
-    function fetchWorkoutMinsStats() {
-        userAxios.get("statistics").then(res => {
             const workoutMinutesByMonth = res.data.workoutMinutesByMonth
-            const months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
             const minutesLastYear = workoutMinutesByMonth.slice(-12)
                 .map(obj => {
                     return {
@@ -97,6 +88,9 @@ function Statistics() {
         })
     }
 
+    function fetchWorkoutMinsStats() {
+    }
+
     return (
         <Container maxWidth={"lg"}>
             <Grid container direction={"column"} alignContent={"center"} className={classes.rootGrid}>
@@ -104,7 +98,7 @@ function Statistics() {
                     <Chart
                         data={activityData}
                     >
-                        <ArgumentAxis />
+                        <ArgumentAxis/>
                         <ValueAxis
                             max={2400}
                         />
@@ -115,25 +109,25 @@ function Statistics() {
                             argumentField="month"
                         />
 
-                        <Animation />
-                        <Legend position="bottom" rootComponent={ChartRoot} labelComponent={LegendLabel} />
-                        <Title text="Completed exercises (#)" />
+                        <Animation/>
+                        <Legend position="bottom" rootComponent={ChartRoot} labelComponent={LegendLabel}/>
+                        <Title text="Completed exercises (#)"/>
                     </Chart>
                 </Grid>
 
                 <Grid item>
                     <Chart data={workoutData} rootComponent={ChartRoot}>
-                        <ArgumentAxis />
-                        <ValueAxis />
-                        <AreaSeries name="Workout" valueField="min" argumentField="month" />
-                        <Animation />
+                        <ArgumentAxis/>
+                        <ValueAxis/>
+                        <AreaSeries name="Workout" valueField="min" argumentField="month"/>
+                        <Animation/>
                         <Legend
                             position="bottom"
                             rootComponent={LegendRoot}
                             itemComponent={LegendItem}
                             labelComponent={LegendLabel}
                         />
-                        <Title text="Workout time (active minutes)" />
+                        <Title text="Workout time (active minutes)"/>
                     </Chart>
                 </Grid>
             </Grid>
