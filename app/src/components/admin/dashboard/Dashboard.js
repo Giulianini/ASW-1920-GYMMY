@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     tabsPaper: {},
 }))
 
-function Dashboard(props) {
+function Dashboard() {
     const classes = useStyles()
     const [value, setValue] = React.useState(0);
     const location = useLocation()
@@ -30,7 +30,7 @@ function Dashboard(props) {
 
     const welcomeFromRegistration = useCallback(() => {
         if (location.state && location.state.username) {
-            enqueueSnackbar(`Hi ${location.state.username} welcome to Gymmy`, {variant: "success"})
+            enqueueSnackbar(`Hello! ${location.state.username} Welcome to the Gymmy app.`, {variant: "success"})
         }
     }, [location.state, enqueueSnackbar])
 

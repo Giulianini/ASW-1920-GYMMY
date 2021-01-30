@@ -3,6 +3,7 @@ import {Grid, Typography} from "@material-ui/core";
 import {DataGrid} from "@material-ui/data-grid";
 import {makeStyles} from "@material-ui/core/styles";
 import {baseAxios, socket} from "../../../Api";
+import "../styles.css";
 
 const columns = [
     {field: 'id', headerName: 'ID', width: 70},
