@@ -15,6 +15,7 @@ const express = require('express');
 const app = express();
 
 const mongoose = require('mongoose')
+const { seed } = require('./seed/seed')
 
 // your express configuration here
 const httpServer = http.createServer(app);
@@ -108,6 +109,7 @@ mongoose.connect(
             console.log('Could not connect to database ' + err)
         } else {
             console.log(`Connected to ${dbName} @ ${dbConnection}`)
+            seed()
         }
     }
 )
