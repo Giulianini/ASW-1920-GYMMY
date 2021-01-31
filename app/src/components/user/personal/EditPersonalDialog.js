@@ -71,9 +71,9 @@ const EditPersonalDialog = forwardRef((props, ref) => {
                 userAxios.patch('/measures', {...saveUserInfo})
                     .then(() => {
                         props.setUserInfo({...saveUserInfo})
-                        enqueueSnackbar("Personal info saved correctly", {variant: "success"})
+                        enqueueSnackbar("Personal info saved correctly.", {variant: "success"})
                     }).catch(() => {
-                    enqueueSnackbar("Cannot save personal info", {variant: "error"})
+                    enqueueSnackbar("Cannot save personal info.", {variant: "error"})
                 })
             } else {
                 enqueueSnackbar(`${erroredFields.join(" and ")} must be numbers!`, {variant: "warning"})
@@ -85,7 +85,6 @@ const EditPersonalDialog = forwardRef((props, ref) => {
                 handleClickOpen: handleClickOpen
             };
         });
-
 
         return (
             <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
@@ -140,7 +139,6 @@ const EditPersonalDialog = forwardRef((props, ref) => {
             </Dialog>
         );
     }
-
     return <MyEditPersonalDialog {...props}/>
 })
 

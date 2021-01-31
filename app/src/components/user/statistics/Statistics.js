@@ -1,13 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {makeStyles} from "@material-ui/core/styles";
 import {Container, Grid, withStyles} from "@material-ui/core";
 import {AreaSeries, ArgumentAxis, Chart, Legend, Title, ValueAxis,} from '@devexpress/dx-react-chart-material-ui';
 import {Animation, BarSeries} from '@devexpress/dx-react-chart';
 import {userAxios} from "../../../Api";
-
-const useStyles = makeStyles(theme => ({
-    rootGrid: {}
-}));
 
 const chartRootStyles = {
     chart: {
@@ -50,19 +45,19 @@ const LegendLabel = withStyles(legendLabelStyles, {name: 'LegendLabel'})(LegendL
 const LegendItem = withStyles(legendItemStyles, {name: 'LegendItem'})(LegendItemBase);
 
 function Statistics() {
-    const classes = useStyles();
     const [activityData, setActivityData] = useState([]);
     const [workoutData, setWorkoutData] = useState([]);
 
 
     // ----------- FETCHING STATS DATA -------------
     useEffect(() => {
-        fetchCompletedExStats()
-        fetchWorkoutMinsStats()
+        fetchGraphsData()
     }, [])
 
-    function fetchCompletedExStats() {
+    function fetchGraphsData() {
         userAxios.get("statistics").then(res => {
+
+            // Fetching exercises by month (1st graph)
             const exercisesByMonth = res.data.exercisesByMonth
             const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -75,6 +70,7 @@ function Statistics() {
                 })
             setActivityData(exercisesLastYear)
 
+            // Fetching workout time by month (2nd graph)
             const workoutMinutesByMonth = res.data.workoutMinutesByMonth
             const minutesLastYear = workoutMinutesByMonth.slice(-12)
                 .map(obj => {
@@ -88,12 +84,9 @@ function Statistics() {
         })
     }
 
-    function fetchWorkoutMinsStats() {
-    }
-
     return (
         <Container maxWidth={"lg"}>
-            <Grid container direction={"column"} alignContent={"center"} className={classes.rootGrid}>
+            <Grid container direction={"column"} alignContent={"center"}>
                 <Grid item>
                     <Chart
                         data={activityData}

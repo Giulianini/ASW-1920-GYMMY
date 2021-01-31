@@ -9,7 +9,6 @@ import checkApiEndpoint from "../Api";
 import {appTheme} from "../appTheme";
 import Carousel from "react-material-ui-carousel";
 
-
 const backgroundImage = "landingPageImage.jpeg";
 
 const useStyles = makeStyles({

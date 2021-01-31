@@ -19,21 +19,15 @@ const useStyles = makeStyles(theme => ({
         backgroundRepeat: 'no-repeat',
         height: "100vh",
     },
-    buttonStyle: {
-        color: "red",
-    },
-
     title: {
         fontSize: 50,
         fontWeight: 100
     },
-
     textFieldForm: {
         paddingTop: 10,
         paddingBottom: 5,
         fontWeight: 300,
     },
-
     textFieldGrid: {
         backgroundColor: "white",
         [theme.breakpoints.down('md')]: {
@@ -103,7 +97,7 @@ function Login() {
 
     const welcomeFromRegistration = useCallback(() => {
         if (location.state && location.state.registered) {
-            enqueueSnackbar(`Hi ${location.state.username} we have registered your account. Sign in to Gymmy`,
+            enqueueSnackbar(`Hi ${location.state.username}, we have registered your account. You can now sign in!`,
                 {variant: "success"})
         }
     }, [location.state, enqueueSnackbar])
