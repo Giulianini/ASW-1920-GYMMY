@@ -1,2 +1,2 @@
 #!/bin/bash
-chmod "400" /etc/mongod_keyfile
+chmod "400" /etc/mongod-keyfile
