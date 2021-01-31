@@ -13,6 +13,8 @@ services:
     volumes:
       - ./app:/app
     restart: "no"  # Could be always, on-failure, unless-stopped
+    depends_on:
+      - api-service
   api-service:
     image: "gymmy-api:prod"
     container_name: "gymmy-api_prod"
