@@ -80,7 +80,7 @@ function CreateCardTab(props) {
     const [selectedTags, setSelectedTags] = useState([])
 
     const users = useUsers()
-    const exercises = useExercises()
+    const [exercises, fetchExercises] = useExercises()
     const [tags, fetchTags] = useTags()
 
     const [workoutDuration, setWorkoutDuration] = useState('')
@@ -214,7 +214,8 @@ function CreateCardTab(props) {
                         })}
                         getOptionLabel={(option) => option.name}
                         renderInput={(params) =>
-                            <TextField {...params} label="Select an exercise..." variant="standard"/>
+                            <TextField {...params} onClick={fetchExercises} label="Select an exercise..."
+                                       variant="standard"/>
                         }
                         value={selectedExercise}
                     />
@@ -380,7 +381,7 @@ function CreateCardTab(props) {
             fetchExercises()
         }, [fetchExercises])
 
-        return exercises
+        return [exercises, fetchExercises]
     }
 }
 
