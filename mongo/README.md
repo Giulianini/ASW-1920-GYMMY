@@ -78,5 +78,21 @@ mongo -u <username> -p <password> --port 27017
     rs0:SECONDARY> 
 ```
 
-## Replication
-When a node is stopped, mongodb will start a new election for the new Primary node.
+### Replication
+- Replication is managed automatically by MongoDB through advanced consensus algorithm
+- When a node is stopped, mongodb will start a new election for the new Primary node.
+
+## MongoDB Compass connection to cluster node
+### Primary node: Leader
+Paste this string in MongoDB Compass
+```
+mongodb://admin:password@localhost:27018/
+```
+
+### Secondary node: Slave
+Paste this string in MongoDB Compass
+```
+mongodb://admin:password@localhost:27019/?readPreference=secondary
+```
+
+
