@@ -33,3 +33,10 @@ Choose inside port -> 27017 and  **container ip/name**.
 ```
 mongodb://user:password@mongo:27017/
 ```
+
+## Replication
+
+### Create the keyfile for authentication intra containers
+```
+openssl rand -base64 756 > mongo/etc/mongod_keyfile
+```
