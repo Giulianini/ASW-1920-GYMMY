@@ -7,7 +7,7 @@ import {baseAxios} from "../../../Api";
 
 const useStyles = makeStyles(theme => ({
     mediaPersonal: {
-        paddingTop: '50%', // 16:9
+        paddingTop: '50%',
         margin: 'auto'
     },
     card: {

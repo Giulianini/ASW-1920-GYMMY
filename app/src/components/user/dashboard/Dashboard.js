@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.primary.main,
         margin: "auto"
     },
-    otherText: {
+    activities: {
         fontSize: 23,
         fontWeight: "lighter"
     },
@@ -111,7 +111,7 @@ function Dashboard() {
                     </Grid>
                     <Divider className={classes.divider}/>
                     <Grid item className={classes.vSpace}>
-                        <Typography className={classes.otherText}>
+                        <Typography className={classes.activities}>
                             Challenges
                         </Typography>
                     </Grid>
@@ -123,7 +123,7 @@ function Dashboard() {
 
                     <Divider className={classes.divider}/>
                     <Grid item className={classes.vSpace}>
-                        <Typography className={classes.otherText}>
+                        <Typography className={classes.activities}>
                             Courses
                         </Typography>
                     </Grid>
