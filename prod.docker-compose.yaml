@@ -43,7 +43,7 @@ services:
       - gymmy-network
     volumes:
       - ./mongo/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/:ro
-      - ./mongo/etc/mongod_keyfile:/etc/mongod_keyfile # Permission: 400
+      - ./mongo/etc/mongod-keyfile:/etc/mongod-keyfile # Permission: 400
       - ./mongo/etc/initReplicaSet.js:/etc/initReplicaSet.js # Permission: 400
       # The named volume dbdata will persist the data stored in Mongo’s default data directory, /data/db.
       # This will ensure that you don’t lose data in cases where you stop or remove containers.
@@ -53,7 +53,7 @@ services:
       test: test $$(cat /etc/initReplicaSet.js | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
       interval: 5s
       start_period: 5s
-    command: [ --replSet, rs0, --auth, --bind_ip_all, --keyFile, /etc/mongod_keyfile ]
+    command: [ --replSet, rs0, --auth, --bind_ip_all, --keyFile, /etc/mongod-keyfile ]
     depends_on:
       - mongo2
       - mongo3
@@ -69,7 +69,7 @@ services:
       - gymmy-network
     volumes:
       - ./mongo/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/:ro
-      - ./mongo/etc/mongod_keyfile:/etc/mongod_keyfile # Permission: 400
+      - ./mongo/etc/mongod-keyfile:/etc/mongod-keyfile # Permission: 400
       # The named volume dbdata will persist the data stored in Mongo’s default data directory, /data/db.
       # This will ensure that you don’t lose data in cases where you stop or remove containers.
       # - ./mongo/dbdata:/data/db
@@ -77,7 +77,7 @@ services:
       test: test $$(echo "rs.status().ok" | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
       interval: 5s
       start_period: 5s
-    command: [ --replSet, rs0, --auth, --bind_ip_all, --keyFile, /etc/mongod_keyfile]
+    command: [ --replSet, rs0, --auth, --bind_ip_all, --keyFile, /etc/mongod-keyfile]
     depends_on:
       - mongo3
   mongo3:
@@ -92,7 +92,7 @@ services:
       - gymmy-network
     volumes:
       - ./mongo/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/:ro
-      - ./mongo/etc/mongod_keyfile:/etc/mongod_keyfile # Permission: 400
+      - ./mongo/etc/mongod-keyfile:/etc/mongod-keyfile # Permission: 400
       # The named volume dbdata will persist the data stored in Mongo’s default data directory, /data/db.
       # This will ensure that you don’t lose data in cases where you stop or remove containers.
       # - ./mongo/dbdata:/data/db
@@ -100,7 +100,7 @@ services:
       test: test $$(echo "rs.status().ok" | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
       interval: 5s
       start_period: 5s
-    command: [ --replSet, rs0, --auth, --bind_ip_all, --keyFile, /etc/mongod_keyfile]
+    command: [ --replSet, rs0, --auth, --bind_ip_all, --keyFile, /etc/mongod-keyfile]
 networks:
   gymmy-network:
     name: gymmy-network
