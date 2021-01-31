@@ -3,6 +3,8 @@ services:
   app-service:
     image: "gymmy-app:prod"
     container_name: "gymmy-app_prod"
+    restart: "unless-stopped"  # Could be always, on-failure, unless-stopped
+    env_file: app/.env.production
     build:
       context: app
       dockerfile: prod.Dockerfile
@@ -12,12 +14,16 @@ services:
       - 80:80
     volumes:
       - ./app:/app
-    restart: "no"  # Could be always, on-failure, unless-stopped
+    healthcheck:
+      test: curl $${REACT_APP_API_URL}
+      interval: 5s
+      start_period: 5s
     depends_on:
       - api-service
   api-service:
     image: "gymmy-api:prod"
     container_name: "gymmy-api_prod"
+    restart: unless-stopped
     env_file: api/docker_envs/.env.production
     build:
       context: api
@@ -29,6 +35,10 @@ services:
       - ./api:/app
     networks:
       - gymmy-network
+    healthcheck:
+      test: ping mongo1 -w 1 -q
+      interval: 5s
+      start_period: 5s
     depends_on:
       - mongo1
       - mongo2
