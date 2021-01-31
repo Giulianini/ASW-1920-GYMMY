@@ -50,7 +50,7 @@ services:
       # - ./mongo/dbdata:/data/db
     healthcheck:
       #test: test $$(echo "rs.status().ok" | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
-      test: test $$(mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} /etc/initReplicaSet.js  --quiet) -eq 1
+      test: test $$(cat /etc/initReplicaSet.js | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
       interval: 5s
       start_period: 5s
     command: [ --replSet, rs0, --auth, --bind_ip_all, --keyFile, /etc/mongod_keyfile ]

@@ -101,7 +101,7 @@ mongoose.connect(
         user: dbAdmin,
         pass: dbPassword,
         useNewUrlParser: true,
-        //useUnifiedTopology: true //Comment for connection to docker mongo instance. (from outside)
+        useUnifiedTopology: true //Comment for connection to docker mongo instance. (from outside)
     },
     (err, db) => {
         if (err) {
