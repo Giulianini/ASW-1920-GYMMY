@@ -28,11 +28,13 @@ services:
     networks:
       - gymmy-network
     depends_on:
-      - mongo
-  mongo:
+      - mongo1
+      - mongo2
+      - mongo3
+  mongo1:
     image: mongo:4.2.8
-    container_name: mongo
-    hostname: mongo
+    container_name: mongo1
+    hostname: mongo1
     restart: unless-stopped
     env_file: mongo/docker_envs/.env.production
     ports:
@@ -41,14 +43,64 @@ services:
       - gymmy-network
     volumes:
       - ./mongo/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/:ro
+      - ./mongo/etc/mongod_keyfile:/etc/mongod_keyfile # Permission: 400
+      - ./mongo/etc/initReplicaSet.js:/etc/initReplicaSet.js # Permission: 400
       # The named volume dbdata will persist the data stored in Mongo’s default data directory, /data/db.
       # This will ensure that you don’t lose data in cases where you stop or remove containers.
-      - ./mongo/dbdata:/data/db
+      # - ./mongo/dbdata:/data/db
     healthcheck:
-      test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
+      #test: test $$(echo "rs.status().ok" | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
+      test: test $$(cat /etc/initReplicaSet.js | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
       interval: 5s
       start_period: 5s
-    command: [ --replSet, rs0, --auth, --bind_ip_all ]
+    command: [ --replSet, rs0, --auth, --bind_ip_all, --keyFile, /etc/mongod_keyfile ]
+    depends_on:
+      - mongo2
+      - mongo3
+  mongo2:
+    image: mongo:4.2.8
+    container_name: mongo2
+    hostname: mongo2
+    restart: unless-stopped
+    env_file: mongo/docker_envs/.env.production
+    ports:
+      - 27019:27017
+    networks:
+      - gymmy-network
+    volumes:
+      - ./mongo/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/:ro
+      - ./mongo/etc/mongod_keyfile:/etc/mongod_keyfile # Permission: 400
+      # The named volume dbdata will persist the data stored in Mongo’s default data directory, /data/db.
+      # This will ensure that you don’t lose data in cases where you stop or remove containers.
+      # - ./mongo/dbdata:/data/db
+    healthcheck:
+      test: test $$(echo "rs.status().ok" | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
+      interval: 5s
+      start_period: 5s
+    command: [ --replSet, rs0, --auth, --bind_ip_all, --keyFile, /etc/mongod_keyfile]
+    depends_on:
+      - mongo3
+  mongo3:
+    image: mongo:4.2.8
+    container_name: mongo3
+    hostname: mongo3
+    restart: unless-stopped
+    env_file: mongo/docker_envs/.env.production
+    ports:
+      - 27020:27017
+    networks:
+      - gymmy-network
+    volumes:
+      - ./mongo/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/:ro
+      - ./mongo/etc/mongod_keyfile:/etc/mongod_keyfile # Permission: 400
+      # The named volume dbdata will persist the data stored in Mongo’s default data directory, /data/db.
+      # This will ensure that you don’t lose data in cases where you stop or remove containers.
+      # - ./mongo/dbdata:/data/db
+    healthcheck:
+      test: test $$(echo "rs.status().ok" | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
+      interval: 5s
+      start_period: 5s
+    command: [ --replSet, rs0, --auth, --bind_ip_all, --keyFile, /etc/mongod_keyfile]
 networks:
   gymmy-network:
     name: gymmy-network

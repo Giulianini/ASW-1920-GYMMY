@@ -82,7 +82,6 @@ function Personal() {
         "targetCalories": "",
         "targetMinWorkouts": ""
     })
-    //const big = useMediaQuery(theme => theme.breakpoints.up('md'))
 
     const handleExpandClick = (value) => {
         setExpanded({...expanded, [value]: !expanded[value]});
@@ -96,7 +95,7 @@ function Personal() {
         userAxios.get("").then(res => {
             setUserInfo({...res.data})
         }).catch(reason => {
-            enqueueSnackbar("Cannot retrieve user information", {variant: "error"})
+            enqueueSnackbar("Cannot retrieve user information.", {variant: "error"})
             console.log(reason)
         })
     }

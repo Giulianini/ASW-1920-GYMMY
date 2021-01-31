@@ -19,21 +19,15 @@ const useStyles = makeStyles(theme => ({
         backgroundRepeat: 'no-repeat',
         height: "100vh",
     },
-    buttonStyle: {
-        color: "red",
-    },
-
     textFieldForm: {
         paddingTop: 10,
         paddingBottom: 5,
         fontWeight: 300,
     },
-
     title: {
         fontSize: 50,
         fontWeight: 100
     },
-
     textFieldGrid: {
         backgroundColor: "white",
         [theme.breakpoints.down('md')]: {
@@ -94,7 +88,7 @@ export default function Signup() {
                 history.push(routes.login.value, {registered: true, username: res.data.username})
             }).catch(reason => {
                 if (reason.response.data.toString() === "Conflict") {
-                    enqueueSnackbar("Username already exists", {variant: "error"})
+                    enqueueSnackbar("Username already exists, try a different one.", {variant: "error"})
                 } else {
                     enqueueSnackbar("Error registering user", {variant: "error"})
                 }
@@ -193,7 +187,6 @@ export default function Signup() {
                                 Already registered? <Link to={{pathname: routes.login.value}}
                                                           style={{color: 'white'}}> Login </Link>
                             </Typography>
-
                         </Grid>
                         <Fab color={"primary"}
                              type={"submit"}
