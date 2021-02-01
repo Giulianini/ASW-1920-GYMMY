@@ -9,7 +9,7 @@ import {Link, useHistory} from "react-router-dom";
 import routes from "../../Routes";
 import {useSnackbar} from "notistack";
 
-const backgroundImage = "authLanding.jpeg";
+const backgroundImage = "/authentication/authLanding.jpeg";
 
 const useStyles = makeStyles(theme => ({
     rootBox: {
@@ -99,106 +99,106 @@ export default function Signup() {
         }
     }
 
-        return (
-            <Box className={classes.rootBox}>
-                <Box py={10}>
-                    <Grid container direction="column" alignItems="center" justify={"center"} component={"form"}
-                          onSubmit={handleSubmit}>
-                        <Grid item>
-                            <Typography component={"div"} className={classes.title}>
-                                Sign up
-                            </Typography>
-                        </Grid>
-                        <Grid item md={6} lg={4} xl={3} container direction="column" className={classes.textFieldGrid}>
-                            <FormControl required={true} fullWidth={true} variant={"filled"}>
-                                <InputLabel htmlFor="outlined-adornment-password">Email</InputLabel>
-                                <OutlinedInput
-                                    className={classes.textFieldForm}
-                                    id="email"
-                                    value={values.mail}
-                                    onChange={handleChange('mail')}
-                                    aria-describedby="mail"
-                                    inputProps={{
-                                        'aria-label': 'email',
-                                    }}
-                                />
-                            </FormControl>
-                            <FormControl required={true} fullWidth={true} variant={"filled"}>
-                                <InputLabel>Username</InputLabel>
-                                <OutlinedInput
-                                    className={classes.textFieldForm}
-                                    id="username"
-                                    value={values.username}
-                                    onChange={handleChange('username')}
-                                    aria-describedby="username"
-                                    inputProps={{
-                                        'aria-label': 'username',
-                                    }}
-                                />
-                            </FormControl>
-                            <FormControl required={true} fullWidth={true} variant="filled">
-                                <InputLabel>Password</InputLabel>
-                                <OutlinedInput
-                                    className={classes.textFieldForm}
-                                    id="password"
-                                    type={values.showPassword ? 'text' : 'password'}
-                                    value={values.password}
-                                    onChange={handleChange('password')}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
-                                                {values.showPassword ? <Visibility/> : <VisibilityOff/>}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                />
-                            </FormControl>
-                            <FormControl required={true} fullWidth={true} variant="filled">
-                                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                                <OutlinedInput
-                                    className={classes.textFieldForm}
-                                    id="password2"
-                                    error={passError}
-                                    type={values.showPassword ? 'text' : 'password'}
-                                    value={values.password2}
-                                    onChange={handleChange('password2')}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={handleMouseDownPassword}
-                                                edge="end"
-                                            >
-                                                {values.showPassword ? <Visibility/> : <VisibilityOff/>}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    }
-                                />
-                            </FormControl>
-                        </Grid>
-                        <Grid item>
-                            <Typography variant={"body1"} className={classes.linkText}>
-                                Already registered? <Link to={{pathname: routes.login.value}}
-                                                          style={{color: 'white'}}> Login </Link>
-                            </Typography>
-                        </Grid>
-                        <Fab color={"primary"}
-                             type={"submit"}
-                             href={""}
-                             icontheme={"Filled"}
-                             size={"large"}
-                             onSubmit={handleSubmit}
-                             variant={"round"}>
-                            <SendIcon/>
-                        </Fab>
+    return (
+        <Box className={classes.rootBox}>
+            <Box py={10}>
+                <Grid container direction="column" alignItems="center" justify={"center"} component={"form"}
+                      onSubmit={handleSubmit}>
+                    <Grid item>
+                        <Typography component={"div"} className={classes.title}>
+                            Sign up
+                        </Typography>
                     </Grid>
-                </Box>
+                    <Grid item md={6} lg={4} xl={3} container direction="column" className={classes.textFieldGrid}>
+                        <FormControl required={true} fullWidth={true} variant={"filled"}>
+                            <InputLabel htmlFor="outlined-adornment-password">Email</InputLabel>
+                            <OutlinedInput
+                                className={classes.textFieldForm}
+                                id="email"
+                                value={values.mail}
+                                onChange={handleChange('mail')}
+                                aria-describedby="mail"
+                                inputProps={{
+                                    'aria-label': 'email',
+                                }}
+                            />
+                        </FormControl>
+                        <FormControl required={true} fullWidth={true} variant={"filled"}>
+                            <InputLabel>Username</InputLabel>
+                            <OutlinedInput
+                                className={classes.textFieldForm}
+                                id="username"
+                                value={values.username}
+                                onChange={handleChange('username')}
+                                aria-describedby="username"
+                                inputProps={{
+                                    'aria-label': 'username',
+                                }}
+                            />
+                        </FormControl>
+                        <FormControl required={true} fullWidth={true} variant="filled">
+                            <InputLabel>Password</InputLabel>
+                            <OutlinedInput
+                                className={classes.textFieldForm}
+                                id="password"
+                                type={values.showPassword ? 'text' : 'password'}
+                                value={values.password}
+                                onChange={handleChange('password')}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {values.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                            />
+                        </FormControl>
+                        <FormControl required={true} fullWidth={true} variant="filled">
+                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                            <OutlinedInput
+                                className={classes.textFieldForm}
+                                id="password2"
+                                error={passError}
+                                type={values.showPassword ? 'text' : 'password'}
+                                value={values.password2}
+                                onChange={handleChange('password2')}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {values.showPassword ? <Visibility/> : <VisibilityOff/>}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                            />
+                        </FormControl>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant={"body1"} className={classes.linkText}>
+                            Already registered? <Link to={{pathname: routes.login.value}}
+                                                      style={{color: 'white'}}> Login </Link>
+                        </Typography>
+                    </Grid>
+                    <Fab color={"primary"}
+                         type={"submit"}
+                         href={""}
+                         icontheme={"Filled"}
+                         size={"large"}
+                         onSubmit={handleSubmit}
+                         variant={"round"}>
+                        <SendIcon/>
+                    </Fab>
+                </Grid>
             </Box>
-        );
-    }
+        </Box>
+    );
+}

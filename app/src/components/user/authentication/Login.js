@@ -9,7 +9,7 @@ import {baseAxios, startSocket} from "../../../Api";
 import routes from "../../Routes";
 import {useSnackbar} from "notistack";
 
-const backgroundImage = "authLanding.jpeg";
+const backgroundImage = "/authentication/authLanding.jpeg";
 
 const useStyles = makeStyles(theme => ({
     rootBox: {

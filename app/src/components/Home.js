@@ -11,7 +11,7 @@ import Carousel from "react-material-ui-carousel";
 import {useSnackbar} from "notistack";
 import routes from "./Routes";
 
-const backgroundImage = "landingPageImage.jpeg";
+const backgroundImage = "/home/landingPageImage.jpeg";
 
 const useStyles = makeStyles({
     root: {
@@ -119,20 +119,20 @@ function Home() {
     const items = [
         {
             title: "Main Room",
-            img: "home/mainRoom.jpg"
+            img: "/home/mainRoom.jpg"
         },
         {
             title: "Weight Room",
-            img: "home/bentOverRow.jpg"
+            img: "/home/bentOverRow.jpg"
 
         },
         {
             title: "Cardio machines",
-            img: "home/cardio.jpg"
+            img: "/home/cardio.jpg"
         },
         {
             title: "Crossfit",
-            img: "home/crossfit.jpg"
+            img: "/home/crossfit.jpg"
         },
         {
             title: "Outdoor space",

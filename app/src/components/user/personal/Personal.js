@@ -142,7 +142,7 @@ function Personal() {
                         />
                         <CardMedia
                             className={classes.mediaPersonal}
-                            image="/personRunning.png"
+                            image="/personal/personRunning.png"
                         />
                         <CardContent>
                             <Typography variant="body2" color="textSecondary" component="p">
@@ -216,7 +216,7 @@ function Personal() {
                         />
                         <CardMedia
                             className={classes.mediaTarget}
-                            image="/fire.png"
+                            image="/personal/fire.png"
                             title="fire"
                         />
                         <CardContent>
@@ -240,8 +240,10 @@ function Personal() {
                         </CardActions>
                         <Collapse in={expanded.objectives} timeout="auto" unmountOnExit>
                             <CardContent>
-                                <Typography paragraph>Target weight: {userInfo.objective && userInfo.objective.targetWeight} kg</Typography>
-                                <Typography paragraph>Target body fat: {userInfo.objective && userInfo.objective.targetBMI} %</Typography>
+                                <Typography paragraph>Target
+                                    weight: {userInfo.objective && userInfo.objective.targetWeight} kg</Typography>
+                                <Typography paragraph>Target body
+                                    fat: {userInfo.objective && userInfo.objective.targetBMI} %</Typography>
                                 <Typography paragraph>Target
                                     calories: {userInfo.objective && userInfo.objective.targetCalories} kcal</Typography>
                                 <Typography paragraph>Weekly workout
