@@ -76,13 +76,13 @@ function CreateGoalTab() {
     const handleSubmit = (e) => {
         e.preventDefault()
         if (canSubmit()) {
-            baseAxios.patch("/progressThreshold", values).then((res) => {
+            baseAxios.patch("/progressThreshold", values).then(() => {
                 enqueueSnackbar("Progress values successfully updated", {variant: "success"})
                 resetForm()
             }).catch((reason) => {
                 if (reason.response.status === 404) {
                     enqueueSnackbar("Creating progress values for the first time ", {variant: "warning"})
-                    baseAxios.put("progressThreshold", values).then((res) => {
+                    baseAxios.put("progressThreshold", values).then(() => {
                         enqueueSnackbar("Progress values successfully created", {variant: "success"})
                     }).catch(() => {
                         enqueueSnackbar("Error adding the progress values", {variant: "error"})

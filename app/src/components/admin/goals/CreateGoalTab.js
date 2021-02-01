@@ -284,7 +284,8 @@ function CreateGoalTab() {
             baseAxios.get("users").then(res => {
                 const foundUsers = res.data.filter(obj => obj.role !== "trainer")
                 setUsers(foundUsers)
-            }).catch(reason => {
+            }).catch(() => {
+                enqueueSnackbar('Cannot fetch users', { variant: "error" })
             })
         }, []);
         useEffect(() => {
