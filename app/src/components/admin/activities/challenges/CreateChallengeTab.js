@@ -10,6 +10,7 @@ import {createChallengeTabNotification} from "../Activities";
 const useStyles = makeStyles(theme => ({
     form: {
         paddingTop: 10,
+        paddingBottom: 20,
     },
     title: {
         fontWeight: 300
@@ -71,11 +72,11 @@ function CreateChallengeTab() {
     }, [enqueueSnackbar])
 
     const canSubmit = () => {
-        if (values.title && values.description && values.firstPlaceReward && values.secondPlaceReward && values.thirdPlaceReward && file[0]) {
-            if (values.firstPlaceReward < values.secondPlaceReward && values.secondPlaceReward < values.thirdPlaceReward) {
+        if (values.firstPlaceReward && values.secondPlaceReward && values.thirdPlaceReward && file[0]) {
+            if (values.firstPlaceReward > values.secondPlaceReward && values.secondPlaceReward > values.thirdPlaceReward) {
                 return true
             } else {
-                enqueueSnackbar("Check price order", {variant: "warning"})
+                enqueueSnackbar("Check rewards order", {variant: "warning"})
                 return false
             }
         } else {

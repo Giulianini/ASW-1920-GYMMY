@@ -9,6 +9,7 @@ import {Done} from "@material-ui/icons";
 const useStyles = makeStyles({
     form: {
         paddingTop: 10,
+        paddingBottom: 20,
     },
     title: {
         fontWeight: 300

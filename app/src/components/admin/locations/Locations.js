@@ -9,6 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 const useStyles = makeStyles({
     form: {
         paddingTop: 10,
+        paddingBottom: 20,
     },
     title: {
         fontWeight: 300

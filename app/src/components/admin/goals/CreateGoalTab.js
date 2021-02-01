@@ -10,6 +10,7 @@ import {createGoalsTabNotification} from "./Goals";
 const useStyles = makeStyles(theme => ({
     form: {
         paddingTop: 10,
+        paddingBottom: 20,
     },
     title: {
         fontWeight: 300
@@ -285,7 +286,7 @@ function CreateGoalTab() {
                 const foundUsers = res.data.filter(obj => obj.role !== "trainer")
                 setUsers(foundUsers)
             }).catch(() => {
-                enqueueSnackbar('Cannot fetch users', { variant: "error" })
+                enqueueSnackbar('Cannot fetch users', {variant: "error"})
             })
         }, []);
         useEffect(() => {
