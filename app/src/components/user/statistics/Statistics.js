@@ -65,7 +65,7 @@ function Statistics() {
                 .map(obj => {
                     return {
                         month: `${months[obj.month]} ${obj.year}`,
-                        completedActivities: obj.completedActivities
+                        completedActivities: obj.exercises
                     }
                 })
             setActivityData(exercisesLastYear)

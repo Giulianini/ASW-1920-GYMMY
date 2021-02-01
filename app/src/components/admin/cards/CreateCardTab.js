@@ -147,12 +147,26 @@ function CreateCardTab() {
         return field !== '' && field > 0
     }
 
+    const canSubmit = () => {
+        if (selectedUsername !== null && selectedTitle !== '' && workoutDuration !== '') {
+            if (cardEntries.length !== 0) {
+                return true
+            } else {
+                enqueueSnackbar('You must specify at least one exercise', { variant: "warning" })
+                return false
+            }
+        } else {
+            return false
+        }
+    }
+
     return (
-        <Grid container direction={"column"} justify={"flex-start"} alignItems={"center"} className={classes.grid}>
+        <Grid container direction={"column"} justify={"flex-start"} alignItems={"center"} className={classes.grid}
+              component={"form"} onSubmit={handleCardSubmit}>
             <Grid container item xs={12} md={5}>
                 <Grid item className={classes.userSelector}>
-                    {/*<Typography variant={"h6"} className={classes.title}>Select a user</Typography>*/}
                     <Autocomplete
+                        required
                         options={users}
                         onChange={((event, value) => {
                             setSelectedUsername(value)
@@ -165,7 +179,6 @@ function CreateCardTab() {
                     />
                 </Grid>
                 <Grid item className={classes.userSelector}>
-                    {/*<Typography variant={"h6"} className={classes.title}>Insert card title</Typography>*/}
                     <TextField
                         required
                         label="Card title"
@@ -173,8 +186,6 @@ function CreateCardTab() {
                         fullWidth
                         onChange={e => setSelectedTitle(e.target.value)}
                         value={selectedTitle}
-                        error={selectedTitle === ''}
-                        helperText={'Card title cannot be empty'}
                     />
                 </Grid>
                 <Grid item className={classes.userSelector}>
@@ -194,7 +205,6 @@ function CreateCardTab() {
                     />
                 </Grid>
                 <Grid item className={classes.userSelector}>
-                    {/*<Typography variant={"h6"} className={classes.title}>Insert workout duration</Typography>*/}
                     <TextField
                         required
                         label="Duration (min)"
@@ -206,7 +216,6 @@ function CreateCardTab() {
                     />
                 </Grid>
                 <Grid item className={classes.userSelector}>
-                    {/*<Typography variant={"h6"} className={classes.title}>Select an exercise</Typography>*/}
                     <Autocomplete
                         options={exercises}
                         onChange={((event, value) => {
@@ -221,7 +230,7 @@ function CreateCardTab() {
                     />
                 </Grid>
                 <Grid container item direction={"column"} alignItems={"center"} justify={"center"}
-                      className={classes.exerciseParams} component={"form"} onSubmit={handleExerciseSubmit}>
+                      className={classes.exerciseParams}>
                     <Grid container direction={"column"} alignItems={"center"} justify={"center"}>
                         <Grid item container direction={"column"} alignItems={"flex-start"}
                               className={classes.sliderGrid}>
@@ -319,15 +328,14 @@ function CreateCardTab() {
                 <Grid item className={classes.dataGrid}>
                     <DataGrid rows={cardEntries} columns={columns}/>
                 </Grid>
-                <Grid item container justify={"center"} xs={12} className={classes.gridItem} component={"form"}
-                      onSubmit={handleCardSubmit}>
+                <Grid item container justify={"center"} xs={12} className={classes.gridItem}>
                     <Fab color={"primary"}
                          onSubmit={handleCardSubmit}
                          className={classes.submitButton}
                          type={"submit"}
                          size={"large"}
                          variant={"round"}
-                         disabled={selectedTitle === '' || selectedUsername === null || workoutDuration === '' || cardEntries.length === 0}
+                         disabled={!canSubmit()}
                     >
                         <Done/>
                     </Fab>
