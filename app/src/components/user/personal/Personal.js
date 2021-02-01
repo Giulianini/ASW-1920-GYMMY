@@ -11,12 +11,12 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import {red} from '@material-ui/core/colors';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import {Container, Grid, Tooltip} from "@material-ui/core";
+import {Container, Grid, Popover, Tooltip} from "@material-ui/core";
 import CreateIcon from '@material-ui/icons/Create';
 import {userAxios} from "../../../Api";
 import EditPersonalDialog from "./EditPersonalDialog";
 import {useSnackbar} from "notistack";
+import {Info} from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
@@ -72,16 +72,31 @@ function Personal() {
         "objectives": false,
     })
     const [userInfo, setUserInfo] = React.useState({
-        "username": "",
-        "age": "",
-        "height": "",
-        "weight": "",
-        "mainGoal": "",
-        "targetWeight": "",
-        "targetBMI": "",
-        "targetCalories": "",
-        "targetMinWorkouts": ""
+        username: "",
+        age: "",
+        height: "",
+        weight: "",
+        objective: {
+            description: "",
+            mainGoal: "",
+            targetBMI: "",
+            targetWeight: "",
+            targetCalories: "",
+            targetMinWorkouts: ""
+        }
     })
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     const handleExpandClick = (value) => {
         setExpanded({...expanded, [value]: !expanded[value]});
@@ -93,6 +108,7 @@ function Personal() {
 
     function fetchPersonalData() {
         userAxios.get("").then(res => {
+            console.log(res.data)
             setUserInfo({...res.data})
         }).catch(() => {
             enqueueSnackbar("Cannot retrieve user information.", {variant: "error"})
@@ -119,8 +135,8 @@ function Personal() {
                             }
                             className={classes.titleCard}
                             title={
-                                <Typography variant={"h5"} className={classes.titleCard}>
-                                    Information
+                                <Typography variant={"h4"} className={classes.titleCard}>
+                                    {userInfo.username.capitalize()}
                                 </Typography>
                             }
                             subheader="Your Personal information"
@@ -164,15 +180,37 @@ function Personal() {
                     <Card className={classes.card}>
                         <CardHeader
                             action={
-                                <Tooltip title={"More info"}>
-                                    <IconButton aria-label="settings">
-                                        <MoreVertIcon/>
-                                    </IconButton>
-                                </Tooltip>
+                                <>
+                                    <Tooltip title={"More info"}>
+                                        <IconButton aria-describedby={id} variant="contained"
+                                                    onClick={handleClick}>
+                                            <Info/>
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Popover
+                                        id={id}
+                                        open={open}
+                                        anchorEl={anchorEl}
+                                        onClose={handleClose}
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'center',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'center',
+                                        }}
+                                    >
+                                        <Typography className={classes.typography}>
+                                            {userInfo.objective.description}
+                                        </Typography>
+                                    </Popover>
+                                </>
+
                             }
                             title={
-                                <Typography variant={"h5"} className={classes.titleCard}>
-                                    {userInfo.mainGoal}
+                                <Typography variant={"h4"} className={classes.titleCard}>
+                                    {userInfo.objective.mainGoal}
                                 </Typography>
                             }
                             subheader="Your personal goal"
@@ -203,10 +241,12 @@ function Personal() {
                         </CardActions>
                         <Collapse in={expanded.objectives} timeout="auto" unmountOnExit>
                             <CardContent>
-                                <Typography paragraph>Target weight: {userInfo.targetWeight}</Typography>
-                                <Typography paragraph>Target body fat: {userInfo.targetBMI}</Typography>
-                                <Typography paragraph>Target calories: {userInfo.targetCalories}</Typography>
-                                <Typography paragraph>Weekly workout rate: {userInfo.targetMinWorkouts}</Typography>
+                                <Typography paragraph>Target weight: {userInfo.objective.targetWeight} kg</Typography>
+                                <Typography paragraph>Target body fat: {userInfo.objective.targetBMI} %</Typography>
+                                <Typography paragraph>Target
+                                    calories: {userInfo.objective.targetCalories} kcal</Typography>
+                                <Typography paragraph>Weekly workout
+                                    rate: {userInfo.objective.targetMinWorkouts}</Typography>
                             </CardContent>
                         </Collapse>
                         <div className={classes.pushCardSize}/>
