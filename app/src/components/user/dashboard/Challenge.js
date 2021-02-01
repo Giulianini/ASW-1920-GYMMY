@@ -26,8 +26,8 @@ function Challenge(props) {
     const [accept, setAccepted] = React.useState(props.item.participants.includes(localStorage.getItem(("username"))))
 
     function arrayBufferToBase64(buffer) {
-        var binary = '';
-        var bytes = [].slice.call(new Uint8Array(buffer));
+        let binary = '';
+        const bytes = [].slice.call(new Uint8Array(buffer));
         bytes.forEach((b) => binary += String.fromCharCode(b));
         return window.btoa(binary);
     }
