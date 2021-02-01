@@ -7,7 +7,7 @@ import {Done} from "@material-ui/icons";
 import {Autocomplete} from "@material-ui/lab";
 import {createGoalsTabNotification} from "./Goals";
 
-const useStyles = makeStyles(theme =>({
+const useStyles = makeStyles(theme => ({
     form: {
         paddingTop: 10,
     },
@@ -79,14 +79,13 @@ function CreateGoalTab() {
         if (usernameData) {
             baseAxios.get(`users/${usernameData.username}/objective`).then((res) => {
                 setValues(res.data)
-            }).catch((reason) => {
-                console.log(reason.response.data)
+            }).catch(() => {
+                enqueueSnackbar("Cannot fetch objectives", {variant: "error"})
             })
         } else {
             resetForm()
         }
     }
-
     useEffect(() => {
         enqueueSnackbar(createGoalsTabNotification, {variant: "info"})
     }, [enqueueSnackbar])
@@ -98,17 +97,16 @@ function CreateGoalTab() {
     const handleSubmit = (e) => {
         e.preventDefault()
         if (canSubmit()) {
-            baseAxios.patch(`users/${selectedUsername.username}/objective`, values).then((res) => {
+            baseAxios.patch(`users/${selectedUsername.username}/objective`, values).then(() => {
                 enqueueSnackbar("Goal successfully updated", {variant: "success"})
                 resetForm()
             }).catch((reason) => {
                 if (reason.response.status === 404) {
                     enqueueSnackbar("Creating goals for the first time ", {variant: "warning"})
-                    baseAxios.put(`users/${selectedUsername.username}/objective`, values).then((res) => {
+                    baseAxios.put(`users/${selectedUsername.username}/objective`, values).then(() => {
                         enqueueSnackbar("Goal successfully created", {variant: "success"})
                         resetForm()
-                    }).catch((reason) => {
-                        console.log(reason.response)
+                    }).catch(() => {
                         enqueueSnackbar("Error adding the goals", {variant: "error"})
                     })
                 } else if (reason.response.status === 409) {

@@ -98,12 +98,10 @@ function CreateChallengeTab() {
                 baseAxios.put(`/challenges/${challengeId}/image`, fd, config).then(() => {
                     enqueueSnackbar("Challenge successfully added", {variant: "success"})
                     resetForm()
-                }).catch((reason => {
-                    console.log(reason.response.data)
+                }).catch((() => {
                     enqueueSnackbar("Error adding the challenge image", {variant: "error"})
                 }))
             }).catch((reason) => {
-                console.log(reason.response.data)
                 if (reason.response.status === 409) {
                     enqueueSnackbar("Challenge already present", {variant: "error"})
                 } else {

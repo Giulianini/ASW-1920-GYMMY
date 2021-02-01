@@ -84,8 +84,7 @@ function CreateGoalTab() {
                     enqueueSnackbar("Creating progress values for the first time ", {variant: "warning"})
                     baseAxios.put("progressThreshold", values).then((res) => {
                         enqueueSnackbar("Progress values successfully created", {variant: "success"})
-                    }).catch((reason) => {
-                        console.log(reason.response)
+                    }).catch(() => {
                         enqueueSnackbar("Error adding the progress values", {variant: "error"})
                     })
                 } else {
@@ -200,8 +199,8 @@ function CreateGoalTab() {
         const fetchProgress = useCallback(() => {
             baseAxios.get("/progressThreshold").then((res) => {
                 setValues(res.data)
-            }).catch((reason) => {
-                console.log(reason.response.data)
+            }).catch(() => {
+                enqueueSnackbar("", {variant: "error"})
             })
         }, [])
         useEffect(() => {

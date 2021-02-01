@@ -104,8 +104,7 @@ function CloseCourseTab() {
         const fetchCourses = useCallback(() => {
             baseAxios.get("courses").then(res => {
                 setCourses(res.data)
-            }).catch(reason => {
-                console.log(reason.response.data)
+            }).catch(() => {
                 enqueueSnackbar("Cannot fetch courses", {variant: "error"})
             })
         }, []);

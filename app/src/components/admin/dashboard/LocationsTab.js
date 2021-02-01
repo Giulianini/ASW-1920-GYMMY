@@ -59,6 +59,7 @@ function LocationsTab() {
                 })
                 setLocations(rows)
             }).catch(reason => {
+
             })
         }, [])
 
@@ -73,7 +74,6 @@ function LocationsTab() {
                 const updatedLocations = locations.map(obj => {
                     if (obj.location === location) {
                         obj.available = capacity
-                        console.log(obj)
                     }
                     return obj
                 })

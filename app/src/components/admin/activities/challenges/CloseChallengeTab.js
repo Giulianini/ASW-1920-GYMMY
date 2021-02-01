@@ -11,7 +11,7 @@ const useStyles = makeStyles({
         paddingTop: 10,
     },
     challengeBlock: {
-      marginBottom: 20,
+        marginBottom: 20,
     },
     autocompleteTitle: {
         fontWeight: 300,
@@ -186,8 +186,7 @@ function CloseChallengeTab() {
         const fetchChallenges = useCallback(() => {
             baseAxios.get("challenges").then(res => {
                 setChallenges(res.data)
-            }).catch(reason => {
-                console.log(reason.response.data)
+            }).catch(() => {
                 enqueueSnackbar("Cannot fetch challenges", {variant: "error"})
             })
         }, []);
