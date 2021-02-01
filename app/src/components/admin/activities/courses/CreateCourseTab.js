@@ -9,6 +9,7 @@ import {Done} from "@material-ui/icons";
 const useStyles = makeStyles({
     form: {
         paddingTop: 10,
+        paddingBottom: 20,
     },
     title: {
         fontWeight: 300
@@ -57,7 +58,7 @@ function CreateCourseTab() {
     }
 
     const canSubmit = () => {
-        return values.description && values.title && file[0]
+        return file[0]
     }
 
     const handleSubmit = (e) => {

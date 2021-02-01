@@ -10,6 +10,7 @@ import {createGoalsTabNotification} from "./Goals";
 const useStyles = makeStyles(theme => ({
     form: {
         paddingTop: 10,
+        paddingBottom: 20,
     },
     title: {
         fontWeight: 300
@@ -75,12 +76,11 @@ function CreateGoalTab() {
     }
 
     const fetchObjectives = (usernameData) => {
-
         if (usernameData) {
             baseAxios.get(`users/${usernameData.username}/objective`).then((res) => {
                 setValues(res.data)
             }).catch(() => {
-                enqueueSnackbar("Cannot fetch objectives", {variant: "error"})
+                enqueueSnackbar("Objective is not specified yet", {variant: "info"})
             })
         } else {
             resetForm()
@@ -91,7 +91,7 @@ function CreateGoalTab() {
     }, [enqueueSnackbar])
 
     const canSubmit = () => {
-        return selectedUsername && values.description && values.mainGoal && values.targetBMI && values.targetWeight && values.targetCalories && values.targetMinWorkouts
+        return selectedUsername && values.targetBMI && values.targetWeight && values.targetCalories && values.targetMinWorkouts
     }
 
     const handleSubmit = (e) => {
@@ -285,7 +285,7 @@ function CreateGoalTab() {
                 const foundUsers = res.data.filter(obj => obj.role !== "trainer")
                 setUsers(foundUsers)
             }).catch(() => {
-                enqueueSnackbar('Cannot fetch users', { variant: "error" })
+                enqueueSnackbar('Cannot fetch users', {variant: "error"})
             })
         }, []);
         useEffect(() => {

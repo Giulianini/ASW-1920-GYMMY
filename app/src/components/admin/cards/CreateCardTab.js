@@ -351,7 +351,7 @@ function CreateCardTab() {
                 const foundUsers = res.data.filter(obj => obj.role !== "trainer")
                 setUsers(foundUsers)
             }).catch(() => {
-                enqueueSnackbar('Error while fetching users', { variant: "error" })
+                enqueueSnackbar('Error while fetching users', {variant: "error"})
             })
         }, []);
         useEffect(() => {
@@ -368,7 +368,7 @@ function CreateCardTab() {
                 const foundTags = res.data
                 setTags(foundTags)
             }).catch(() => {
-                enqueueSnackbar('Error while fetching tags', { variant: "error" })
+                enqueueSnackbar('Error while fetching tags', {variant: "error"})
             })
         }, []);
         useEffect(() => {
@@ -386,7 +386,7 @@ function CreateCardTab() {
                 const foundExercises = res.data
                 setExercises(foundExercises)
             }).catch(() => {
-                enqueueSnackbar('Error while fetching exercises', { variant: "error" })
+                enqueueSnackbar('Error while fetching exercises', {variant: "error"})
             })
         }, [])
         useEffect(() => {

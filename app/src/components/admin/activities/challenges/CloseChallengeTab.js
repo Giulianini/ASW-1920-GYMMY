@@ -9,6 +9,7 @@ import {Autocomplete} from "@material-ui/lab";
 const useStyles = makeStyles({
     form: {
         paddingTop: 10,
+        paddingBottom: 20,
     },
     challengeBlock: {
         marginBottom: 20,

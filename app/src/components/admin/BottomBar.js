@@ -24,7 +24,7 @@ function BottomBar(props) {
     useEffect(() => {
         setValue(location.pathname.toString().split("/").slice(1, 3).join("/"))
     }, [location])
-
+    
     return (
         <BottomNavigation
             className={classes.root}
