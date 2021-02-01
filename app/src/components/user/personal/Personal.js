@@ -182,7 +182,7 @@ function Personal() {
                                 <>
                                     <Tooltip title={"More info"}>
                                         <IconButton aria-describedby={id} variant="contained"
-                                                    onClick={handleClick}>
+                                                    onClick={handleClick} disabled={!userInfo.objective}>
                                             <Info/>
                                         </IconButton>
                                     </Tooltip>
@@ -201,7 +201,7 @@ function Personal() {
                                         }}
                                     >
                                         <Typography className={classes.typography}>
-                                            {userInfo.objective.description}
+                                            {userInfo.objective && userInfo.objective.description}
                                         </Typography>
                                     </Popover>
                                 </>
@@ -209,7 +209,7 @@ function Personal() {
                             }
                             title={
                                 <Typography variant={"h4"} className={classes.titleCard}>
-                                    {userInfo.objective.mainGoal}
+                                    {userInfo.objective && userInfo.objective.mainGoal}
                                 </Typography>
                             }
                             subheader="Your personal goal"
@@ -240,12 +240,12 @@ function Personal() {
                         </CardActions>
                         <Collapse in={expanded.objectives} timeout="auto" unmountOnExit>
                             <CardContent>
-                                <Typography paragraph>Target weight: {userInfo.objective.targetWeight} kg</Typography>
-                                <Typography paragraph>Target body fat: {userInfo.objective.targetBMI} %</Typography>
+                                <Typography paragraph>Target weight: {userInfo.objective && userInfo.objective.targetWeight} kg</Typography>
+                                <Typography paragraph>Target body fat: {userInfo.objective && userInfo.objective.targetBMI} %</Typography>
                                 <Typography paragraph>Target
-                                    calories: {userInfo.objective.targetCalories} kcal</Typography>
+                                    calories: {userInfo.objective && userInfo.objective.targetCalories} kcal</Typography>
                                 <Typography paragraph>Weekly workout
-                                    rate: {userInfo.objective.targetMinWorkouts}</Typography>
+                                    rate: {userInfo.objective && userInfo.objective.targetMinWorkouts} workouts/week</Typography>
                             </CardContent>
                         </Collapse>
                         <div className={classes.pushCardSize}/>
