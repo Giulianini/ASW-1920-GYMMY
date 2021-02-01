@@ -99,7 +99,8 @@ function DeleteCardTab(props) {
             baseAxios.get("users").then(res => {
                 const foundUsers = res.data.filter(obj => obj.role !== "trainer")
                 setUsers(foundUsers)
-            }).catch(reason => {
+            }).catch(() => {
+                enqueueSnackbar('Error while fetching users', { variant: "error" })
             })
         }, []);
         useEffect(() => {
@@ -115,7 +116,8 @@ function DeleteCardTab(props) {
             baseAxios.get(`users/${username}/cards`).then(res => {
                 const foundCards = res.data
                 setCards(foundCards)
-            }).catch(reason => {
+            }).catch(() => {
+                enqueueSnackbar('Error while fetching cards', { variant: "error" })
             })
         }, []);
         return [cards, fetchCards]

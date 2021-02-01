@@ -65,12 +65,10 @@ function CreateExerciseTab(props) {
                 setExerciseDescription('')
                 setSelectedLocation(null)
                 setFile([])
-            }).catch((reason => {
-                console.log(reason.response.data)
+            }).catch((() => {
                 enqueueSnackbar("Error adding the exercise image", {variant: "error"})
             }))
         }).catch(reason => {
-            console.log(reason.response.data)
             if (reason.response.status === 409) {
                 enqueueSnackbar("Exercise already present", {variant: "error"})
             } else {
@@ -148,7 +146,8 @@ function CreateExerciseTab(props) {
             baseAxios.get("locations").then(res => {
                 const foundLocations = res.data
                 setLocations(foundLocations)
-            }).catch(reason => {
+            }).catch(() => {
+                enqueueSnackbar('Error while fetching locations', { variant: "error" })
             })
         }, []);
         useEffect(() => {

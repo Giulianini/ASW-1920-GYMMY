@@ -39,7 +39,6 @@ function CreateTagTab(props) {
             enqueueSnackbar("Tag successfully created", {variant: "success"})
             setTagName('')
         }).catch(reason => {
-            console.log(reason.response.data)
             if (reason.response.status === 409) {
                 enqueueSnackbar("Tag already present", {variant: "error"})
             } else {
@@ -60,7 +59,8 @@ function CreateTagTab(props) {
                         }}
                         value={tagName}
                         label="Tag name"
-                        variant="standard"/>
+                        variant="standard"
+                    />
                 </Grid>
                 <Grid item container justify={"center"} xs={12} className={classes.gridItem}>
                     <Fab color={"primary"}
