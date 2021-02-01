@@ -53,10 +53,9 @@ function Dashboard() {
         fetchStepperExpPoints()
         fetchCourses()
         fetchChallenges()
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     function fetchUser() {
-        let username = localStorage.getItem("username")
         userAxios.get("statistics").then(res => {
             setUserInfo({...res.data})
             console.log(userInfo.experiencePoints)

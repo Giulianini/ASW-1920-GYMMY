@@ -193,7 +193,7 @@ export default function CustomizedSteppers(props) {
                 setActiveStep(2)
             }
         }
-    }, [props.stepperInfo, beginner, intermediate, advanced])
+    }, [props.stepperInfo, beginner, intermediate, advanced]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Stepper alternativeLabel className={classes.root} activeStep={activeStep} connector={<SteppingConnector/>}>
