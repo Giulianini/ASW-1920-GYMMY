@@ -61,7 +61,7 @@ const useStyles = makeStyles({
         },
     },
     carouselSpacing: {
-        paddingTop: 1
+        paddingTop: 0
     }
 });
 
@@ -80,7 +80,7 @@ function Home() {
         };
         let id = setTimeout(() => {
             executeScroll()
-        }, 3000)
+        }, 5000)
         checkApiEndpoint((message, apiUrl) => {
             setSnackState({...snackState, open: true, snackMessage: `Endpoint ${message} @ ${apiUrl}`})
         }, (err) => {
@@ -140,20 +140,24 @@ function Home() {
 
     const items = [
         {
-            title: "Sala principale",
-            img: "mainRoom.jpg"
+            title: "Main Room",
+            img: "home/mainRoom.jpg"
         },
         {
-            title: "Sala pesi",
-            img: "weightRoom.jpg"
+            title: "Weight Room",
+            img: "home/bentOverRow.jpg"
         },
         {
-            title: "Zumba",
-            img: "zumba.jpg"
+            title: "Cardio machines",
+            img: "home/cardio.jpg"
         },
         {
-            title: "Pilates",
-            img: "pilates.jpg"
+            title: "Crossfit",
+            img: "home/crossfit.jpg"
+        },
+        {
+            title: "Outdoor space",
+            img: "home/outdoor.jpg"
         }
     ];
 
