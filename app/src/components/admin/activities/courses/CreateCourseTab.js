@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Box, Fab, Grid, TextField, Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import {makeStyles} from "@material-ui/core/styles";
@@ -50,14 +50,14 @@ function CreateCourseTab() {
 
     const resetForm = () => {
         setValues({
-            mainGoal: '',
+            title: '',
             description: '',
         })
         setFile([])
     }
 
     const canSubmit = () => {
-        return values.description && values.mainGoal && file[0]
+        return values.description && values.title && file[0]
     }
 
     const handleSubmit = (e) => {
