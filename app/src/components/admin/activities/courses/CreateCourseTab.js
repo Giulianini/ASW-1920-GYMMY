@@ -75,12 +75,10 @@ function CreateCourseTab() {
                 baseAxios.put(`/courses/${challengeId}/image`, fd, config).then(() => {
                     enqueueSnackbar("Course successfully added", {variant: "success"})
                     resetForm()
-                }).catch((reason => {
-                    console.log(reason.response.data)
+                }).catch((() => {
                     enqueueSnackbar("Error adding the course image", {variant: "error"})
                 }))
             }).catch((reason) => {
-                console.log(reason.response.data)
                 if (reason.response.status === 409) {
                     enqueueSnackbar("Course already present", {variant: "error"})
                 } else {

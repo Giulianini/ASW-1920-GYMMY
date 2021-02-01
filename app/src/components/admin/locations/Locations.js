@@ -82,7 +82,6 @@ function Locations() {
                 enqueueSnackbar("Location successfully added", {variant: "success"})
                 resetForm()
             }).catch((reason => {
-                console.log(reason.response.data)
                 if (reason.response.status === 409) {
                     enqueueSnackbar("Location already present", {variant: "error"})
                 } else {
