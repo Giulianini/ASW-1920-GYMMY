@@ -343,6 +343,7 @@ function CreateCardTab(props) {
                 const foundUsers = res.data.filter(obj => obj.role !== "trainer")
                 setUsers(foundUsers)
             }).catch(reason => {
+                enqueueSnackbar('Error while fetching users', { variant: "error" })
             })
         }, []);
         useEffect(() => {
@@ -358,9 +359,10 @@ function CreateCardTab(props) {
             baseAxios.get("tags").then(res => {
                 const foundTags = res.data
                 setTags(foundTags)
-            }).catch(reason => {
+            }).catch(() => {
+                enqueueSnackbar('Error while fetching tags', { variant: "error" })
             })
-        }, [selectedTags]);
+        }, []);
         useEffect(() => {
             fetchTags()
         }, [fetchTags])
@@ -375,6 +377,8 @@ function CreateCardTab(props) {
             baseAxios.get("exercises").then(res => {
                 const foundExercises = res.data
                 setExercises(foundExercises)
+            }).catch(() => {
+                enqueueSnackbar('Error while fetching exercises', { variant: "error" })
             })
         }, [])
         useEffect(() => {

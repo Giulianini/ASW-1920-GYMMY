@@ -47,6 +47,8 @@ function Cards(props) {
             case 3:
                 enqueueSnackbar(addTagInfo, {variant: "info"})
                 break
+            default:
+                break
         }
     }
 

@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Box, Fab, Grid, Slider, TextField, Typography} from "@material-ui/core";
+import {Fab, Grid, Slider, TextField, Typography} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import {makeStyles} from "@material-ui/core/styles";
 import {baseAxios} from "../../../Api";
