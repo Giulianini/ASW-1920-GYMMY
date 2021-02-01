@@ -5,7 +5,7 @@ import {Done} from "@material-ui/icons";
 import {baseAxios} from "../../../Api";
 import {useSnackbar} from "notistack";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
     userSelector: {
         width: "100%",
         paddingTop: 14,
@@ -23,9 +23,9 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 24,
         paddingTop: 10
     },
-}))
+})
 
-function CreateTagTab(props) {
+function CreateTagTab() {
     const classes = useStyles()
     const {enqueueSnackbar} = useSnackbar()
 
@@ -35,7 +35,7 @@ function CreateTagTab(props) {
         e.preventDefault()
         baseAxios.post('tags', {
             name: tagName
-        }).then(res => {
+        }).then(() => {
             enqueueSnackbar("Tag successfully created", {variant: "success"})
             setTagName('')
         }).catch(reason => {

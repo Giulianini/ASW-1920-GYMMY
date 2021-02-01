@@ -70,7 +70,7 @@ const columns = [
     {field: 'rest', headerName: 'Rest time', width: 130, type: 'number'},
 ]
 
-function CreateCardTab(props) {
+function CreateCardTab() {
     const classes = useStyles()
     const {enqueueSnackbar} = useSnackbar()
 
@@ -127,7 +127,7 @@ function CreateCardTab(props) {
                     }
                 }
             })
-        }).then(res => {
+        }).then(() => {
             enqueueSnackbar("Card successfully added", {variant: "success"})
             setSelectedUsername(null)
             setSelectedTitle('')
@@ -138,7 +138,7 @@ function CreateCardTab(props) {
             setReps(0)
             setRest(0)
             setCardEntries([])
-        }).catch(reason => {
+        }).catch(() => {
             enqueueSnackbar("Error while creating card", {variant: "error"})
         })
     }
@@ -342,7 +342,7 @@ function CreateCardTab(props) {
             baseAxios.get("users").then(res => {
                 const foundUsers = res.data.filter(obj => obj.role !== "trainer")
                 setUsers(foundUsers)
-            }).catch(reason => {
+            }).catch(() => {
                 enqueueSnackbar('Error while fetching users', { variant: "error" })
             })
         }, []);

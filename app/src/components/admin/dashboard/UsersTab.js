@@ -3,7 +3,7 @@ import {Grid, Typography} from "@material-ui/core";
 import {DataGrid} from "@material-ui/data-grid";
 import {makeStyles} from "@material-ui/core/styles";
 import {baseAxios, socket} from "../../../Api";
-import "../styles.css";
+import {useSnackbar} from "notistack";
 
 const columns = [
     {field: 'id', headerName: 'ID', width: 70},
@@ -29,8 +29,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function UsersTab(props) {
+function UsersTab() {
     const classes = useStyles()
+    const {enqueueSnackbar} = useSnackbar()
 
     const executions = useExecutions()
     const executionIds = useRef(new Map())
@@ -62,7 +63,8 @@ function UsersTab(props) {
                     }
                 })
                 setExecutions(rows)
-            }).catch(reason => {
+            }).catch(() => {
+                enqueueSnackbar('Error while fetching executions', { variant: "error" })
             })
         }, [])
 

@@ -6,7 +6,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import {Delete} from "@material-ui/icons";
 import {useSnackbar} from "notistack";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
     userSelector: {
         width: "100%",
         paddingTop: 14,
@@ -21,9 +21,9 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 24,
         paddingTop: 10
     },
-}))
+})
 
-function DeleteCardTab(props) {
+function DeleteCardTab() {
     const classes = useStyles()
     const {enqueueSnackbar} = useSnackbar()
 
@@ -35,20 +35,19 @@ function DeleteCardTab(props) {
 
     const handleCardDelete = (e) => {
         e.preventDefault()
-        baseAxios.delete(`users/${selectedUser.username}/cards/${selectedCard._id}`).then((res) => {
+        baseAxios.delete(`users/${selectedUser.username}/cards/${selectedCard._id}`).then(() => {
             enqueueSnackbar("Card successfully deleted", {variant: "success"})
             setSelectedUser(null)
             setSelectedCard(null)
-        }).catch((reason => {
+        }).catch(() => {
             enqueueSnackbar("Error while deleting card", {variant: "error"})
-        }))
+        })
     }
 
     return (
         <Grid container direction={"column"} justify={"flex-start"} alignItems={"center"} className={classes.grid}>
             <Grid container item xs={12} md={5} component={"form"} onSubmit={handleCardDelete}>
                 <Grid item className={classes.userSelector}>
-                    {/*<Typography variant={"h6"} className={classes.title}>Select a user</Typography>*/}
                     <Autocomplete
                         options={users}
                         onChange={((event, value) => {
@@ -63,7 +62,6 @@ function DeleteCardTab(props) {
                     />
                 </Grid>
                 <Grid item className={classes.userSelector}>
-                    {/*<Typography variant={"h6"} className={classes.title}>Select a user</Typography>*/}
                     <Autocomplete
                         options={cards}
                         onChange={((event, value) => {

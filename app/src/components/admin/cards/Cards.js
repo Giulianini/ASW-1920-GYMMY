@@ -28,7 +28,7 @@ const deleteCardInfo = "Here you can remove a card from a user."
 const createExerciseInfo = "Here you can create a brand new exercise. Don't forget to upload an image! 😉"
 const addTagInfo = "Here you can create a new tag to be used in training cards."
 
-function Cards(props) {
+function Cards() {
     const classes = useStyles()
     const [value, setValue] = React.useState(0);
     const {enqueueSnackbar} = useSnackbar()

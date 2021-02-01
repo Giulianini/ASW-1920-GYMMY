@@ -3,7 +3,7 @@ import {Grid, Typography} from "@material-ui/core";
 import {DataGrid} from "@material-ui/data-grid";
 import {makeStyles} from "@material-ui/core/styles";
 import {baseAxios, socket} from "../../../Api";
-import "../styles.css";
+import {useSnackbar} from "notistack";
 
 const columns = [
     {field: 'id', headerName: 'ID', width: 70},
@@ -12,7 +12,7 @@ const columns = [
     {field: 'capacity', headerName: 'Capacity', width: 130, type: 'number'},
 ]
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
     tableTitle: {
         fontWeight: 100,
         paddingBottom: 10
@@ -27,10 +27,11 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         minHeight: 400,
     },
-}))
+})
 
 function LocationsTab() {
     const classes = useStyles()
+    const {enqueueSnackbar} = useSnackbar()
 
     const locations = useLocations()
 
@@ -38,7 +39,7 @@ function LocationsTab() {
         <Grid container direction={"column"} justify={"flex-start"} alignItems={"center"} className={classes.grid}>
             <Typography variant={"h5"} className={classes.tableTitle}>Locations usage</Typography>
             <Grid item xs={12} md={8} className={classes.gridItem}>
-                <DataGrid className={classes.tableRows} rows={locations} columns={columns} pageSize={8} autoHeight/>
+                <DataGrid rows={locations} columns={columns} pageSize={8} autoHeight/>
             </Grid>
         </Grid>
     );
@@ -58,8 +59,8 @@ function LocationsTab() {
                     }
                 })
                 setLocations(rows)
-            }).catch(reason => {
-
+            }).catch(() => {
+                enqueueSnackbar('Error while fetching location capacities', { variant: "error" })
             })
         }, [])
 

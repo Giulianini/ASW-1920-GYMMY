@@ -7,7 +7,7 @@ import {DropzoneArea} from "material-ui-dropzone";
 import {baseAxios} from "../../../Api";
 import {Autocomplete} from "@material-ui/lab";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
     userSelector: {
         width: "100%",
         paddingTop: 14,
@@ -32,9 +32,9 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 300,
         textAlign: "center"
     },
-}))
+})
 
-function CreateExerciseTab(props) {
+function CreateExerciseTab() {
     const classes = useStyles()
     const {enqueueSnackbar} = useSnackbar()
 
@@ -51,7 +51,7 @@ function CreateExerciseTab(props) {
             name: exerciseName,
             description: exerciseDescription,
             location: selectedLocation.description
-        }).then(res => {
+        }).then(() => {
             const config = {
                 headers: {
                     "Content-Type": "multipart/form-data"
