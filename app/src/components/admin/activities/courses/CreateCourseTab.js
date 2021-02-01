@@ -58,7 +58,7 @@ function CreateCourseTab() {
     }
 
     const canSubmit = () => {
-        return values.description && values.title && file[0]
+        return file[0]
     }
 
     const handleSubmit = (e) => {

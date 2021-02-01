@@ -78,7 +78,7 @@ function Locations() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (values.description && values.defaultCapacity) {
+        if (values.defaultCapacity) {
             baseAxios.post("/locations", values).then(() => {
                 enqueueSnackbar("Location successfully added", {variant: "success"})
                 resetForm()
@@ -90,7 +90,7 @@ function Locations() {
                 }
             }))
         } else {
-            enqueueSnackbar("Some field are empty", {variant: "warning"})
+            enqueueSnackbar("Capacity cannot be zero", {variant: "warning"})
         }
     }
 

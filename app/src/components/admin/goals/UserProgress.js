@@ -53,14 +53,6 @@ function CreateGoalTab() {
         })
     }
 
-    const resetForm = () => {
-        setValues({
-            beginner: 0,
-            intermediate: 0,
-            advanced: 0,
-        })
-    }
-
     const canSubmit = () => {
         if (values.intermediate && values.advanced) {
             if (values.beginner < values.intermediate && values.intermediate < values.advanced) {
@@ -79,7 +71,6 @@ function CreateGoalTab() {
         if (canSubmit()) {
             baseAxios.patch("/progressThreshold", values).then(() => {
                 enqueueSnackbar("Progress values successfully updated", {variant: "success"})
-                resetForm()
             }).catch((reason) => {
                 if (reason.response.status === 404) {
                     enqueueSnackbar("Creating progress values for the first time ", {variant: "warning"})
