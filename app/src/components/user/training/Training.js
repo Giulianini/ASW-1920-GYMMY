@@ -70,7 +70,6 @@ function Training() {
                 setStarted(false)
                 enqueueSnackbar("We have canceled your workout", {variant: "info"})
             }).catch(() => {
-                console.log("Cannot stop training")
                 enqueueSnackbar("Cannot stop training", {variant: "error"})
             })
         } else {
@@ -78,7 +77,6 @@ function Training() {
                 setStarted(true)
                 fetchExecutionStatus()
             }).catch(() => {
-                console.log("Cannot start training")
                 enqueueSnackbar("Cannot start training", {variant: "error"})
             })
         }
@@ -92,11 +90,9 @@ function Training() {
             fetchExecutionStatus()
         }).catch((reason) => {
             if (reason.response.status === 404) {
-                console.log("No workouts in progress")
                 enqueueSnackbar("No workouts in progress", {variant: "error"})
             } else {
                 enqueueSnackbar("Cannot start exercise", {variant: "error"})
-                console.log("Cannot start exercise")
             }
         })
     }
@@ -116,11 +112,9 @@ function Training() {
             }
         }).catch((reason) => {
             if (reason.response.status === 404) {
-                console.log("No workouts in progress")
                 enqueueSnackbar("No workouts in progress", {variant: "error"})
             } else {
                 enqueueSnackbar("Cannot complete exercise", {variant: "error"})
-                console.log("Cannot complete exercise")
             }
         })
     }

@@ -94,9 +94,8 @@ function Personal() {
     function fetchPersonalData() {
         userAxios.get("").then(res => {
             setUserInfo({...res.data})
-        }).catch(reason => {
+        }).catch(() => {
             enqueueSnackbar("Cannot retrieve user information.", {variant: "error"})
-            console.log(reason)
         })
     }
 
